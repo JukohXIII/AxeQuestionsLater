@@ -16,9 +16,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform visual;
 
     [Header("Dash")]
-    [SerializeField] private float dashSpeed = 14f;
-    [SerializeField] private float dashDuration = 0.2f;
-    [SerializeField] private float dashAcceleration = 200f;
+    [SerializeField] private float runBurstSpeed = 14f;
+    [SerializeField] private float runBurstDuration = 0.2f;
+    [SerializeField] private float runBurstAcceleration = 200f;
 
     [Header("Jump movement")]
     [SerializeField] private float jumpVelocity = 10f;
@@ -47,10 +47,14 @@ public class PlayerMovement : MonoBehaviour
     private bool wasDownPressed;
     private float dropTimer;
     private bool isFastFalling;
-    private float dashTimer;
+    private float runBurstTimer;
     private float dashDirection;
     private float previousMoveX;
     private int facingDirection = 1;
+    private float maxSpeed;
+    private float accel;
+    private float decel;
+    private bool downJustPressed;
     
 
     void Awake()
@@ -66,14 +70,10 @@ public class PlayerMovement : MonoBehaviour
         checkGrounded();
 
         bool downPressed = moveInput.y < -0.5f;
-        bool downJustPressed = downPressed && !wasDownPressed;
+        downJustPressed = downPressed && !wasDownPressed;
 
         bool newDirection = moveInput.x != 0 && (previousMoveX == 0 || Mathf.Sign(moveInput.x) != Mathf.Sign(previousMoveX));
         bool newFacingDirection = moveInput.x != 0 && Mathf.Sign(moveInput.x) != facingDirection;
-
-        float maxSpeed;
-        float accel;
-        float decel;
 
         if (isGrounded)
         {
@@ -83,11 +83,11 @@ public class PlayerMovement : MonoBehaviour
             if (newDirection)
             {
                 dashDirection = Mathf.Sign(moveInput.x);
-                dashTimer = dashDuration;
+                runBurstTimer = runBurstDuration;
             }
 
-            maxSpeed = dashTimer > 0 ? dashSpeed : moveSpeed;
-            accel = dashTimer > 0 ? dashAcceleration : acceleration;
+            maxSpeed = runBurstTimer > 0 ? runBurstSpeed : moveSpeed;
+            accel = runBurstTimer > 0 ? runBurstAcceleration : acceleration;
             decel = deceleration;
         }
         else
@@ -95,58 +95,16 @@ public class PlayerMovement : MonoBehaviour
             maxSpeed = airSpeed;
             accel = airAcceleration;
             decel = airDeceleration;
-            dashTimer = 0;
+            runBurstTimer = 0;
         }
         
-        if (moveInput.x == 0)
-        {
-            rb.linearVelocity = new Vector2(Mathf.MoveTowards(rb.linearVelocity.x, 0, decel * Time.fixedDeltaTime), rb.linearVelocity.y);
-        }
-        else
-        {
-            rb.linearVelocity = new Vector2(Mathf.MoveTowards(rb.linearVelocity.x, moveInput.x * maxSpeed, accel * Time.fixedDeltaTime), rb.linearVelocity.y);
-        }
+        HandleHorizontalMovement();
 
-        if (dashTimer > 0)
-        {
-            dashTimer -= Time.fixedDeltaTime;
-            if (moveInput.x == 0 || Mathf.Sign(moveInput.x) != dashDirection)
-            {
-                dashTimer = 0;
-            }
-        }
+        HandleDash();
 
-        if (jumpReleased)
-        {
-            jumpReleased = false;
-            if (rb.linearVelocity.y > 0)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
-            }
-        }
+        HandleJump();
 
-        if (downJustPressed && isGrounded && lastPlatform != null && ignoredPlatform == null)
-        {
-            Physics2D.IgnoreCollision(playerCollider, lastPlatform, true);
-            ignoredPlatform = lastPlatform;
-            dropTimer = dropTime;
-        }
-
-        if (ignoredPlatform != null)
-        {
-            dropTimer -= Time.fixedDeltaTime;
-            if (dropTimer <= 0)
-            {
-                Physics2D.IgnoreCollision(playerCollider, ignoredPlatform, false);
-                ignoredPlatform = null;
-            }
-        }
-        
-        if (!isGrounded && downJustPressed && rb.linearVelocity.y < 0)
-        {
-            isFastFalling = true;
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -fastFallSpeed);
-        }
+        HandleFall();
 
         float limit = isFastFalling ? fastFallSpeed : maxFallSpeed;
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -limit));
@@ -175,6 +133,68 @@ public class PlayerMovement : MonoBehaviour
         Collider2D groundHit = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayers);
         isGrounded = (rb.linearVelocity.y <= 0.1f) && (groundHit != null) && (groundHit.bounds.max.y - groundCheck.position.y <= groundedTolerance);
         lastPlatform = (isGrounded && groundHit.GetComponent<PlatformEffector2D>() != null) ? groundHit : null;
+    }
+
+    void HandleDash()
+    {
+        if (runBurstTimer > 0)
+        {
+            runBurstTimer -= Time.fixedDeltaTime;
+            if (moveInput.x == 0 || Mathf.Sign(moveInput.x) != dashDirection)
+            {
+                runBurstTimer = 0;
+            }
+        }
+    }
+
+    void HandleHorizontalMovement()
+    {
+        if (moveInput.x == 0)
+        {
+            rb.linearVelocity = new Vector2(Mathf.MoveTowards(rb.linearVelocity.x, 0, decel * Time.fixedDeltaTime), rb.linearVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(Mathf.MoveTowards(rb.linearVelocity.x, moveInput.x * maxSpeed, accel * Time.fixedDeltaTime), rb.linearVelocity.y);
+        }
+    }
+
+    void HandleJump()
+    {
+        if (jumpReleased)
+        {
+            jumpReleased = false;
+            if (rb.linearVelocity.y > 0)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+            }
+        }
+    }
+
+    void HandleFall()
+    {
+        if (downJustPressed && isGrounded && lastPlatform != null && ignoredPlatform == null)
+        {
+            Physics2D.IgnoreCollision(playerCollider, lastPlatform, true);
+            ignoredPlatform = lastPlatform;
+            dropTimer = dropTime;
+        }
+
+        if (ignoredPlatform != null)
+        {
+            dropTimer -= Time.fixedDeltaTime;
+            if (dropTimer <= 0)
+            {
+                Physics2D.IgnoreCollision(playerCollider, ignoredPlatform, false);
+                ignoredPlatform = null;
+            }
+        }
+        
+        if (!isGrounded && downJustPressed && rb.linearVelocity.y < 0)
+        {
+            isFastFalling = true;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -fastFallSpeed);
+        }
     }
 
     void OnMove(InputValue value)

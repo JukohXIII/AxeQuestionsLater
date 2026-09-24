@@ -173,13 +173,6 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleFall()
     {
-        if (downJustPressed && isGrounded && lastPlatform != null && ignoredPlatform == null)
-        {
-            Physics2D.IgnoreCollision(playerCollider, lastPlatform, true);
-            ignoredPlatform = lastPlatform;
-            dropTimer = dropTime;
-        }
-
         if (ignoredPlatform != null)
         {
             dropTimer -= Time.fixedDeltaTime;
@@ -207,8 +200,17 @@ public class PlayerMovement : MonoBehaviour
     {
         if (value.isPressed && isGrounded)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
-            isGrounded = false;
+            if (moveInput.y < -0.5f && lastPlatform != null && ignoredPlatform == null)
+            {
+                Physics2D.IgnoreCollision(playerCollider, lastPlatform, true);
+                ignoredPlatform = lastPlatform;
+                dropTimer = dropTime;
+            }
+            else
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
+                isGrounded = false;
+            }
         }
         else if (value.isPressed && !isGrounded && airJumpsRemaining > 0)
         {

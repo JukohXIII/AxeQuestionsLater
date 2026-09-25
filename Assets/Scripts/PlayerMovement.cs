@@ -15,10 +15,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.1f;
     [SerializeField] private Transform visual;
 
-    [Header("Dash")]
-    [SerializeField] private float runBurstSpeed = 14f;
-    [SerializeField] private float runBurstDuration = 0.2f;
-    [SerializeField] private float runBurstAcceleration = 200f;
+    [Header("Burst movement")]
+    [SerializeField] private float burstMovementSpeed = 14f;
+    [SerializeField] private float burstMovementDuration = 0.2f;
+    [SerializeField] private float burstMovementAcceleration = 200f;
 
     [Header("Jump movement")]
     [SerializeField] private float jumpVelocity = 10f;
@@ -36,6 +36,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float airAcceleration = 30f;
     [SerializeField] private float airDeceleration = 5f;
 
+    [Header("Dash movement")]
+    [SerializeField] private float dashSpeed = 20f;
+    [SerializeField] private float dashDuration = 0.15f;
+    [SerializeField] private float dashCooldown = 0.4f;
+    [SerializeField] private float dashAttackWindow = 0.2f;
+    private bool isDashing;
+    private float dashTimer;
+    private float dashCooldownTimer;
+    private float defaultGravityScale;
+    private PlayerCombat playerCombat;
+
     private bool isGrounded;
     private PlayerInput playerInput;
     private InputAction jumpAction;
@@ -48,13 +59,18 @@ public class PlayerMovement : MonoBehaviour
     private float dropTimer;
     private bool isFastFalling;
     private float runBurstTimer;
-    private float dashDirection;
+    private float burstMovementDirection;
     private float previousMoveX;
     private int facingDirection = 1;
     private float maxSpeed;
     private float accel;
     private float decel;
     private bool downJustPressed;
+    public int FacingDirection => facingDirection;
+    public bool IsGrounded => isGrounded;
+    public bool IsDashing => isDashing;
+    private float dashAttackWindowTimer;
+    public bool CanDashAttack => isDashing || dashAttackWindowTimer > 0;
     
 
     void Awake()
@@ -63,6 +79,8 @@ public class PlayerMovement : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         playerCollider = GetComponent<Collider2D>();
         jumpAction = playerInput.actions["Jump"];
+        defaultGravityScale = rb.gravityScale;
+        playerCombat = GetComponent<PlayerCombat>();
     }
 
     void FixedUpdate()
@@ -82,12 +100,12 @@ public class PlayerMovement : MonoBehaviour
 
             if (newDirection)
             {
-                dashDirection = Mathf.Sign(moveInput.x);
-                runBurstTimer = runBurstDuration;
+                burstMovementDirection = Mathf.Sign(moveInput.x);
+                runBurstTimer = burstMovementDuration;
             }
 
-            maxSpeed = runBurstTimer > 0 ? runBurstSpeed : moveSpeed;
-            accel = runBurstTimer > 0 ? runBurstAcceleration : acceleration;
+            maxSpeed = runBurstTimer > 0 ? burstMovementSpeed : moveSpeed;
+            accel = runBurstTimer > 0 ? burstMovementAcceleration : acceleration;
             decel = deceleration;
         }
         else
@@ -100,11 +118,13 @@ public class PlayerMovement : MonoBehaviour
         
         HandleHorizontalMovement();
 
-        HandleDash();
+        HandleBurstMovement();
 
         HandleJump();
 
         HandleFall();
+
+        HandleDash();
 
         float limit = isFastFalling ? fastFallSpeed : maxFallSpeed;
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -limit));
@@ -135,12 +155,12 @@ public class PlayerMovement : MonoBehaviour
         lastPlatform = (isGrounded && groundHit.GetComponent<PlatformEffector2D>() != null) ? groundHit : null;
     }
 
-    void HandleDash()
+    void HandleBurstMovement()
     {
         if (runBurstTimer > 0)
         {
             runBurstTimer -= Time.fixedDeltaTime;
-            if (moveInput.x == 0 || Mathf.Sign(moveInput.x) != dashDirection)
+            if (moveInput.x == 0 || Mathf.Sign(moveInput.x) != burstMovementDirection)
             {
                 runBurstTimer = 0;
             }
@@ -190,6 +210,39 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void HandleDash()
+    {
+        if (dashCooldownTimer > 0)
+        {
+            dashCooldownTimer -= Time.fixedDeltaTime;
+        }
+        if (dashAttackWindowTimer > 0)
+        {
+            dashAttackWindowTimer -= Time.fixedDeltaTime;
+        }
+        if (isDashing)
+        {
+            dashTimer -= Time.fixedDeltaTime;
+            if (dashTimer <= 0)
+            {
+                EndDash();
+                dashAttackWindowTimer = dashAttackWindow;
+            }
+            else
+            {
+                rb.linearVelocity = new Vector2(facingDirection * dashSpeed, 0);
+            }
+        }
+    }
+
+    public void EndDash()
+    {
+        isDashing = false;
+        rb.gravityScale = defaultGravityScale;
+        dashCooldownTimer = dashCooldown;
+        dashAttackWindowTimer = 0;
+    }
+
     void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
@@ -198,7 +251,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnJump(InputValue value)
     {
-        if (value.isPressed && isGrounded)
+        if (value.isPressed && isGrounded && !isDashing)
         {
             if (moveInput.y < -0.5f && lastPlatform != null && ignoredPlatform == null)
             {
@@ -212,10 +265,20 @@ public class PlayerMovement : MonoBehaviour
                 isGrounded = false;
             }
         }
-        else if (value.isPressed && !isGrounded && airJumpsRemaining > 0)
+        else if (value.isPressed && !isGrounded && airJumpsRemaining > 0 && !isDashing)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
             airJumpsRemaining--;
+        }
+    }
+
+    void OnDash(InputValue value)
+    {
+        if (value.isPressed && isGrounded && !isDashing && dashCooldownTimer <= 0 && playerCombat.state == PlayerCombat.PlayerState.Normal)
+        {
+            isDashing = true;
+            dashTimer = dashDuration;
+            rb.gravityScale = 0f;
         }
     }
 

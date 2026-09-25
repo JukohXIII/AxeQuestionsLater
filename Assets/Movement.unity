@@ -251,9 +251,9 @@ MonoBehaviour:
   groundCheck: {fileID: 208943685}
   groundCheckRadius: 0.1
   visual: {fileID: 1186850190}
-  runBurstSpeed: 14
-  runBurstDuration: 0.2
-  runBurstAcceleration: 200
+  burstMovementSpeed: 14
+  burstMovementDuration: 0.2
+  burstMovementAcceleration: 200
   jumpVelocity: 11
   jumpCutMultiplier: 0.3
   maxAirJumps: 1
@@ -264,6 +264,10 @@ MonoBehaviour:
   airSpeed: 8
   airAcceleration: 50
   airDeceleration: 5
+  dashSpeed: 15
+  dashDuration: 0.15
+  dashCooldown: 0.4
+  dashAttackWindow: 0.2
 --- !u!114 &148818920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,6 +333,60 @@ MonoBehaviour:
     knockback: 3
     hitboxOffset: {x: 0, y: -0.8}
     hitboxSize: {x: 0.7, y: 0.7}
+  neutralAirData:
+    attackName: Neutral Aerial
+    startup: 0.25
+    active: 0.3
+    recovery: 0.5
+    damage: 7
+    knockback: 3
+    hitboxOffset: {x: 0.7, y: 0}
+    hitboxSize: {x: 0.7, y: 0.7}
+  upAirData:
+    attackName: Up Aerial
+    startup: 0.25
+    active: 0.3
+    recovery: 0.5
+    damage: 7
+    knockback: 3
+    hitboxOffset: {x: 0.7, y: 0}
+    hitboxSize: {x: 0.7, y: 0.7}
+  downAirData:
+    attackName: Down Aerial
+    startup: 0.25
+    active: 0.3
+    recovery: 0.5
+    damage: 7
+    knockback: 3
+    hitboxOffset: {x: 0.7, y: 0}
+    hitboxSize: {x: 0.7, y: 0.7}
+  forwardAirData:
+    attackName: Forward Aerial
+    startup: 0.25
+    active: 0.3
+    recovery: 0.5
+    damage: 7
+    knockback: 4
+    hitboxOffset: {x: 0.7, y: 0}
+    hitboxSize: {x: 0.7, y: 0.7}
+  backAirData:
+    attackName: Back Aerial
+    startup: 0.25
+    active: 0.3
+    recovery: 0.5
+    damage: 7
+    knockback: 3
+    hitboxOffset: {x: 0.7, y: 0}
+    hitboxSize: {x: 0.7, y: 0.7}
+  dashAttackData:
+    attackName: Dash Attack
+    startup: 0.05
+    active: 0.12
+    recovery: 0.35
+    damage: 8
+    knockback: 6
+    hitboxOffset: {x: 0.9, y: 0}
+    hitboxSize: {x: 0.9, y: 0.7}
   comboAttacks:
   - attackName: Neutral Attack-1
     startup: 0.25
@@ -463,7 +521,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 500
   m_LinearDamping: 6
   m_AngularDamping: 0.05
   m_GravityScale: 3

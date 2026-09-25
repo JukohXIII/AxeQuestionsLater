@@ -34,11 +34,22 @@ public class PlayerCombat : MonoBehaviour
     private AttackData currentAttack;
     private bool isComboAttack;
     private Vector2 moveInput;
+    [SerializeField] private AttackData neutralAirData;
+    [SerializeField] private AttackData upAirData;
+    [SerializeField] private AttackData downAirData;
+    [SerializeField] private AttackData forwardAirData;
+    [SerializeField] private AttackData backAirData;
+    private PlayerMovement playerMovement;
+    [SerializeField] private AttackData dashAttackData;
 
     [Header("Attack Settings")]
     [SerializeField] private AttackData[] comboAttacks;
 
-    
+
+    void Awake()
+    {
+        playerMovement = GetComponent<PlayerMovement>();
+    }
     void Update()
     {
         HandleCombat();
@@ -78,21 +89,58 @@ public class PlayerCombat : MonoBehaviour
     {
         if (state == PlayerState.Normal && attackPressedThisFrame)
         {
-            if (moveInput.y > 0.5f)
+            if (playerMovement.CanDashAttack)
             {
-                currentAttack = upTiltData;
+                currentAttack = dashAttackData;
                 isComboAttack = false;
+                playerMovement.EndDash();
             }
-            else if (moveInput.y < -0.5f)
+            else if (!playerMovement.IsGrounded)
             {
-                currentAttack = downTiltData;
-                isComboAttack = false;
+                if (moveInput.y > 0.5f)
+                {
+                    currentAttack = upAirData;
+                    isComboAttack = false;
+                }
+                else if (moveInput.y < -0.5f)
+                {
+                    currentAttack = downAirData;
+                    isComboAttack = false;
+                }
+                else if (moveInput.x != 0 && playerMovement.FacingDirection == 1)
+                {
+                    currentAttack = forwardAirData;
+                    isComboAttack = false;
+                }
+                else if (moveInput.x != 0 && playerMovement.FacingDirection == -1)
+                {
+                    currentAttack = backAirData;
+                    isComboAttack = false;
+                }
+                else
+                {
+                    currentAttack = neutralAirData;
+                    isComboAttack = false;
+                }
             }
             else
             {
-                comboStep = 1;
-                currentAttack = comboAttacks[comboStep - 1];
-                isComboAttack = true;
+                if (moveInput.y > 0.5f)
+                {
+                    currentAttack = upTiltData;
+                    isComboAttack = false;
+                }
+                else if (moveInput.y < -0.5f)
+                {
+                    currentAttack = downTiltData;
+                    isComboAttack = false;
+                }
+                else
+                {
+                    comboStep = 1;
+                    currentAttack = comboAttacks[comboStep - 1];
+                    isComboAttack = true;
+                }
             }
             state = PlayerState.Attacking;
             phase = AttackPhase.Startup;

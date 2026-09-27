@@ -91,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
         downJustPressed = downPressed && !wasDownPressed;
 
         bool newDirection = moveInput.x != 0 && (previousMoveX == 0 || Mathf.Sign(moveInput.x) != Mathf.Sign(previousMoveX));
-        bool newFacingDirection = moveInput.x != 0 && Mathf.Sign(moveInput.x) != facingDirection;
+        bool newFacingDirection = moveInput.x != 0 && Mathf.Sign(moveInput.x) != facingDirection && playerCombat.state != PlayerCombat.PlayerState.Grabbing;
 
         if (isGrounded)
         {
@@ -169,7 +169,9 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleHorizontalMovement()
     {
-        if (moveInput.x == 0)
+        bool lockedOnGround = isGrounded && playerCombat.state != PlayerCombat.PlayerState.Normal;
+
+        if (moveInput.x == 0 || lockedOnGround  )
         {
             rb.linearVelocity = new Vector2(Mathf.MoveTowards(rb.linearVelocity.x, 0, decel * Time.fixedDeltaTime), rb.linearVelocity.y);
         }
@@ -251,7 +253,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnJump(InputValue value)
     {
-        if (value.isPressed && isGrounded && !isDashing)
+        if (value.isPressed && isGrounded && !isDashing && playerCombat.state != PlayerCombat.PlayerState.Grabbing)
         {
             if (moveInput.y < -0.5f && lastPlatform != null && ignoredPlatform == null)
             {
@@ -265,7 +267,7 @@ public class PlayerMovement : MonoBehaviour
                 isGrounded = false;
             }
         }
-        else if (value.isPressed && !isGrounded && airJumpsRemaining > 0 && !isDashing)
+        else if (value.isPressed && !isGrounded && airJumpsRemaining > 0 && !isDashing && playerCombat.state != PlayerCombat.PlayerState.Grabbing)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
             airJumpsRemaining--;
@@ -280,6 +282,11 @@ public class PlayerMovement : MonoBehaviour
             dashTimer = dashDuration;
             rb.gravityScale = 0f;
         }
+    }
+
+    public void SetFacing(int direction)
+    {
+        facingDirection = direction;
     }
 
     void OnDrawGizmosSelected()

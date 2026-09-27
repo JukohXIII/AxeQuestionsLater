@@ -387,6 +387,34 @@ MonoBehaviour:
     knockback: 6
     hitboxOffset: {x: 0.9, y: 0}
     hitboxSize: {x: 0.9, y: 0.7}
+  grabAttackData:
+    attackName: Grab Attack
+    startup: 0.05
+    active: 0.12
+    recovery: 0.35
+    damage: 0
+    knockback: 0
+    hitboxOffset: {x: 0.9, y: 0}
+    hitboxSize: {x: 0.7, y: 0.7}
+  holdOffset: {x: 1, y: 0.5}
+  grabHoldTime: 1.5
+  minHoldTime: 0.25
+  forwardThrow:
+    damage: 7
+    knockback: 7
+    direction: {x: 1, y: 0.3}
+  backThrow:
+    damage: 7
+    knockback: 7
+    direction: {x: -1, y: 0.3}
+  upThrow:
+    damage: 7
+    knockback: 7
+    direction: {x: 0.3, y: 1}
+  downThrow:
+    damage: 7
+    knockback: 7
+    direction: {x: 0.3, y: -1}
   comboAttacks:
   - attackName: Neutral Attack-1
     startup: 0.25
@@ -456,6 +484,7 @@ GameObject:
   - component: {fileID: 462626264}
   - component: {fileID: 462626263}
   - component: {fileID: 462626267}
+  - component: {fileID: 462626268}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -623,6 +652,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   damagePercent: 0
+--- !u!114 &462626268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462626262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c6505d78736f74ab857c9bbfde6b9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Grabbable
 --- !u!1 &736598720
 GameObject:
   m_ObjectHideFlags: 0

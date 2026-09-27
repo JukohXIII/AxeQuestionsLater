@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
-using NUnit.Framework.Constraints;
 
 [System.Serializable]
 public class AttackData
@@ -28,6 +27,11 @@ public class PlayerCombat : MonoBehaviour
 {
 
     public enum PlayerState { Normal, Attacking, Grabbing }
+    private AttackData currentAttack;
+    private Vector2 moveInput;
+    private PlayerMovement playerMovement;
+
+    [Header("Attack State")]
     public PlayerState state = PlayerState.Normal;
     private enum AttackPhase { None, Startup, Active, Recovery }
     private AttackPhase phase = AttackPhase.None;
@@ -35,21 +39,29 @@ public class PlayerCombat : MonoBehaviour
     private float phaseTimer;
     private bool queuedNextHit;
     private int comboStep = 0;
+
+    [Header("Hitbox")]
     [SerializeField] private GameObject attackHitbox;
     [SerializeField] private LayerMask hittableLayers;
     private HashSet<Collider2D> hitTargetsThisSwing = new HashSet<Collider2D>();
+
+    [Header("Ground Attacks")]
+    [SerializeField] private AttackData[] comboAttacks;
     [SerializeField] private AttackData upTiltData;
     [SerializeField] private AttackData downTiltData;
-    private AttackData currentAttack;
     private bool isComboAttack;
-    private Vector2 moveInput;
+
+    [Header("Air Attacks")]
     [SerializeField] private AttackData neutralAirData;
     [SerializeField] private AttackData upAirData;
     [SerializeField] private AttackData downAirData;
     [SerializeField] private AttackData forwardAirData;
     [SerializeField] private AttackData backAirData;
-    private PlayerMovement playerMovement;
+
+    [Header("Dash Attack")]
     [SerializeField] private AttackData dashAttackData;
+
+    [Header("Grab")]
     private bool grabPressedThisFrame;
     [SerializeField] private AttackData grabAttackData;
     private bool isGrabAttack;
@@ -58,14 +70,13 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float grabHoldTime = 1.5f;
     [SerializeField] private float minHoldTime = 0.25f;
     private float grabTimer;
+
+    [Header("Throws")]
     [SerializeField] private ThrowData forwardThrow;
     [SerializeField] private ThrowData backThrow;
     [SerializeField] private ThrowData upThrow;
     [SerializeField] private ThrowData downThrow;
     [SerializeField] private float throwRecovery = 0.3f;
-
-    [Header("Attack Settings")]
-    [SerializeField] private AttackData[] comboAttacks;
 
 
     void Awake()

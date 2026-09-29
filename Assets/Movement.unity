@@ -674,9 +674,9 @@ MonoBehaviour:
     hitboxSize: {x: 0.7, y: 0.7}
   upTiltData:
     attackName: Up Tilt
-    startup: 0.25
-    active: 0.3
-    recovery: 0.5
+    startup: 0.08
+    active: 0.8
+    recovery: 0.2
     damage: 7
     knockback: 3
     hitboxOffset: {x: 0, y: 0.8}
@@ -746,9 +746,9 @@ MonoBehaviour:
     hitboxSize: {x: 0.9, y: 0.7}
   grabAttackData:
     attackName: Grab Attack
-    startup: 0.05
-    active: 0.12
-    recovery: 0.35
+    startup: 0.15
+    active: 0.1
+    recovery: 0.4
     damage: 0
     knockback: 0
     hitboxOffset: {x: 0.9, y: 0}
@@ -767,7 +767,7 @@ MonoBehaviour:
   upThrow:
     damage: 7
     knockback: 7
-    direction: {x: 0.3, y: 1}
+    direction: {x: 0.3, y: 6}
   downThrow:
     damage: 7
     knockback: 7

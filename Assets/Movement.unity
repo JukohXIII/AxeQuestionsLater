@@ -481,7 +481,7 @@ Transform:
   m_GameObject: {fileID: 148818915}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.8, y: -1.5, z: 0}
+  m_LocalPosition: {x: -7.62, y: -0.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -955,6 +955,7 @@ GameObject:
   - component: {fileID: 462626263}
   - component: {fileID: 462626267}
   - component: {fileID: 462626268}
+  - component: {fileID: 462626269}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -1122,6 +1123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   damagePercent: 0
+  maxDamagePercent: 100
 --- !u!114 &462626268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1134,6 +1136,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8c6505d78736f74ab857c9bbfde6b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
+--- !u!114 &462626269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462626262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b97c74b0836f1d04786b45b2cf78bbb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+  config: {fileID: 11400000, guid: a90dcade85d75794fb3382fc45439b09, type: 2}
+  player: {fileID: 148818916}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  currentStateName: 
 --- !u!1 &736598720
 GameObject:
   m_ObjectHideFlags: 0

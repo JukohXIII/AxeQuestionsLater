@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a566ecc8db691f448ea113156fd29c3, type: 3}
   m_Name: EnemyConfig
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
-  moveSpeed: 2
-  jumpVelocity: 5
-  detectionRange: 5
+  moveSpeed: 3
+  jumpVelocity: 15
+  detectionRange: 10
   attackRange: 1.5
   verticalAttackTolerance: 1
   jumpHeightThreshold: 1.5

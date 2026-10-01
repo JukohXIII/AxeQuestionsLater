@@ -112,6 +112,26 @@ public class HitstunState : EnemyState
     public override void Tick()
     {
         timer -= Time.deltaTime;
+        if (timer <= 0f && enemyController.IsGrounded())
+            enemyController.ChangeState(enemyController.Knockdown);
+    }
+}
+
+public class KnockdownState : EnemyState
+{
+    float timer;
+
+    public KnockdownState(EnemyController e) : base(e) { }
+
+    public override void Enter()
+    {
+        enemyController.StopHorizontal();
+        timer = enemyController.Config.knockdownDuration;
+    }
+
+    public override void Tick()
+    {
+        timer -= Time.deltaTime;
         if (timer <= 0f)
             enemyController.ChangeState(enemyController.Idle);
     }

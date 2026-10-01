@@ -319,18 +319,22 @@ public class PlayerCombat : MonoBehaviour
             }
             if (moveInput.y > 0.5f)
             {
+                Debug.Log("Up throw");
                 DoThrow(upThrow);
             }
             else if (moveInput.y < -0.5f)
             {
+                Debug.Log("Down throw");
                 DoThrow(downThrow);
             }
             else if (moveInput.x != 0 && Mathf.Sign(moveInput.x) == playerMovement.FacingDirection)
             {
+                Debug.Log("Forward throw");
                 DoThrow(forwardThrow);
             }
             else if (moveInput.x != 0 && Mathf.Sign(moveInput.x) == -playerMovement.FacingDirection)
             {
+                Debug.Log("Back throw");
                 DoThrow(backThrow, true);
             }
             return;
@@ -348,6 +352,7 @@ public class PlayerCombat : MonoBehaviour
         }
         heldTarget.Release();
         heldTarget.GetComponent<Health>().TakeHit(t.damage, dir, t.knockback);
+        StartCoroutine(HitStop());
         heldTarget = null;
         state = PlayerState.Attacking;
         phase = AttackPhase.Recovery;

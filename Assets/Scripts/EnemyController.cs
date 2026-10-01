@@ -24,6 +24,7 @@ public class EnemyController : MonoBehaviour
     public IEnemyState Recovery { get; private set; }
     public IEnemyState Hitstun { get; private set; }
     public IEnemyState Dead { get; private set; }
+    public IEnemyState Knockdown { get; private set; }
 
     private IEnemyState currentState;
     private new BoxCollider2D collider;
@@ -42,6 +43,7 @@ public class EnemyController : MonoBehaviour
         Recovery = CreateRecovery();
         Hitstun = CreateHitstun();
         Dead = CreateDead();
+        Knockdown = CreateKnockdown();
     }
 
     void OnEnable(){
@@ -87,6 +89,7 @@ public class EnemyController : MonoBehaviour
     protected virtual IEnemyState CreateRecovery() => new RecoveryState(this);
     protected virtual IEnemyState CreateHitstun() => new HitstunState(this);
     protected virtual IEnemyState CreateDead() => new DeadState(this);
+    protected virtual IEnemyState CreateKnockdown() => new KnockdownState(this);
 
     // ---------- Perception ----------
     public float DistanceToPlayer() => Vector2.Distance(transform.position, player.position);

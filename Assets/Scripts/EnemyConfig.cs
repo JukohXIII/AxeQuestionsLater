@@ -24,4 +24,5 @@ public class EnemyConfig : ScriptableObject
     public float recoveryDuration = 0.6f;
     public float hitstunDuration = 0.4f;
     public float deathDelay = 1f;
+    public float knockdownDuration = 5f;
 }

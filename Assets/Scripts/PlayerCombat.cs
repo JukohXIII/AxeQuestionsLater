@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
@@ -30,6 +31,7 @@ public class PlayerCombat : MonoBehaviour
     private AttackData currentAttack;
     private Vector2 moveInput;
     private PlayerMovement playerMovement;
+    [SerializeField] private float hitStopDuration = 0.05f;
 
     [Header("Attack State")]
     public PlayerState state = PlayerState.Normal;
@@ -253,6 +255,7 @@ public class PlayerCombat : MonoBehaviour
                         {
                             Vector2 knockbackDirection = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
                             targetHealth.TakeHit(currentAttack.damage, knockbackDirection, currentAttack.knockback);
+                            StartCoroutine(HitStop());
                         }
                     }
                 }
@@ -351,6 +354,13 @@ public class PlayerCombat : MonoBehaviour
         phaseTimer = throwRecovery;
         isComboAttack = false;
         isGrabAttack = false;
+    }
+
+    IEnumerator HitStop()
+    {
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(hitStopDuration);
+        Time.timeScale = 1f;
     }
 
     void OnDrawGizmosSelected()

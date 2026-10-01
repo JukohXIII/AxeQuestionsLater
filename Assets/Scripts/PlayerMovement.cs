@@ -47,6 +47,10 @@ public class PlayerMovement : MonoBehaviour
     private float defaultGravityScale;
     private PlayerCombat playerCombat;
 
+    [Header("Enemy bounce")]
+    [SerializeField] private float enemyBounceVelocity = 12f;
+    [SerializeField] private LayerMask enemyLayer;
+
     private bool isGrounded;
     private PlayerInput playerInput;
     private InputAction jumpAction;
@@ -287,6 +291,21 @@ public class PlayerMovement : MonoBehaviour
     public void SetFacing(int direction)
     {
         facingDirection = direction;
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
+        {
+            foreach (ContactPoint2D contact in collision.contacts)
+            {
+                if (contact.normal.y > 0.5f)
+                {
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, enemyBounceVelocity);
+                    break;
+                }
+            }
+        }
     }
 
     void OnDrawGizmosSelected()

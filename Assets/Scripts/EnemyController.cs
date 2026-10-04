@@ -18,6 +18,7 @@ public class EnemyController : MonoBehaviour
     public int FacingDirection { get; private set; } = -1; // 1 for right, -1 for left
 
     // States
+    public EnemyDecider Decider { get; private set;}
     public IEnemyState Idle { get; private set; }
     public IEnemyState Chase { get; private set; }
     public IEnemyState Attack { get; private set; }
@@ -28,6 +29,7 @@ public class EnemyController : MonoBehaviour
 
     private IEnemyState currentState;
     private new BoxCollider2D collider;
+    private float lastJumpTime = -999f;
 
     // ----------- Lifecycle ----------- //
     protected virtual void Awake()
@@ -44,6 +46,8 @@ public class EnemyController : MonoBehaviour
         Hitstun = CreateHitstun();
         Dead = CreateDead();
         Knockdown = CreateKnockdown();
+
+        Decider = new EnemyDecider(this);
     }
 
     void OnEnable(){
@@ -126,8 +130,18 @@ public class EnemyController : MonoBehaviour
         Rb.linearVelocity = new Vector2(0f, Rb.linearVelocity.y);
     }
 
+    public float MaxJumpHeight()
+    {
+        float gravity = Mathf.Abs(Physics2D.gravity.y) * Rb.gravityScale;
+        return config.jumpVelocity * config.jumpVelocity / (2f*gravity);
+    }
+
+    public bool CanJump() => 
+        IsGrounded() && Time.time >= lastJumpTime+config.jumpCooldown;
+    
     public void Jump()
     {
+        lastJumpTime = Time.time;
         Rb.linearVelocity = new Vector2(Rb.linearVelocity.x, config.jumpVelocity);
     }
 

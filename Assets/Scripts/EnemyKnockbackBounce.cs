@@ -9,12 +9,15 @@ public class EnemyKnockbackBounce : MonoBehaviour
     private float knockbackWindow;
     private Health health;
     private Rigidbody2D rb;
+    private Vector2 lastVelocity;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         health = GetComponent<Health>();
     }
+
+    void FixedUpdate() { lastVelocity = rb.linearVelocity; }
 
     void OnEnable() { health.OnHit += StartKnockbackWindow; }
     void OnDisable() { health.OnHit -= StartKnockbackWindow; }
@@ -29,14 +32,12 @@ public class EnemyKnockbackBounce : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (knockbackWindow <= 0) return;
-        if (((1 << collision.gameObject.layer) & groundLayers) != 0)
-        {
-            float impactSpeed = collision.relativeVelocity.y;
-            if (impactSpeed > minBounceSpeed)
-            {
-                float newY = impactSpeed * bounceDamping;
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, newY);
-            }
-        }
+        if (((1 << collision.gameObject.layer) & groundLayers) == 0) return;
+
+        Vector2 normal = collision.GetContact(0).normal;
+        float impactSpeed = Mathf.Abs(Vector2.Dot(lastVelocity, normal));
+
+        if (impactSpeed > minBounceSpeed)
+            rb.linearVelocity = Vector2.Reflect(lastVelocity, normal) * bounceDamping;
     }
 }

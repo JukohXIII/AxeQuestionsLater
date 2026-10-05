@@ -12,6 +12,7 @@ public class AttackData
     public float recovery;
     public float damage;
     public float knockback;
+    public Vector2 launchDirection;
     public Vector2 hitboxOffset = new Vector2(0.7f, 0f);
     public Vector2 hitboxSize = new Vector2(0.7f, 0.7f);
 }
@@ -253,7 +254,11 @@ public class PlayerCombat : MonoBehaviour
                     {
                         if (targetHealth != null)
                         {
-                            Vector2 knockbackDirection = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
+                            Vector2 knockbackDirection;
+                            if (currentAttack.launchDirection != Vector2.zero)
+                                knockbackDirection = new Vector2(currentAttack.launchDirection.x * playerMovement.FacingDirection, currentAttack.launchDirection.y).normalized;
+                            else
+                                knockbackDirection = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
                             targetHealth.TakeHit(currentAttack.damage, knockbackDirection, currentAttack.knockback);
                             StartCoroutine(HitStop());
                         }

@@ -17,6 +17,9 @@ public class EnemyController : MonoBehaviour
     public Health Health { get; private set; }
     public int FacingDirection { get; private set; } = -1; // 1 for right, -1 for left
 
+    public AttackKind CurrentAttackKind { get; private set; }
+    private float lastDashTime = -999f;
+    public bool IsDashReady => Time.time >= lastDashTime + config.dashCooldown;
     // States
     public EnemyDecider Decider { get; private set;}
     public IEnemyState Idle { get; private set; }
@@ -108,6 +111,24 @@ public class EnemyController : MonoBehaviour
         Vector2 size = new Vector2(bounds.size.x * 0.9f, 0.05f);
         return Physics2D.BoxCast(bounds.center, size, 0f, Vector2.down, 
             bounds.extents.y + 0.05f, groundLayer);
+    }
+
+    public void StartAttack(AttackKind kind)
+    {
+        CurrentAttackKind = kind;
+        if (kind == AttackKind.Dash)
+            lastDashTime = Time.time;
+        ChangeState(Attack);
+    }
+
+    public bool IsPlayerInDashRange()
+    {
+        float dx = Mathf.Abs(player.position.x - transform.position.x);
+        return IsDashReady
+            && dx > config.attackRange
+            && dx <= config.dashMaxDistance
+            && Mathf.Abs(VerticalOffsetToPlayer()) <= config.verticalAttackTolerance
+            && IsGrounded();
     }
 
     public bool IsObstacleAhead()

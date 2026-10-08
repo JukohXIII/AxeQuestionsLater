@@ -18,14 +18,22 @@ public class IdleState : EnemyState
             return;
 
         bool inRange = enemyController.IsPlayerInAttackRange();
+        bool inDash = enemyController.IsPlayerInDashRange();
 
         switch (enemyController.Decider.Current)
         {
             case EnemyAction.Attack:
                 if (inRange && enemyController.IsGrounded())
-                    enemyController.ChangeState(enemyController.Attack);
+                    enemyController.StartAttack(AttackKind.Melee);
                 else if (!inRange)
-                    enemyController.ChangeState(enemyController.Chase); // wants to attack, too far: approach
+                    enemyController.ChangeState(enemyController.Chase);
+                break;
+
+            case EnemyAction.DashAttack:
+                if (inDash)
+                    enemyController.StartAttack(AttackKind.Dash);
+                else if (!inRange)
+                    enemyController.ChangeState(enemyController.Chase);
                 break;
 
             case EnemyAction.Chase:
@@ -33,7 +41,7 @@ public class IdleState : EnemyState
                     enemyController.ChangeState(enemyController.Chase);
                 break;
 
-            // EnemyAction.Wait: stay in Idle
+            // Wait: stay in Idle
         }
     }
 }
@@ -58,7 +66,13 @@ public class ChaseState : EnemyState
 
         if (action == EnemyAction.Attack && inRange && enemyController.IsGrounded())
         {
-            enemyController.ChangeState(enemyController.Attack);
+            enemyController.StartAttack(AttackKind.Melee);
+            return;
+        }
+
+        if (action == EnemyAction.DashAttack && enemyController.IsPlayerInDashRange())
+        {
+            enemyController.StartAttack(AttackKind.Dash);
             return;
         }
 
@@ -96,30 +110,68 @@ public class ChaseState : EnemyState
 // Split into Windup / Hit1 / Hit2 once the attacks are designed.
 public class AttackState : EnemyState
 {
+    enum Phase { Windup, Active }
+
+    Phase phase;
+    AttackKind kind;
     float timer;
+    int dashDir;
 
     public AttackState(EnemyController e) : base(e) { }
 
     public override void Enter()
     {
+        var c = enemyController.Config;
+        kind = enemyController.CurrentAttackKind;
+
         enemyController.StopHorizontal();
-        enemyController.Face(enemyController.DirectionToPlayer());
-        timer = enemyController.Config.attackDuration;
-        // TODO: trigger attack animation / enable hitbox
+
+        // Direction is locked at the start of the windup: the player can dodge it
+        dashDir = enemyController.DirectionToPlayer();
+        enemyController.Face(dashDir);
+
+        phase = Phase.Windup;
+        timer = kind == AttackKind.Dash ? c.dashWindup : c.meleeWindup;
     }
 
     public override void Tick()
     {
+        var c = enemyController.Config;
         timer -= Time.deltaTime;
+
+        if (phase == Phase.Windup)
+        {
+            if (timer > 0f) return;
+
+            phase = Phase.Active;
+            timer = kind == AttackKind.Dash ? c.dashDuration : c.meleeActiveDuration;
+            // TODO: enable the hitbox here
+            return;
+        }
+
+        // Active phase
+        if (kind == AttackKind.Dash)
+        {
+            enemyController.MoveHorizontal(dashDir * c.dashSpeed);
+
+            // A wall ends the dash early
+            if (enemyController.IsObstacleAhead())
+                timer = 0f;
+        }
+
         if (timer <= 0f)
+        {
+            enemyController.StopHorizontal();
             enemyController.ChangeState(enemyController.Recovery);
+        }
     }
 
     public override void Exit()
     {
-        // TODO: disable the hitbox (the attack can be interrupted by a hit)
+        // TODO: disable the hitbox
+        // Do NOT touch the velocity here: Exit is also called when a hit
+        // interrupts the attack, and it would cancel the knockback.
     }
-    
 }
 
 // RECOVERY: punish window, stands still and vulnerable.
@@ -131,8 +183,11 @@ public class RecoveryState : EnemyState
 
     public override void Enter()
     {
+        var c = enemyController.Config;
         enemyController.StopHorizontal();
-        timer = enemyController.Config.recoveryDuration;
+        timer = enemyController.CurrentAttackKind == AttackKind.Dash
+            ? c.dashRecoveryDuration
+            : c.recoveryDuration;
     }
 
     public override void Tick()
@@ -149,7 +204,7 @@ public class RecoveryState : EnemyState
 }
 
 // HITSTUN: just got hit. Does NOT touch velocity, so the knockback
-// from Health plays out. Re-entering resets the timer (combos).
+// from Health.cs plays out. Re-entering resets the timer (combos).
 public class HitstunState : EnemyState
 {
     float timer;

@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public enum EnemyAction { Chase, Attack, Wait }
+public enum EnemyAction { Chase, Attack, DashAttack, Wait }
+public enum AttackKind {Melee, Dash}
 
 public class EnemyDecider
 {
@@ -30,18 +31,21 @@ public class EnemyDecider
     {
         var config = enemyController.Config;
 
-        // Occasionally ignore the weights entirely: a dumb, irrational choice
         if (Random.value < config.decisionNoise)
-            return (EnemyAction)Random.Range(0, 3);
+            return (EnemyAction)Random.Range(0, 4);   // 4 = number of EnemyAction values
 
-        bool inRange = enemyController.IsPlayerInAttackRange();
-        float attack = inRange ? config.aggression : 0f;
-        float chase  = inRange ? 0.1f : 1f - config.hesitation;
+        bool inMelee = enemyController.IsPlayerInAttackRange();
+        bool inDash  = enemyController.IsPlayerInDashRange();
+
+        float attack = inMelee ? config.aggression : 0f;
+        float dash   = inDash ? config.dashAggression : 0f;
+        float chase  = inMelee ? 0.1f : 1f - config.hesitation;
         float wait   = config.hesitation;
 
-        float roll = Random.value * (attack + chase + wait);
+        float roll = Random.value * (attack + dash + chase + wait);
         if (roll < attack) return EnemyAction.Attack;
-        if (roll < attack + chase) return EnemyAction.Chase;
+        if (roll < attack + dash) return EnemyAction.DashAttack;
+        if (roll < attack + dash + chase) return EnemyAction.Chase;
         return EnemyAction.Wait;
     }
 

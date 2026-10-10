@@ -31,7 +31,6 @@ public class Health : MonoBehaviour
     public void TakeHit(float damageAmount, Vector2 knockbackDirection, float knockbackForce, bool causesKnockdown=false)
     {
         if (IsDead || IsInvincible) return;
-        Debug.Log("Hit taken: damage " + damageAmount + ", knockdown flag " + causesKnockdown);
 
         damagePercent += damageAmount;
         rb.linearVelocity = knockbackDirection * knockbackForce;

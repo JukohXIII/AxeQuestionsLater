@@ -100,20 +100,27 @@ public class RecoveryState : EnemyState
 public class HitstunState : EnemyState
 {
     float timer;
+    bool causeKnockdown;
 
     public HitstunState(EnemyController e) : base(e) { }
 
     public override void Enter()
     {
         timer = enemyController.Config.hitstunDuration;
+        if (enemyController.Health.LastHitCausedKnockdown) causeKnockdown = true;
         // TODO: hit animation / flash
     }
 
     public override void Tick()
     {
+        if (!enemyController.IsGrounded()) causeKnockdown = true;
         timer -= Time.deltaTime;
         if (timer <= 0f && enemyController.IsGrounded())
-            enemyController.ChangeState(enemyController.Knockdown);
+        {
+            IEnemyState next = causeKnockdown ? enemyController.Knockdown : enemyController.Idle;
+            causeKnockdown = false;
+            enemyController.ChangeState(next);
+        }
     }
 }
 
@@ -127,6 +134,12 @@ public class KnockdownState : EnemyState
     {
         enemyController.StopHorizontal();
         timer = enemyController.Config.knockdownDuration;
+        enemyController.Health.IsInvincible = true;
+    }
+
+    public override void Exit()
+    {
+        enemyController.Health.IsInvincible = false;
     }
 
     public override void Tick()

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 
 [System.Serializable]
 public class AttackData
@@ -15,6 +16,7 @@ public class AttackData
     public Vector2 launchDirection;
     public Vector2 hitboxOffset = new Vector2(0.7f, 0f);
     public Vector2 hitboxSize = new Vector2(0.7f, 0.7f);
+    public bool causesKnockdown;
 }
 
 [System.Serializable]
@@ -23,6 +25,7 @@ public class ThrowData
     public float damage;
     public float knockback;
     public Vector2 direction;
+    public bool causesKnockdown;
 }
 
 public class PlayerCombat : MonoBehaviour
@@ -236,6 +239,7 @@ public class PlayerCombat : MonoBehaviour
                 {
                     hitTargetsThisSwing.Add(hit);
                     Health targetHealth = hit.GetComponent<Health>();
+                    if (targetHealth != null && targetHealth.IsInvincible) continue;
                     if (isGrabAttack)
                     {
                         Grabbable grabbable = hit.GetComponent<Grabbable>();
@@ -259,7 +263,7 @@ public class PlayerCombat : MonoBehaviour
                                 knockbackDirection = new Vector2(currentAttack.launchDirection.x * playerMovement.FacingDirection, currentAttack.launchDirection.y).normalized;
                             else
                                 knockbackDirection = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
-                            targetHealth.TakeHit(currentAttack.damage, knockbackDirection, currentAttack.knockback);
+                            targetHealth.TakeHit(currentAttack.damage, knockbackDirection, currentAttack.knockback, currentAttack.causesKnockdown);
                             StartCoroutine(HitStop());
                         }
                     }
@@ -356,7 +360,7 @@ public class PlayerCombat : MonoBehaviour
             heldTarget.transform.position = (Vector2)transform.position + new Vector2(holdOffset.x * -oldFacing, holdOffset.y);
         }
         heldTarget.Release();
-        heldTarget.GetComponent<Health>().TakeHit(t.damage, dir, t.knockback);
+        heldTarget.GetComponent<Health>().TakeHit(t.damage, dir, t.knockback, t.causesKnockdown);
         StartCoroutine(HitStop());
         heldTarget = null;
         state = PlayerState.Attacking;

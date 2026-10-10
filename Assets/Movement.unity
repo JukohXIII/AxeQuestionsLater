@@ -662,6 +662,7 @@ MonoBehaviour:
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0.8, y: 0}
     hitboxSize: {x: 1, y: 0.7}
+    causesKnockdown: 0
   - attackName: Neutral Attack-2
     startup: 0.06
     active: 0.05
@@ -671,6 +672,7 @@ MonoBehaviour:
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0.8, y: 0}
     hitboxSize: {x: 1, y: 0.7}
+    causesKnockdown: 0
   - attackName: Neutral Attack-3
     startup: 0.08
     active: 0.08
@@ -680,6 +682,7 @@ MonoBehaviour:
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0.8, y: 0}
     hitboxSize: {x: 1, y: 0.7}
+    causesKnockdown: 1
   upTiltData:
     attackName: Up Tilt
     startup: 0.1
@@ -690,6 +693,7 @@ MonoBehaviour:
     launchDirection: {x: 0.2, y: 1}
     hitboxOffset: {x: 0.3, y: 0.5}
     hitboxSize: {x: 1.1, y: 1}
+    causesKnockdown: 0
   downTiltData:
     attackName: Down Tilt
     startup: 0.1
@@ -700,6 +704,7 @@ MonoBehaviour:
     launchDirection: {x: 1, y: 0.6}
     hitboxOffset: {x: 0.7, y: -0.3}
     hitboxSize: {x: 1.1, y: 0.4}
+    causesKnockdown: 0
   neutralAirData:
     attackName: Neutral Aerial
     startup: 0.1
@@ -710,6 +715,7 @@ MonoBehaviour:
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0.7, y: 0}
     hitboxSize: {x: 0.7, y: 0.7}
+    causesKnockdown: 0
   upAirData:
     attackName: Up Aerial
     startup: 0.1
@@ -720,6 +726,7 @@ MonoBehaviour:
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0, y: 0.7}
     hitboxSize: {x: 0.7, y: 0.7}
+    causesKnockdown: 0
   downAirData:
     attackName: Down Aerial
     startup: 0.1
@@ -730,6 +737,7 @@ MonoBehaviour:
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0, y: -0.7}
     hitboxSize: {x: 0.7, y: 0.7}
+    causesKnockdown: 0
   forwardAirData:
     attackName: Forward Aerial
     startup: 0.1
@@ -740,6 +748,7 @@ MonoBehaviour:
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0.7, y: 0}
     hitboxSize: {x: 0.7, y: 0.7}
+    causesKnockdown: 0
   backAirData:
     attackName: Back Aerial
     startup: 0.1
@@ -750,6 +759,7 @@ MonoBehaviour:
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: -0.7, y: 0}
     hitboxSize: {x: 0.7, y: 0.7}
+    causesKnockdown: 0
   dashAttackData:
     attackName: Dash Attack
     startup: 0.06
@@ -760,6 +770,7 @@ MonoBehaviour:
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0.9, y: 0}
     hitboxSize: {x: 0.9, y: 0.7}
+    causesKnockdown: 1
   grabAttackData:
     attackName: Grab Attack
     startup: 0.15
@@ -770,6 +781,7 @@ MonoBehaviour:
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0.9, y: 0}
     hitboxSize: {x: 0.7, y: 0.7}
+    causesKnockdown: 0
   holdOffset: {x: 1, y: 0.5}
   grabHoldTime: 1.5
   minHoldTime: 0.25
@@ -777,18 +789,22 @@ MonoBehaviour:
     damage: 7
     knockback: 7
     direction: {x: 1, y: 0.3}
+    causesKnockdown: 1
   backThrow:
     damage: 7
     knockback: 7
     direction: {x: -1, y: 0.3}
+    causesKnockdown: 1
   upThrow:
     damage: 7
     knockback: 10
     direction: {x: 0.3, y: 1}
+    causesKnockdown: 0
   downThrow:
     damage: 7
     knockback: 7
     direction: {x: 0.3, y: -1}
+    causesKnockdown: 0
   throwRecovery: 0.3
 --- !u!1 &208943684
 GameObject:

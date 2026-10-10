@@ -8,11 +8,31 @@ public class HitVisualCue : MonoBehaviour
     [SerializeField] private float flashDuration = 0.1f;
     private Health health;
     private Color originalColor;
+    [SerializeField] private float blinkInterval = 0.08f;
+    private float blinkTimer;
+    private bool wasBlinking;
 
     void Awake()
     {
         health = GetComponent<Health>();
         originalColor = sprite.color;
+    }
+
+    void Update()
+    {
+        if (health.IsInvincible)
+        {
+            blinkTimer += Time.deltaTime;
+            bool white = (int)(blinkTimer / blinkInterval) % 2 == 0;
+            sprite.color = white ? flashColor : originalColor;
+            wasBlinking = true;
+        }
+        else if (wasBlinking)
+        {
+            sprite.color = originalColor;
+            blinkTimer = 0;
+            wasBlinking = false;
+        }
     }
 
     void OnEnable() { health.OnHit += Flash; }

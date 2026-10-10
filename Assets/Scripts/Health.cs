@@ -14,6 +14,10 @@ public class Health : MonoBehaviour
     /// </summary>
     public float DamageRatio => Mathf.Clamp01(damagePercent / maxDamagePercent);
     public bool IsDead { get; private set; }
+    //used to determine if the player should be knocked down or not from an attack
+    public bool LastHitCausedKnockdown { get; private set; }
+    //iframe used to prevent the player/the enemy from taking damage during knockdown or other states
+    public bool IsInvincible { get; set; }
 
     /// <summary>
     /// 
@@ -24,12 +28,14 @@ public class Health : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
     }
-    public void TakeHit(float damageAmount, Vector2 knockbackDirection, float knockbackForce)
+    public void TakeHit(float damageAmount, Vector2 knockbackDirection, float knockbackForce, bool causesKnockdown=false)
     {
-        if (IsDead) return;
+        if (IsDead || IsInvincible) return;
+        Debug.Log("Hit taken: damage " + damageAmount + ", knockdown flag " + causesKnockdown);
 
         damagePercent += damageAmount;
         rb.linearVelocity = knockbackDirection * knockbackForce;
+        LastHitCausedKnockdown = causesKnockdown;
 
         if (damagePercent >= maxDamagePercent)
         {

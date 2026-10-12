@@ -392,4 +392,11 @@ public class PlayerCombat : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(attackHitbox.transform.position, attackHitbox.GetComponent<BoxCollider2D>().size);
     }
+
+    public void ClearInput()
+    {
+        moveInput = Vector2.zero;
+        attackPressedThisFrame = false;
+        grabPressedThisFrame = false;
+    }
 }

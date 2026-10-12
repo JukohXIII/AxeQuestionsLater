@@ -324,4 +324,9 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
+
+    public void ClearInput()
+    {
+        moveInput = Vector2.zero;
+    }
 }

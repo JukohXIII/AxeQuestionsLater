@@ -1,10 +1,16 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+[RequireComponent(typeof(Rigidbody2D))]
 
+[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(PlayerCombat))]
+[RequireComponent(typeof(PlayerStats))]
 public class PlayerMovement : MonoBehaviour
 {
     private Vector2 moveInput;
     private Rigidbody2D rb;
+    private PlayerStats stats;
 
     [Header("Ground movement")]
     [SerializeField] private float moveSpeed = 10f;
@@ -75,8 +81,11 @@ public class PlayerMovement : MonoBehaviour
     public bool IsDashing => isDashing;
     private float dashAttackWindowTimer;
     public bool CanDashAttack => isDashing || dashAttackWindowTimer > 0;
-    
-
+    private float MoveSpeedMult  => stats.MultApply(StatType.MoveSpeed);
+    private float JumpPowerMult  => stats.MultApply(StatType.JumpPower);
+    private float DashSpeedMult  => stats.MultApply(StatType.DashSpeed);
+    private float DashRecoveryMult => stats.MultApply(StatType.DashRecovery);
+    private int MaxAirJumps      => Mathf.RoundToInt(stats.AbsoluteApply(StatType.ExtraAirJumps, maxAirJumps));
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -85,6 +94,7 @@ public class PlayerMovement : MonoBehaviour
         jumpAction = playerInput.actions["Jump"];
         defaultGravityScale = rb.gravityScale;
         playerCombat = GetComponent<PlayerCombat>();
+        stats = GetComponent<PlayerStats>();
     }
 
     void FixedUpdate()
@@ -96,10 +106,11 @@ public class PlayerMovement : MonoBehaviour
 
         bool newDirection = moveInput.x != 0 && (previousMoveX == 0 || Mathf.Sign(moveInput.x) != Mathf.Sign(previousMoveX));
         bool newFacingDirection = moveInput.x != 0 && Mathf.Sign(moveInput.x) != facingDirection && playerCombat.state != PlayerCombat.PlayerState.Grabbing;
+        float speedMult = MoveSpeedMult;
 
         if (isGrounded)
         {
-            airJumpsRemaining = maxAirJumps;
+            airJumpsRemaining = MaxAirJumps;
             isFastFalling = false;
 
             if (newDirection)
@@ -108,15 +119,15 @@ public class PlayerMovement : MonoBehaviour
                 runBurstTimer = burstMovementDuration;
             }
 
-            maxSpeed = runBurstTimer > 0 ? burstMovementSpeed : moveSpeed;
-            accel = runBurstTimer > 0 ? burstMovementAcceleration : acceleration;
-            decel = deceleration;
+            maxSpeed = (runBurstTimer > 0 ? burstMovementSpeed : moveSpeed) * speedMult;
+            accel = (runBurstTimer > 0 ? burstMovementAcceleration : acceleration) * speedMult;
+            decel = deceleration * speedMult;
         }
         else
         {
-            maxSpeed = airSpeed;
-            accel = airAcceleration;
-            decel = airDeceleration;
+            maxSpeed = airSpeed * speedMult;
+            accel = airAcceleration * speedMult;
+            decel = airDeceleration * speedMult;
             runBurstTimer = 0;
         }
         
@@ -236,7 +247,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                rb.linearVelocity = new Vector2(facingDirection * dashSpeed, 0);
+                rb.linearVelocity = new Vector2(facingDirection * dashSpeed * DashSpeedMult, 0);
             }
         }
     }
@@ -245,7 +256,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isDashing = false;
         rb.gravityScale = defaultGravityScale;
-        dashCooldownTimer = dashCooldown;
+        dashCooldownTimer = dashCooldown / DashRecoveryMult;
         dashAttackWindowTimer = 0;
     }
 
@@ -267,13 +278,13 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity * JumpPowerMult);
                 isGrounded = false;
             }
         }
         else if (value.isPressed && !isGrounded && airJumpsRemaining > 0 && !isDashing && playerCombat.state != PlayerCombat.PlayerState.Grabbing)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity * JumpPowerMult);
             airJumpsRemaining--;
         }
     }

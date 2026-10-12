@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 
 [System.Serializable]
 public class AttackData
@@ -27,7 +26,9 @@ public class ThrowData
     public Vector2 direction;
     public bool causesKnockdown;
 }
+[RequireComponent(typeof(PlayerStats))]
 
+[RequireComponent(typeof(PlayerMovement))]
 public class PlayerCombat : MonoBehaviour
 {
 
@@ -36,6 +37,12 @@ public class PlayerCombat : MonoBehaviour
     private Vector2 moveInput;
     private PlayerMovement playerMovement;
     [SerializeField] private float hitStopDuration = 0.05f;
+    private PlayerStats stats;
+    private float DamageMult         => stats.MultApply(StatType.Damage);
+    private float KnockbackMult      => stats.MultApply(StatType.KnockbackDealt);
+    private float AttackSpeedMult    => stats.MultApply(StatType.AttackSpeed);
+    private float ComboSpeedMult     => stats.MultApply(StatType.ComboSpeed);
+    private float AttackRangeMult    => stats.MultApply(StatType.AttackRange);
 
     [Header("Attack State")]
     public PlayerState state = PlayerState.Normal;
@@ -88,6 +95,7 @@ public class PlayerCombat : MonoBehaviour
     void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        stats = GetComponent<PlayerStats>();
     }
     void Update()
     {
@@ -124,7 +132,8 @@ public class PlayerCombat : MonoBehaviour
 
         if (state == PlayerState.Attacking)
         {
-            phaseTimer -= Time.deltaTime;
+            float attackSpeed = AttackSpeedMult * (isComboAttack ? ComboSpeedMult : 1f);
+            phaseTimer -= Time.deltaTime * attackSpeed;
 
             HandleStartupPhase();
             HandleActivePhase();
@@ -221,8 +230,8 @@ public class PlayerCombat : MonoBehaviour
             phase = AttackPhase.Active;
             phaseTimer = currentAttack.active;
             attackHitbox.SetActive(true);
-            attackHitbox.transform.localPosition = currentAttack.hitboxOffset;
-            attackHitbox.GetComponent<BoxCollider2D>().size = currentAttack.hitboxSize;
+            attackHitbox.transform.localPosition = currentAttack.hitboxOffset * AttackRangeMult;
+            attackHitbox.GetComponent<BoxCollider2D>().size = currentAttack.hitboxSize * AttackRangeMult;
             hitTargetsThisSwing.Clear();
         }
     }
@@ -263,7 +272,7 @@ public class PlayerCombat : MonoBehaviour
                                 knockbackDirection = new Vector2(currentAttack.launchDirection.x * playerMovement.FacingDirection, currentAttack.launchDirection.y).normalized;
                             else
                                 knockbackDirection = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
-                            targetHealth.TakeHit(currentAttack.damage, knockbackDirection, currentAttack.knockback, currentAttack.causesKnockdown);
+                            targetHealth.TakeHit(currentAttack.damage * DamageMult, knockbackDirection, currentAttack.knockback * KnockbackMult, currentAttack.causesKnockdown);
                             StartCoroutine(HitStop());
                         }
                     }
@@ -282,7 +291,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (phase == AttackPhase.Recovery && phaseTimer <= 0)
         {
-            if (isComboAttack && queuedNextHit && comboStep < 3)
+            if (isComboAttack && queuedNextHit && comboStep < comboAttacks.Length)
             {
                 comboStep++;
                 queuedNextHit = false;
@@ -360,7 +369,7 @@ public class PlayerCombat : MonoBehaviour
             heldTarget.transform.position = (Vector2)transform.position + new Vector2(holdOffset.x * -oldFacing, holdOffset.y);
         }
         heldTarget.Release();
-        heldTarget.GetComponent<Health>().TakeHit(t.damage, dir, t.knockback, t.causesKnockdown);
+        heldTarget.GetComponent<Health>().TakeHit(t.damage * DamageMult, dir, t.knockback * KnockbackMult, t.causesKnockdown);
         StartCoroutine(HitStop());
         heldTarget = null;
         state = PlayerState.Attacking;

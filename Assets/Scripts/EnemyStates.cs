@@ -253,6 +253,7 @@ public class KnockdownState : EnemyState
     public override void Exit()
     {
         enemyController.Health.IsInvincible = false;
+        enemyController.Decider.ForceRedecide();
     }
 
     public override void Tick()
@@ -260,11 +261,6 @@ public class KnockdownState : EnemyState
         timer -= Time.deltaTime;
         if (timer <= 0f)
             enemyController.ChangeState(enemyController.Idle);
-    }
-
-    public override void Exit()
-    {
-        enemyController.Decider.ForceRedecide();
     }
 }
 

@@ -17,7 +17,11 @@ public class EnemyController : MonoBehaviour
     public Health Health { get; private set; }
     public int FacingDirection { get; private set; } = -1; // 1 for right, -1 for left
 
+    public AttackKind CurrentAttackKind { get; private set; }
+    private float lastDashTime = -999f;
+    public bool IsDashReady => Time.time >= lastDashTime + config.dashCooldown;
     // States
+    public EnemyDecider Decider { get; private set;}
     public IEnemyState Idle { get; private set; }
     public IEnemyState Chase { get; private set; }
     public IEnemyState Attack { get; private set; }
@@ -28,6 +32,7 @@ public class EnemyController : MonoBehaviour
 
     private IEnemyState currentState;
     private new BoxCollider2D collider;
+    private float lastJumpTime = -999f;
 
     // ----------- Lifecycle ----------- //
     protected virtual void Awake()
@@ -44,6 +49,8 @@ public class EnemyController : MonoBehaviour
         Hitstun = CreateHitstun();
         Dead = CreateDead();
         Knockdown = CreateKnockdown();
+
+        Decider = new EnemyDecider(this);
     }
 
     void OnEnable(){
@@ -106,6 +113,24 @@ public class EnemyController : MonoBehaviour
             bounds.extents.y + 0.05f, groundLayer);
     }
 
+    public void StartAttack(AttackKind kind)
+    {
+        CurrentAttackKind = kind;
+        if (kind == AttackKind.Dash)
+            lastDashTime = Time.time;
+        ChangeState(Attack);
+    }
+
+    public bool IsPlayerInDashRange()
+    {
+        float dx = Mathf.Abs(player.position.x - transform.position.x);
+        return IsDashReady
+            && dx > config.attackRange
+            && dx <= config.dashMaxDistance
+            && Mathf.Abs(VerticalOffsetToPlayer()) <= config.verticalAttackTolerance
+            && IsGrounded();
+    }
+
     public bool IsObstacleAhead()
     {
         Bounds bounds = collider.bounds;
@@ -126,8 +151,18 @@ public class EnemyController : MonoBehaviour
         Rb.linearVelocity = new Vector2(0f, Rb.linearVelocity.y);
     }
 
+    public float MaxJumpHeight()
+    {
+        float gravity = Mathf.Abs(Physics2D.gravity.y) * Rb.gravityScale;
+        return config.jumpVelocity * config.jumpVelocity / (2f*gravity);
+    }
+
+    public bool CanJump() => 
+        IsGrounded() && Time.time >= lastJumpTime+config.jumpCooldown;
+    
     public void Jump()
     {
+        lastJumpTime = Time.time;
         Rb.linearVelocity = new Vector2(Rb.linearVelocity.x, config.jumpVelocity);
     }
 

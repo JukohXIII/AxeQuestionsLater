@@ -8,10 +8,41 @@ public class IdleState : EnemyState
 
     public override void Tick()
     {
-        if (enemyController.IsGrounded()) enemyController.StopHorizontal();
+        var config = enemyController.Config;
 
-        if (enemyController.DistanceToPlayer() <= enemyController.Config.detectionRange)
-            enemyController.ChangeState(enemyController.Chase);
+        if (enemyController.IsGrounded())
+            enemyController.StopHorizontal();
+
+        // No target: nothing to decide
+        if (enemyController.DistanceToPlayer() > config.detectionRange)
+            return;
+
+        bool inRange = enemyController.IsPlayerInAttackRange();
+        bool inDash = enemyController.IsPlayerInDashRange();
+
+        switch (enemyController.Decider.Current)
+        {
+            case EnemyAction.Attack:
+                if (inRange && enemyController.IsGrounded())
+                    enemyController.StartAttack(AttackKind.Melee);
+                else if (!inRange)
+                    enemyController.ChangeState(enemyController.Chase);
+                break;
+
+            case EnemyAction.DashAttack:
+                if (inDash)
+                    enemyController.StartAttack(AttackKind.Dash);
+                else if (!inRange)
+                    enemyController.ChangeState(enemyController.Chase);
+                break;
+
+            case EnemyAction.Chase:
+                if (!inRange)
+                    enemyController.ChangeState(enemyController.Chase);
+                break;
+
+            // Wait: stay in Idle
+        }
     }
 }
 
@@ -22,24 +53,55 @@ public class ChaseState : EnemyState
 
     public override void Tick()
     {
-        var c = enemyController.Config;
+        var config = enemyController.Config;
 
-        if (enemyController.DistanceToPlayer() > c.detectionRange)
+        if (enemyController.DistanceToPlayer() > config.detectionRange)
         {
             enemyController.ChangeState(enemyController.Idle);
             return;
         }
 
-        if (enemyController.IsPlayerInAttackRange() && enemyController.IsGrounded())
+        EnemyAction action = enemyController.Decider.Current;
+        bool inRange = enemyController.IsPlayerInAttackRange();
+
+        if (action == EnemyAction.Attack && inRange && enemyController.IsGrounded())
         {
-            enemyController.ChangeState(enemyController.Attack);
+            enemyController.StartAttack(AttackKind.Melee);
             return;
         }
 
-        enemyController.MoveHorizontal(enemyController.DirectionToPlayer() * c.moveSpeed);
+        if (action == EnemyAction.DashAttack && enemyController.IsPlayerInDashRange())
+        {
+            enemyController.StartAttack(AttackKind.Dash);
+            return;
+        }
 
-        bool playerAbove = enemyController.VerticalOffsetToPlayer() > c.jumpHeightThreshold;
-        if (enemyController.IsGrounded() && (playerAbove || enemyController.IsObstacleAhead()))
+        // Decided to wait, or in range but not attacking: back to the decision hub
+        if (action == EnemyAction.Wait || inRange)
+        {
+            enemyController.ChangeState(enemyController.Idle);
+            return;
+        }
+
+        float heightGap = enemyController.VerticalOffsetToPlayer();
+        bool playerAbove = heightGap > config.jumpHeightThreshold;
+        bool reachable = heightGap <= enemyController.MaxJumpHeight();
+
+        float dx = enemyController.Player.position.x - enemyController.transform.position.x;
+        bool underPlayer = Mathf.Abs(dx) < 0.3f;
+
+        // Directly below the player: stop steering, no left-right jitter
+        if (playerAbove && underPlayer)
+        {
+            enemyController.StopHorizontal();
+            if (reachable && enemyController.CanJump())
+                enemyController.Jump();
+            return;
+        }
+
+        enemyController.MoveHorizontal(enemyController.DirectionToPlayer() * config.moveSpeed);
+
+        if (enemyController.CanJump() && ((playerAbove && reachable) || enemyController.IsObstacleAhead()))
             enemyController.Jump();
     }
 }
@@ -48,30 +110,68 @@ public class ChaseState : EnemyState
 // Split into Windup / Hit1 / Hit2 once the attacks are designed.
 public class AttackState : EnemyState
 {
+    enum Phase { Windup, Active }
+
+    Phase phase;
+    AttackKind kind;
     float timer;
+    int dashDir;
 
     public AttackState(EnemyController e) : base(e) { }
 
     public override void Enter()
     {
+        var c = enemyController.Config;
+        kind = enemyController.CurrentAttackKind;
+
         enemyController.StopHorizontal();
-        enemyController.Face(enemyController.DirectionToPlayer());
-        timer = enemyController.Config.attackDuration;
-        // TODO: trigger attack animation / enable hitbox
+
+        // Direction is locked at the start of the windup: the player can dodge it
+        dashDir = enemyController.DirectionToPlayer();
+        enemyController.Face(dashDir);
+
+        phase = Phase.Windup;
+        timer = kind == AttackKind.Dash ? c.dashWindup : c.meleeWindup;
     }
 
     public override void Tick()
     {
+        var c = enemyController.Config;
         timer -= Time.deltaTime;
+
+        if (phase == Phase.Windup)
+        {
+            if (timer > 0f) return;
+
+            phase = Phase.Active;
+            timer = kind == AttackKind.Dash ? c.dashDuration : c.meleeActiveDuration;
+            // TODO: enable the hitbox here
+            return;
+        }
+
+        // Active phase
+        if (kind == AttackKind.Dash)
+        {
+            enemyController.MoveHorizontal(dashDir * c.dashSpeed);
+
+            // A wall ends the dash early
+            if (enemyController.IsObstacleAhead())
+                timer = 0f;
+        }
+
         if (timer <= 0f)
+        {
+            enemyController.StopHorizontal();
             enemyController.ChangeState(enemyController.Recovery);
+        }
     }
 
     public override void Exit()
     {
-        // TODO: disable the hitbox (the attack can be interrupted by a hit)
+        // TODO: disable the hitbox
+        // Do NOT touch the velocity here: Exit is also called when a hit
+        // interrupts the attack, and it would cancel the knockback.
     }
-    
 }
 
 // RECOVERY: punish window, stands still and vulnerable.
@@ -83,8 +183,11 @@ public class RecoveryState : EnemyState
 
     public override void Enter()
     {
+        var c = enemyController.Config;
         enemyController.StopHorizontal();
-        timer = enemyController.Config.recoveryDuration;
+        timer = enemyController.CurrentAttackKind == AttackKind.Dash
+            ? c.dashRecoveryDuration
+            : c.recoveryDuration;
     }
 
     public override void Tick()
@@ -93,10 +196,15 @@ public class RecoveryState : EnemyState
         if (timer <= 0f)
             enemyController.ChangeState(enemyController.Idle);
     }
+
+    public override void Exit()
+    {
+        enemyController.Decider.ForceRedecide();
+    }
 }
 
 // HITSTUN: just got hit. Does NOT touch velocity, so the knockback
-// from Health plays out. Re-entering resets the timer (combos).
+// from Health.cs plays out. Re-entering resets the timer (combos).
 public class HitstunState : EnemyState
 {
     float timer;
@@ -122,6 +230,11 @@ public class HitstunState : EnemyState
             enemyController.ChangeState(next);
         }
     }
+
+    public override void Exit()
+    {
+        enemyController.Decider.ForceRedecide();
+    }
 }
 
 public class KnockdownState : EnemyState
@@ -140,6 +253,7 @@ public class KnockdownState : EnemyState
     public override void Exit()
     {
         enemyController.Health.IsInvincible = false;
+        enemyController.Decider.ForceRedecide();
     }
 
     public override void Tick()

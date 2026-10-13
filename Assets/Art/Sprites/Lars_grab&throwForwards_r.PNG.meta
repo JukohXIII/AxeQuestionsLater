@@ -1,0 +1,382 @@
+fileFormatVersion: 2
+guid: 4334169cbabb2fd44825b721fea67bee
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8716740464043848272
+    second: IMG_1479_0
+  - first:
+      213: 3407225668356708016
+    second: IMG_1479_1
+  - first:
+      213: 6094217236175688696
+    second: IMG_1479_2
+  - first:
+      213: 2397152156705700578
+    second: IMG_1479_3
+  - first:
+      213: 4045916327400130246
+    second: IMG_1479_4
+  - first:
+      213: 3108670836189057407
+    second: IMG_1479_5
+  - first:
+      213: 3448650817233961041
+    second: IMG_1479_6
+  - first:
+      213: -6716305685282655791
+    second: IMG_1479_7
+  - first:
+      213: 8873994464272990535
+    second: IMG_1479_8
+  - first:
+      213: -5268325544162279322
+    second: IMG_1479_9
+  - first:
+      213: -1494281382857749461
+    second: IMG_1479_10
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 8
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Lars_grab&throwForwards_r_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 143
+        width: 128
+        height: 113
+      alignment: 9
+      pivot: {x: 0.546875, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 818f9b0555e11fd42ac32469f887d095
+      internalID: -1697604192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars_grab&throwForwards_r_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 143
+        width: 128
+        height: 113
+      alignment: 9
+      pivot: {x: 0.53125, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ade07beddb3681349970a414f47dcb0d
+      internalID: -1060012035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars_grab&throwForwards_r_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 143
+        width: 128
+        height: 113
+      alignment: 9
+      pivot: {x: 0.53125, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3604cd825f981ae4db3f45fd28c8a164
+      internalID: 2064073481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars_grab&throwForwards_r_3
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 143
+        width: 128
+        height: 113
+      alignment: 9
+      pivot: {x: 0.546875, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe21fda84cbd2ab4b88849e419d4e02c
+      internalID: -69576223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars_grab&throwForwards_r_4
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 143
+        width: 128
+        height: 113
+      alignment: 9
+      pivot: {x: 0.546875, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 928622c36649ee549ade2777742550a5
+      internalID: -31879391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars_grab&throwForwards_r_5
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 143
+        width: 128
+        height: 113
+      alignment: 9
+      pivot: {x: 0.546875, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 873d5b375a338b645973b7a1fe82f865
+      internalID: -1378211341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars_grab&throwForwards_r_6
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 143
+        width: 128
+        height: 113
+      alignment: 9
+      pivot: {x: 0.546875, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17bd3e6220429be42b9db2fa92e85703
+      internalID: 153935268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars_grab&throwForwards_r_7
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 143
+        width: 128
+        height: 113
+      alignment: 9
+      pivot: {x: 0.546875, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8357ccd59c6630a48ad58b1a6dd7a771
+      internalID: 343224359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars_grab&throwForwards_r_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 15
+        width: 128
+        height: 119
+      alignment: 9
+      pivot: {x: 0.546875, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbc2718be350fbb4f86c8d6ff5624ae2
+      internalID: 169359921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars_grab&throwForwards_r_9
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 15
+        width: 128
+        height: 119
+      alignment: 9
+      pivot: {x: 0.53125, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e6a1bcf7d43c1a428c2d3a4a6af399b
+      internalID: -2141164890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 66cb79a6b17b60343acbb01007931326
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":128.0,"y":122.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Lars_grab&throwForwards_r_0: -1697604192
+      Lars_grab&throwForwards_r_1: -1060012035
+      Lars_grab&throwForwards_r_2: 2064073481
+      Lars_grab&throwForwards_r_3: -69576223
+      Lars_grab&throwForwards_r_4: -31879391
+      Lars_grab&throwForwards_r_5: -1378211341
+      Lars_grab&throwForwards_r_6: 153935268
+      Lars_grab&throwForwards_r_7: 343224359
+      Lars_grab&throwForwards_r_8: 169359921
+      Lars_grab&throwForwards_r_9: -2141164890
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

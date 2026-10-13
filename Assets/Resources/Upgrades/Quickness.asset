@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ad4da1f162d1c47a7e8f8326515fe2, type: 3}
+  m_Name: Quickness
+  m_EditorClassIdentifier: Assembly-CSharp::StatUpgradeData
+  id: Quickness
+  displayName: Quickness
+  description: Attacks come out faster.
+  statType: 1
+  modifierKind: 1
+  valuePerLevel: 0.04
+  maxLevel: 10
+  baseCost: 75
+  costGrowth: 1.4

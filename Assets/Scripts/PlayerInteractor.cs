@@ -7,14 +7,20 @@ public class PlayerInteractor : MonoBehaviour
 {
     [SerializeField] private float interactibleRadius = 1.5f;
     [SerializeField] private TMP_Text promptText;
+    [Tooltip("Gap (world units) between the top of the object and the prompt.")]
+    [SerializeField] private float promptOffset = 0.3f;
 
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
     private PlayerCombat playerCombat;
     private IInteractable currentInteractable;
+    private Collider2D currentCollider;
     private bool interactPressed;
+    private Camera cam;
 
     public bool Locked { get; private set; }
+    private string InteractKeyLabel =>
+        playerInput.actions["Interact"].GetBindingDisplayString(group: playerInput.currentControlScheme);
 
     void Awake()
     {
@@ -26,15 +32,13 @@ public class PlayerInteractor : MonoBehaviour
     void Update()
     {
         currentInteractable = Locked ? null : FindClosest(); 
+        UpdatePrompt();
 
-        if(promptText != null)
+        if (interactPressed && currentInteractable != null
+            && playerCombat.state == PlayerCombat.PlayerState.Normal)
         {
-            promptText.gameObject.SetActive(currentInteractable != null);
-            if(currentInteractable != null) promptText.text = currentInteractable.Prompt;
-        }
-
-        if(interactPressed && currentInteractable != null && playerCombat.state == PlayerCombat.PlayerState.Normal)
             currentInteractable.Interact(this);
+        }
         
         interactPressed = false;
     }
@@ -42,6 +46,23 @@ public class PlayerInteractor : MonoBehaviour
     void OnInteract(InputValue value)
     {
        if (value.isPressed) interactPressed = true; 
+    }
+
+    private void UpdatePrompt()
+    {
+        if (promptText == null) return;
+
+        bool show = currentInteractable != null;
+        promptText.gameObject.SetActive(show);
+        if (!show) return;
+
+        promptText.text = $"[{InteractKeyLabel}] {currentInteractable.Prompt}";
+
+        // Above the top of the object's collider, converted to screen coordinates
+        if (cam == null) cam = Camera.main;
+        Bounds bounds = currentCollider.bounds;
+        Vector3 anchor = new Vector3(bounds.center.x, bounds.max.y + promptOffset, 0f);
+        promptText.rectTransform.position = cam.WorldToScreenPoint(anchor);
     }
 
     private IInteractable FindClosest()
@@ -59,6 +80,7 @@ public class PlayerInteractor : MonoBehaviour
             {
                 bestDist = distanceToCandidate;
                 bestCandidate = candidate;
+                currentCollider = hit;
             }
         }
         return bestCandidate;

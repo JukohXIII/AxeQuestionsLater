@@ -6,7 +6,7 @@ public class UpgradeStation : MonoBehaviour, IInteractable
     [SerializeField] private StatUpgradeData[] upgrades;
     [SerializeField] private UpgradeMenu menu;
 
-    public string Prompt => $"[E] {stationName}";
+    public string Prompt => $"{stationName}";
 
     public void Interact(PlayerInteractor interactor)
     {

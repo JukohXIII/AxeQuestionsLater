@@ -190,28 +190,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IMG_1470_3
-      rect:
-        serializedVersion: 2
-        x: 454
-        y: 56
-        width: 30
-        height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 49afed5c720950ac0800000000000000
-      internalID: -3889544202666706284
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: IMG_1470_4
       rect:
         serializedVersion: 2
@@ -251,28 +229,6 @@ TextureImporter:
       bones: []
       spriteID: 8d44bb9c294513540800000000000000
       internalID: 4985859251902301400
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: IMG_1470_6
-      rect:
-        serializedVersion: 2
-        x: 796
-        y: 56
-        width: 30
-        height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d617d9515cc627240800000000000000
-      internalID: 4788008947575255405
       vertices: []
       indices: 
       edges: []

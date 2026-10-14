@@ -31,6 +31,7 @@ public class EnemyController : MonoBehaviour
     public IEnemyState Knockdown { get; private set; }
 
     private IEnemyState currentState;
+    public IEnemyState CurrentState => currentState;
     private new BoxCollider2D collider;
     private float lastJumpTime = -999f;
 
@@ -51,6 +52,11 @@ public class EnemyController : MonoBehaviour
         Knockdown = CreateKnockdown();
 
         Decider = new EnemyDecider(this);
+
+        // Ensure the enemy is facing the player at start
+        Vector3 scale = transform.localScale;
+        scale.x = Mathf.Abs(scale.x) * FacingDirection;
+        transform.localScale = scale;
     }
 
     void OnEnable(){

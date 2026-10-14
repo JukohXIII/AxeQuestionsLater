@@ -14,13 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   moveSpeed: 3
   jumpVelocity: 15
+  jumpCooldown: 0.8
   detectionRange: 10
   attackRange: 1.5
   verticalAttackTolerance: 1
   jumpHeightThreshold: 1.5
   obstacleDetectionDistance: 0.5
-  attackDuration: 0.8
+  decisionInterval: 0.5
+  decisionNoise: 0.3
+  aggression: 0.7
+  dashAggression: 0.6
+  hesitation: 0.15
+  meleeWindup: 0.25
+  meleeActiveDuration: 0.2
+  dashWindup: 0.9
+  dashSpeed: 14
+  dashDuration: 0.35
+  dashMaxDistance: 7
+  dashCooldown: 5
   recoveryDuration: 0.6
+  dashRecoveryDuration: 1
   hitstunDuration: 0.4
+  knockdownDuration: 1.5
   deathDelay: 1
-  knockdownDuration: 2

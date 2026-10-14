@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 
 [System.Serializable]
 public class AttackData
 {
     public string attackName;
+    public string animationName;
     public float startup;
     public float active;
     public float recovery;
@@ -26,6 +26,7 @@ public class ThrowData
     public float knockback;
     public Vector2 direction;
     public bool causesKnockdown;
+    public string animationName;
 }
 
 public class PlayerCombat : MonoBehaviour
@@ -36,6 +37,7 @@ public class PlayerCombat : MonoBehaviour
     private Vector2 moveInput;
     private PlayerMovement playerMovement;
     [SerializeField] private float hitStopDuration = 0.05f;
+    [SerializeField] private Animator animator;
 
     [Header("Attack State")]
     public PlayerState state = PlayerState.Normal;
@@ -193,6 +195,7 @@ public class PlayerCombat : MonoBehaviour
                 }
             }
             state = PlayerState.Attacking;
+            PlayAttackAnimation();
             phase = AttackPhase.Startup;
             phaseTimer = currentAttack.startup;
             isGrabAttack = false;
@@ -208,6 +211,7 @@ public class PlayerCombat : MonoBehaviour
             currentAttack = grabAttackData;
             isGrabAttack = true;
             state = PlayerState.Attacking;
+            PlayAttackAnimation();
             phase = AttackPhase.Startup;
             phaseTimer = currentAttack.startup;
             isComboAttack = false;
@@ -249,6 +253,7 @@ public class PlayerCombat : MonoBehaviour
                             heldTarget = grabbable;
                             attackHitbox.SetActive(false);
                             state = PlayerState.Grabbing;
+                            animator.Play("Lars_grab&idle", 0, 0f);
                             phase = AttackPhase.None;
                             grabTimer = 0;
                             return;
@@ -288,12 +293,14 @@ public class PlayerCombat : MonoBehaviour
                 queuedNextHit = false;
                 phase = AttackPhase.Startup;
                 currentAttack = comboAttacks[comboStep - 1];
+                PlayAttackAnimation();
                 phaseTimer = currentAttack.startup;
                 Debug.Log("Combo step " + comboStep + " — startup");
             }
             else
             {
                 state = PlayerState.Normal;
+                animator.Play("Lars_idle", 0, 0f);
                 phase = AttackPhase.None;
                 comboStep = 0;
                 queuedNextHit = false;
@@ -324,6 +331,7 @@ public class PlayerCombat : MonoBehaviour
                 heldTarget.Release();
                 heldTarget = null;
                 state = PlayerState.Normal;
+                animator.Play("Lars_idle", 0, 0f);
                 return;
             }
             if (moveInput.y > 0.5f)
@@ -363,6 +371,10 @@ public class PlayerCombat : MonoBehaviour
         heldTarget.GetComponent<Health>().TakeHit(t.damage, dir, t.knockback, t.causesKnockdown);
         StartCoroutine(HitStop());
         heldTarget = null;
+        if (!string.IsNullOrEmpty(t.animationName))
+        {
+            animator.Play(t.animationName, 0, 0f);
+        }
         state = PlayerState.Attacking;
         phase = AttackPhase.Recovery;
         phaseTimer = throwRecovery;
@@ -375,6 +387,12 @@ public class PlayerCombat : MonoBehaviour
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(hitStopDuration);
         Time.timeScale = 1f;
+    }
+
+    void PlayAttackAnimation()
+    {
+        if (!string.IsNullOrEmpty(currentAttack.animationName))
+            animator.Play(currentAttack.animationName, 0, 0f);
     }
 
     void OnDrawGizmosSelected()

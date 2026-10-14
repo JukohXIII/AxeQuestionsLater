@@ -24,12 +24,12 @@ public class HitVisualCue : MonoBehaviour
         {
             blinkTimer += Time.deltaTime;
             bool white = (int)(blinkTimer / blinkInterval) % 2 == 0;
-            sprite.color = white ? flashColor : originalColor;
+            sprite.enabled = white;
             wasBlinking = true;
         }
         else if (wasBlinking)
         {
-            sprite.color = originalColor;
+            sprite.enabled = true;
             blinkTimer = 0;
             wasBlinking = false;
         }

@@ -433,7 +433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   hitStopDuration: 0.15
-  animator: {fileID: 6039470422745858709}
+  maxAirHangs: 3
   state: 0
   attackHitbox: {fileID: 9119232456851001650}
   hittableLayers:
@@ -480,8 +480,8 @@ MonoBehaviour:
     active: 0.08
     recovery: 0.17
     damage: 7
-    knockback: 10
-    launchDirection: {x: 0.2, y: 1}
+    knockback: 20
+    launchDirection: {x: 0.1, y: 1}
     hitboxOffset: {x: 0.3, y: 0.5}
     hitboxSize: {x: 1.1, y: 1}
     causesKnockdown: 0
@@ -499,7 +499,7 @@ MonoBehaviour:
     causesKnockdown: 0
   neutralAirData:
     attackName: Neutral Aerial
-    animationName: 
+    animationName: Lars_groundAttack_chop
     startup: 0.1
     active: 0.1
     recovery: 0.22
@@ -511,7 +511,7 @@ MonoBehaviour:
     causesKnockdown: 0
   upAirData:
     attackName: Up Aerial
-    animationName: 
+    animationName: Lars_strongAttack_UpTilt
     startup: 0.1
     active: 0.1
     recovery: 0.22
@@ -523,7 +523,7 @@ MonoBehaviour:
     causesKnockdown: 0
   downAirData:
     attackName: Down Aerial
-    animationName: 
+    animationName: Lars_strongAttack_DownTilt
     startup: 0.1
     active: 0.1
     recovery: 0.22
@@ -535,7 +535,7 @@ MonoBehaviour:
     causesKnockdown: 0
   forwardAirData:
     attackName: Forward Aerial
-    animationName: 
+    animationName: Lars_groundAttack_chop
     startup: 0.1
     active: 0.1
     recovery: 0.22
@@ -547,7 +547,7 @@ MonoBehaviour:
     causesKnockdown: 0
   backAirData:
     attackName: Back Aerial
-    animationName: 
+    animationName: Lars_groundAttack_chop
     startup: 0.1
     active: 0.1
     recovery: 0.22
@@ -598,8 +598,8 @@ MonoBehaviour:
     animationName: Lars_throwForwards
   upThrow:
     damage: 7
-    knockback: 10
-    direction: {x: 0.3, y: 1}
+    knockback: 20
+    direction: {x: 0.1, y: 1}
     causesKnockdown: 0
     animationName: Lars_throwUpwards
   downThrow:
@@ -622,6 +622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimation
   animator: {fileID: 6039470422745858709}
+  landDuration: 0.125
 --- !u!1 &8023591662331067518
 GameObject:
   m_ObjectHideFlags: 0

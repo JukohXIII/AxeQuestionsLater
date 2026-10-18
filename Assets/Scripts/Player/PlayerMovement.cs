@@ -308,6 +308,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void SetAirHang(bool hang)
+    {
+        if (hang)
+        {
+            rb.gravityScale = 0f;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.5f, 0f);
+        }
+        else
+        {
+            rb.gravityScale = defaultGravityScale;
+        }
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

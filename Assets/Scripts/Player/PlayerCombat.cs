@@ -37,7 +37,11 @@ public class PlayerCombat : MonoBehaviour
     private Vector2 moveInput;
     private PlayerMovement playerMovement;
     [SerializeField] private float hitStopDuration = 0.05f;
-    [SerializeField] private Animator animator;
+    public string CurrentAnimation { get; private set; }
+    public int AttackId { get; private set; }
+    [SerializeField] private int maxAirHangs = 3;
+    private int airHangsUsed;
+    private bool isAirHanging;
 
     [Header("Attack State")]
     public PlayerState state = PlayerState.Normal;
@@ -93,6 +97,7 @@ public class PlayerCombat : MonoBehaviour
     }
     void Update()
     {
+        if (playerMovement.IsGrounded) airHangsUsed = 0;
         HandleCombat();
         attackPressedThisFrame = false;
         grabPressedThisFrame = false;
@@ -149,6 +154,12 @@ public class PlayerCombat : MonoBehaviour
             }
             else if (!playerMovement.IsGrounded)
             {
+                if (airHangsUsed < maxAirHangs)
+                {
+                    playerMovement.SetAirHang(true);
+                    airHangsUsed++;
+                    isAirHanging = true;
+                }
                 if (moveInput.y > 0.5f)
                 {
                     currentAttack = upAirData;
@@ -253,7 +264,7 @@ public class PlayerCombat : MonoBehaviour
                             heldTarget = grabbable;
                             attackHitbox.SetActive(false);
                             state = PlayerState.Grabbing;
-                            animator.Play("Lars_grab&idle", 0, 0f);
+                            SetAnimation("Lars_grab&idle");
                             phase = AttackPhase.None;
                             grabTimer = 0;
                             return;
@@ -300,7 +311,12 @@ public class PlayerCombat : MonoBehaviour
             else
             {
                 state = PlayerState.Normal;
-                animator.Play("Lars_idle", 0, 0f);
+                CurrentAnimation = null;
+                if (isAirHanging)
+                {
+                    playerMovement.SetAirHang(false);
+                    isAirHanging = false;
+                }
                 phase = AttackPhase.None;
                 comboStep = 0;
                 queuedNextHit = false;
@@ -331,7 +347,7 @@ public class PlayerCombat : MonoBehaviour
                 heldTarget.Release();
                 heldTarget = null;
                 state = PlayerState.Normal;
-                animator.Play("Lars_idle", 0, 0f);
+                CurrentAnimation = null;
                 return;
             }
             if (moveInput.y > 0.5f)
@@ -373,7 +389,7 @@ public class PlayerCombat : MonoBehaviour
         heldTarget = null;
         if (!string.IsNullOrEmpty(t.animationName))
         {
-            animator.Play(t.animationName, 0, 0f);
+            SetAnimation(t.animationName);
         }
         state = PlayerState.Attacking;
         phase = AttackPhase.Recovery;
@@ -391,8 +407,13 @@ public class PlayerCombat : MonoBehaviour
 
     void PlayAttackAnimation()
     {
-        if (!string.IsNullOrEmpty(currentAttack.animationName))
-            animator.Play(currentAttack.animationName, 0, 0f);
+        SetAnimation(currentAttack.animationName);
+    }
+
+    void SetAnimation(string clip)
+    {
+        CurrentAnimation = clip;
+        AttackId++;
     }
 
     void OnDrawGizmosSelected()

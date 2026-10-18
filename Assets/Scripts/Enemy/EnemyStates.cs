@@ -209,6 +209,7 @@ public class HitstunState : EnemyState
 {
     float timer;
     bool causeKnockdown;
+    float savedGravity;
 
     public HitstunState(EnemyController e) : base(e) { }
 
@@ -217,12 +218,14 @@ public class HitstunState : EnemyState
         timer = enemyController.Config.hitstunDuration;
         if (enemyController.Health.LastHitCausedKnockdown) causeKnockdown = true;
         // TODO: hit animation / flash
+        savedGravity = enemyController.Rb.gravityScale;
     }
 
     public override void Tick()
     {
-        if (!enemyController.IsGrounded()) causeKnockdown = true;
         timer -= Time.deltaTime;
+        bool floating = timer > 0f && !causeKnockdown && !enemyController.IsGrounded();
+        enemyController.Rb.gravityScale = floating ? 0f : savedGravity;
         if (timer <= 0f && enemyController.IsGrounded())
         {
             IEnemyState next = causeKnockdown ? enemyController.Knockdown : enemyController.Idle;
@@ -233,6 +236,7 @@ public class HitstunState : EnemyState
 
     public override void Exit()
     {
+        enemyController.Rb.gravityScale = savedGravity;
         enemyController.Decider.ForceRedecide();
     }
 }

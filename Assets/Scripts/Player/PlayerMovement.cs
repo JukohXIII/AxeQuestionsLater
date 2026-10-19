@@ -95,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
         downJustPressed = downPressed && !wasDownPressed;
 
         bool newDirection = moveInput.x != 0 && (previousMoveX == 0 || Mathf.Sign(moveInput.x) != Mathf.Sign(previousMoveX));
-        bool newFacingDirection = moveInput.x != 0 && Mathf.Sign(moveInput.x) != facingDirection && playerCombat.state != PlayerCombat.PlayerState.Grabbing;
+        bool newFacingDirection = moveInput.x != 0 && Mathf.Sign(moveInput.x) != facingDirection && playerCombat.state == PlayerCombat.PlayerState.Normal;
 
         if (isGrounded)
         {

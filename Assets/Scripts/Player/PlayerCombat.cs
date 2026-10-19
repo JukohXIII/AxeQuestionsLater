@@ -27,6 +27,7 @@ public class ThrowData
     public Vector2 direction;
     public bool causesKnockdown;
     public string animationName;
+    public float releaseDelay = 0.15f;
 }
 
 public class PlayerCombat : MonoBehaviour
@@ -42,6 +43,11 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private int maxAirHangs = 3;
     private int airHangsUsed;
     private bool isAirHanging;
+    private bool turnAfterThrow;
+    private ThrowData pendingThrow;
+    private bool pendingIsBackThrow;
+    private float throwTimer;
+    private bool isThrowing;
 
     [Header("Attack State")]
     public PlayerState state = PlayerState.Normal;
@@ -170,14 +176,19 @@ public class PlayerCombat : MonoBehaviour
                     currentAttack = downAirData;
                     isComboAttack = false;
                 }
-                else if (moveInput.x != 0 && playerMovement.FacingDirection == 1)
+                // else if (moveInput.x != 0 && playerMovement.FacingDirection == 1)
+                // {
+                //     currentAttack = forwardAirData;
+                //     isComboAttack = false;
+                // }
+                // else if (moveInput.x != 0 && playerMovement.FacingDirection == -1)
+                // {
+                //     currentAttack = backAirData;
+                //     isComboAttack = false;
+                // }
+                else if (moveInput.x != 0)
                 {
                     currentAttack = forwardAirData;
-                    isComboAttack = false;
-                }
-                else if (moveInput.x != 0 && playerMovement.FacingDirection == -1)
-                {
-                    currentAttack = backAirData;
                     isComboAttack = false;
                 }
                 else
@@ -264,7 +275,7 @@ public class PlayerCombat : MonoBehaviour
                             heldTarget = grabbable;
                             attackHitbox.SetActive(false);
                             state = PlayerState.Grabbing;
-                            SetAnimation("Lars_grab&idle");
+                            SetAnimation("Lars_grabIdle");
                             phase = AttackPhase.None;
                             grabTimer = 0;
                             return;
@@ -312,6 +323,11 @@ public class PlayerCombat : MonoBehaviour
             {
                 state = PlayerState.Normal;
                 CurrentAnimation = null;
+                if (turnAfterThrow)
+                {
+                    playerMovement.SetFacing(-playerMovement.FacingDirection);
+                    turnAfterThrow = false;
+                }
                 if (isAirHanging)
                 {
                     playerMovement.SetAirHang(false);
@@ -340,6 +356,16 @@ public class PlayerCombat : MonoBehaviour
         if (heldTarget != null)
         {
             heldTarget.transform.position = (Vector2)transform.position + new Vector2(holdOffset.x * playerMovement.FacingDirection, holdOffset.y);
+            if (isThrowing)
+            {
+                throwTimer -= Time.deltaTime;
+                if (throwTimer <= 0f)
+                {
+                    isThrowing = false;
+                    DoThrow(pendingThrow, pendingIsBackThrow);
+                }
+                return;
+            }
             grabTimer += Time.deltaTime;
             if (grabTimer < minHoldTime) return;
             if (grabTimer >= grabHoldTime)
@@ -353,22 +379,22 @@ public class PlayerCombat : MonoBehaviour
             if (moveInput.y > 0.5f)
             {
                 Debug.Log("Up throw");
-                DoThrow(upThrow);
+                StartThrow(upThrow);
             }
             else if (moveInput.y < -0.5f)
             {
                 Debug.Log("Down throw");
-                DoThrow(downThrow);
+                StartThrow(downThrow);
             }
             else if (moveInput.x != 0 && Mathf.Sign(moveInput.x) == playerMovement.FacingDirection)
             {
                 Debug.Log("Forward throw");
-                DoThrow(forwardThrow);
+                StartThrow(forwardThrow);
             }
             else if (moveInput.x != 0 && Mathf.Sign(moveInput.x) == -playerMovement.FacingDirection)
             {
                 Debug.Log("Back throw");
-                DoThrow(backThrow, true);
+                StartThrow(backThrow, true);
             }
             return;
         }
@@ -380,22 +406,28 @@ public class PlayerCombat : MonoBehaviour
         Vector2 dir = new Vector2(t.direction.x * oldFacing, t.direction.y).normalized;
         if (isBackThrow)
         {
-            playerMovement.SetFacing(-oldFacing);
+            // playerMovement.SetFacing(-oldFacing);
             heldTarget.transform.position = (Vector2)transform.position + new Vector2(holdOffset.x * -oldFacing, holdOffset.y);
+            turnAfterThrow = true;
         }
         heldTarget.Release();
         heldTarget.GetComponent<Health>().TakeHit(t.damage, dir, t.knockback, t.causesKnockdown);
         StartCoroutine(HitStop());
         heldTarget = null;
-        if (!string.IsNullOrEmpty(t.animationName))
-        {
-            SetAnimation(t.animationName);
-        }
         state = PlayerState.Attacking;
         phase = AttackPhase.Recovery;
         phaseTimer = throwRecovery;
         isComboAttack = false;
         isGrabAttack = false;
+    }
+
+    void StartThrow(ThrowData t, bool isBackThrow = false)
+    {
+        pendingThrow = t;
+        pendingIsBackThrow = isBackThrow;
+        throwTimer = t.releaseDelay;
+        isThrowing = true;
+        SetAnimation(t.animationName);
     }
 
     IEnumerator HitStop()

@@ -156,6 +156,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 72
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
   currentStateName: 
 --- !u!114 &2775216598484916532
 MonoBehaviour:

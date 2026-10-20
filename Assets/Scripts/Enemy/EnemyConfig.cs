@@ -1,5 +1,18 @@
 using UnityEngine;
 
+[System.Serializable]
+public class EnemyHitData
+{
+    public float damage = 10f;
+    public float knockback = 12f;
+    [Tooltip("Launch direction of the target. X is mirrored by the enemy's facing: write it for an enemy facing right.")]
+    public Vector2 launchDirection = new Vector2(1f, 0.5f);
+    [Tooltip("Center of the hit zone, relative to the enemy. X is mirrored by the facing.")]
+    public Vector2 hitboxOffset = new Vector2(0.8f, 0f);
+    public Vector2 hitboxSize = new Vector2(1f, 0.8f);
+    public bool causesKnockback;
+}
+
 [CreateAssetMenu(fileName = "EnemyConfig", menuName = "Enemies/EnemyConfig")]
 public class EnemyConfig : ScriptableObject
 {
@@ -35,6 +48,7 @@ public class EnemyConfig : ScriptableObject
     [Header("Melee attack")]
     public float meleeWindup = 0.25f;
     public float meleeActiveDuration = 0.2f;
+    public EnemyHitData meleeHit = new();
 
     [Header("Dash attack")]
     [Tooltip("Long windup = the telegraph the player reacts to.")]
@@ -45,6 +59,13 @@ public class EnemyConfig : ScriptableObject
     public float dashMaxDistance = 7f;
     [Tooltip("Minimum seconds between the START of two dashes (includes the windup, dash and recovery).")]
     public float dashCooldown = 5f;
+    public EnemyHitData dashHit = new EnemyHitData
+    {
+        damage = 15f,
+        knockback = 16f,
+        hitboxOffset = new Vector2(0.3f, 0f),
+        hitboxSize = new Vector2(1.2f, 0.9f)
+    };
 
     [Header("Timing (seconds)")]
     public float recoveryDuration = 0.6f;

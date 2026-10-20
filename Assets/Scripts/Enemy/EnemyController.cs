@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(Health))]
 public class EnemyController : MonoBehaviour
@@ -8,6 +9,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform player;
     [Tooltip("Ground and walls. The enemy itself must NOT be on this layer.")]
     [SerializeField] private LayerMask groundLayer;
+    [Tooltip("Layer of the player. Used to detect who the attacks hit.")]
+    [SerializeField] private LayerMask playerLayer;
 
     [Header("Debug")]
     [SerializeField] private string currentStateName;
@@ -74,7 +77,7 @@ public class EnemyController : MonoBehaviour
         if (player == null)
         {
             var playerGameObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerGameObj == null) player = playerGameObj.transform;
+            if (playerGameObj != null) player = playerGameObj.transform;
         }
         ChangeState(Idle);
     }
@@ -125,6 +128,26 @@ public class EnemyController : MonoBehaviour
         if (kind == AttackKind.Dash)
             lastDashTime = Time.time;
         ChangeState(Attack);
+    }
+
+    public void DealHit(EnemyHitData hit, HashSet<Health> alreadyHit)
+    {
+        Vector2 center = (Vector2)transform.position
+            + new Vector2(hit.hitboxOffset.x * FacingDirection, hit.hitboxOffset.y);
+
+        Vector2 launch = hit.launchDirection == Vector2.zero ? Vector2.right : hit.launchDirection;
+        Vector2 direction = new Vector2(launch.x * FacingDirection, launch.y).normalized;    
+    
+        foreach (Collider2D collider in Physics2D.OverlapBoxAll(center, hit.hitboxSize, 0f, playerLayer))
+        {
+            Health target = collider.GetComponentInParent<Health>();
+            if (target == null || target == Health || alreadyHit.Contains(target)) continue;
+
+            alreadyHit.Add(target);
+            if (target.IsInvincible) continue;
+
+            target.TakeHit(hit.damage, direction, hit.knockback, hit.causesKnockback);
+        }
     }
 
     public bool IsPlayerInDashRange()
@@ -191,5 +214,15 @@ public class EnemyController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position,
             new Vector3(config.attackRange * 2f, config.verticalAttackTolerance * 2f, 0f));
+        DrawHitGizmo(config.meleeHit, Color.magenta);
+        DrawHitGizmo(config.dashHit, new Color(1f, 0.5f, 0f));    
+    }
+
+    void DrawHitGizmo(EnemyHitData hit, Color color)
+    {
+        Gizmos.color = color;
+        Vector2 center = (Vector2)transform.position
+            + new Vector2(hit.hitboxOffset.x * FacingDirection, hit.hitboxOffset.y);
+        Gizmos.DrawWireCube(center, hit.hitboxSize);
     }
 }

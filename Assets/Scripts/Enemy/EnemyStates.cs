@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // IDLE: no active target. Also the decision hub:
@@ -116,6 +117,8 @@ public class AttackState : EnemyState
     AttackKind kind;
     float timer;
     int dashDir;
+    EnemyHitData hit;
+    readonly HashSet<Health> alreadyHit = new HashSet<Health>();
 
     public AttackState(EnemyController e) : base(e) { }
 
@@ -123,6 +126,7 @@ public class AttackState : EnemyState
     {
         var c = enemyController.Config;
         kind = enemyController.CurrentAttackKind;
+        hit = kind == AttackKind.Dash ? c.dashHit : c.meleeHit;
 
         enemyController.StopHorizontal();
 
@@ -130,13 +134,14 @@ public class AttackState : EnemyState
         dashDir = enemyController.DirectionToPlayer();
         enemyController.Face(dashDir);
 
+        alreadyHit.Clear();
         phase = Phase.Windup;
         timer = kind == AttackKind.Dash ? c.dashWindup : c.meleeWindup;
     }
 
     public override void Tick()
     {
-        var c = enemyController.Config;
+        var config = enemyController.Config;
         timer -= Time.deltaTime;
 
         if (phase == Phase.Windup)
@@ -144,20 +149,21 @@ public class AttackState : EnemyState
             if (timer > 0f) return;
 
             phase = Phase.Active;
-            timer = kind == AttackKind.Dash ? c.dashDuration : c.meleeActiveDuration;
-            // TODO: enable the hitbox here
+            timer = kind == AttackKind.Dash ? config.dashDuration : config.meleeActiveDuration;
             return;
         }
 
         // Active phase
         if (kind == AttackKind.Dash)
         {
-            enemyController.MoveHorizontal(dashDir * c.dashSpeed);
+            enemyController.MoveHorizontal(dashDir * config.dashSpeed);
 
             // A wall ends the dash early
             if (enemyController.IsObstacleAhead())
                 timer = 0f;
         }
+
+        enemyController.DealHit(hit, alreadyHit);
 
         if (timer <= 0f)
         {

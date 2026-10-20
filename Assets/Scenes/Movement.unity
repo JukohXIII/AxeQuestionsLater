@@ -316,6 +316,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TiptoolPanelToggle
   movesPanel: {fileID: 18144010}
   playerInput: {fileID: 148818920}
+--- !u!1 &48901167 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6313414769092845965, guid: 83b20813894f9834f8468931f8864bcd, type: 3}
+  m_PrefabInstance: {fileID: 4868144399946474480}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &57016132
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,12 +605,26 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 261553383235914320, guid: 83b20813894f9834f8468931f8864bcd, type: 3}
   m_PrefabInstance: {fileID: 4868144399946474480}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 48901167}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+--- !u!114 &148818926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48901167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dcbbd931e94e5246951c3f3ce003a20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  damagePercent: 0
+  maxDamagePercent: 100
 --- !u!1 &289627555
 GameObject:
   m_ObjectHideFlags: 0
@@ -2454,7 +2473,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6313414769092845965, guid: 83b20813894f9834f8468931f8864bcd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 148818926}
   m_SourcePrefab: {fileID: 100100000, guid: 83b20813894f9834f8468931f8864bcd, type: 3}
 --- !u!1001 &5484736000811799800
 PrefabInstance:

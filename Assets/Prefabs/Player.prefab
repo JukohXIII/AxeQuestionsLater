@@ -160,6 +160,7 @@ GameObject:
   - component: {fileID: 1619698627920981600}
   - component: {fileID: 1912604250374779109}
   - component: {fileID: 259956947824447934}
+  - component: {fileID: 1780166894035160115}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -536,6 +537,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimation
   animator: {fileID: 6039470422745858709}
   landDuration: 0.125
+--- !u!114 &1780166894035160115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6313414769092845965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dcbbd931e94e5246951c3f3ce003a20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  damagePercent: 0
+  maxDamagePercent: 100
 --- !u!1 &8023591662331067518
 GameObject:
   m_ObjectHideFlags: 0

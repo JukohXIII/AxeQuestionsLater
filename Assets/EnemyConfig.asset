@@ -27,11 +27,27 @@ MonoBehaviour:
   hesitation: 0.15
   meleeWindup: 0.25
   meleeActiveDuration: 0.2
+  meleeHit:
+    damage: 10
+    knockback: 12
+    launchDirection: {x: 1, y: 0.5}
+    hitboxOffset: {x: 0.8, y: 0}
+    hitboxSize: {x: 1, y: 0.8}
+    causesKnockback: 0
+    breaksGuard: 0
   dashWindup: 0.9
   dashSpeed: 14
   dashDuration: 0.35
   dashMaxDistance: 7
   dashCooldown: 5
+  dashHit:
+    damage: 15
+    knockback: 16
+    launchDirection: {x: 1, y: 0.5}
+    hitboxOffset: {x: 0.3, y: 0}
+    hitboxSize: {x: 1.2, y: 0.9}
+    causesKnockback: 1
+    breaksGuard: 1
   recoveryDuration: 0.6
   dashRecoveryDuration: 1
   hitstunDuration: 0.4

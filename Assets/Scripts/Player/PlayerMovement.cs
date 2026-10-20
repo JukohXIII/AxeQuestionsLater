@@ -257,7 +257,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnJump(InputValue value)
     {
-        if (value.isPressed && isGrounded && !isDashing && playerCombat.state != PlayerCombat.PlayerState.Grabbing)
+        if (value.isPressed && isGrounded && !isDashing && playerCombat.state != PlayerCombat.PlayerState.Grabbing && !playerCombat.IsHurt && !playerCombat.IsInBlockstun)
         {
             if (moveInput.y < -0.5f && lastPlatform != null && ignoredPlatform == null)
             {
@@ -271,7 +271,7 @@ public class PlayerMovement : MonoBehaviour
                 isGrounded = false;
             }
         }
-        else if (value.isPressed && !isGrounded && airJumpsRemaining > 0 && !isDashing && playerCombat.state != PlayerCombat.PlayerState.Grabbing)
+        else if (value.isPressed && !isGrounded && airJumpsRemaining > 0 && !isDashing && playerCombat.state != PlayerCombat.PlayerState.Grabbing && !playerCombat.IsHurt && !playerCombat.IsInBlockstun)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
             airJumpsRemaining--;

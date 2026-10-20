@@ -80,7 +80,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 771011934850212810, guid: a8d09680283cda74ca5e727767022e26, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -160,7 +160,9 @@ GameObject:
   - component: {fileID: 1619698627920981600}
   - component: {fileID: 1912604250374779109}
   - component: {fileID: 259956947824447934}
-  - component: {fileID: 1780166894035160115}
+  - component: {fileID: 6956639934662882093}
+  - component: {fileID: 4006871800368363726}
+  - component: {fileID: 7410913375435318366}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -491,7 +493,7 @@ MonoBehaviour:
     hitboxOffset: {x: 0.9, y: 0}
     hitboxSize: {x: 0.7, y: 0.7}
     causesKnockdown: 0
-  holdOffset: {x: 1, y: 0.5}
+  holdOffset: {x: 0.9, y: 0.2}
   grabHoldTime: 1.5
   minHoldTime: 0.25
   forwardThrow:
@@ -537,7 +539,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimation
   animator: {fileID: 6039470422745858709}
   landDuration: 0.125
---- !u!114 &1780166894035160115
+--- !u!114 &6956639934662882093
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -551,6 +553,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   damagePercent: 0
   maxDamagePercent: 100
+--- !u!114 &4006871800368363726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6313414769092845965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493e128515279944d9e2a23484115830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerGetHit
+  hitstunDuration: 0.3
+  knockdownDuration: 1.2
+  getUpInvincibility: 0.5
+--- !u!114 &7410913375435318366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6313414769092845965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b6f36bc46b8b8846be2a54baf2a7dba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitVisualCue
+  sprite: {fileID: 2774214657534436145}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.1
+  blinkInterval: 0.08
 --- !u!1 &8023591662331067518
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,12 +13,14 @@ public class PlayerAnimation : MonoBehaviour
     private int lastAttackId;
     private bool wasGrounded = true;
     private float landTimer;
+    private PlayerGetHit playerGetHit;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         playerMovement = GetComponent<PlayerMovement>();
         playerCombat = GetComponent<PlayerCombat>();
+        playerGetHit = GetComponent<PlayerGetHit>();
     }
 
     void Update()
@@ -43,6 +45,13 @@ public class PlayerAnimation : MonoBehaviour
     // Highest priority first
     string ChooseClip()
     {
+        if (playerCombat.state == PlayerCombat.PlayerState.Defeated) return "Lars_defeated";
+        if (playerCombat.state == PlayerCombat.PlayerState.Knockdown)
+        {
+            return playerGetHit.KnockdownLanded ? "Lars_getKnocked" : "Lars_getHit";
+        }
+        if (playerCombat.state == PlayerCombat.PlayerState.Hurt) return "Lars_getHit";
+        if (playerCombat.state == PlayerCombat.PlayerState.Blocking) return "Lars_block";
         if (!string.IsNullOrEmpty(playerCombat.CurrentAnimation)) return playerCombat.CurrentAnimation;
         if (playerMovement.IsDashing) return "Lars_dash";
         if (!playerMovement.IsGrounded) return rb.linearVelocity.y > 0.1f ? "Lars_jump_up" : "Lars_fall";

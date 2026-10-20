@@ -37,6 +37,7 @@ public class EnemyController : MonoBehaviour
     public IEnemyState CurrentState => currentState;
     private new BoxCollider2D collider;
     private float lastJumpTime = -999f;
+    private Grabbable grabbable;
 
     // ----------- Lifecycle ----------- //
     protected virtual void Awake()
@@ -44,6 +45,7 @@ public class EnemyController : MonoBehaviour
         Rb = GetComponent<Rigidbody2D>();
         Health = GetComponent<Health>();
         collider = GetComponent<BoxCollider2D>();
+        grabbable = GetComponent<Grabbable>();
 
         // Virtual factories: a subclass can swap any single state.
         Idle = CreateIdle();
@@ -85,6 +87,7 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         if (player == null) return; // No player to chase or attack
+        if (grabbable != null && grabbable.IsGrabbed) return; // held: enemy freeze
         currentState?.Tick();
     }
 
@@ -146,7 +149,7 @@ public class EnemyController : MonoBehaviour
             alreadyHit.Add(target);
             if (target.IsInvincible) continue;
 
-            target.TakeHit(hit.damage, direction, hit.knockback, hit.causesKnockback);
+            target.TakeHit(hit.damage, direction, hit.knockback, hit.causesKnockback, hit.breaksGuard);
         }
     }
 

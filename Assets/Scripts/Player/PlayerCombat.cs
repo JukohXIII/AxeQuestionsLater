@@ -33,7 +33,7 @@ public class ThrowData
 public class PlayerCombat : MonoBehaviour
 {
 
-    public enum PlayerState { Normal, Attacking, Grabbing }
+    public enum PlayerState { Normal, Attacking, Grabbing, Blocking, Hurt, Knockdown, Defeated }
     private AttackData currentAttack;
     private Vector2 moveInput;
     private PlayerMovement playerMovement;
@@ -48,6 +48,8 @@ public class PlayerCombat : MonoBehaviour
     private bool pendingIsBackThrow;
     private float throwTimer;
     private bool isThrowing;
+    public bool IsHurt => state == PlayerState.Hurt || state == PlayerState.Knockdown || state == PlayerState.Defeated;
+    private Health health;
 
     [Header("Attack State")]
     public PlayerState state = PlayerState.Normal;
@@ -96,11 +98,21 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private ThrowData downThrow;
     [SerializeField] private float throwRecovery = 0.3f;
 
+    [Header("Block")]
+    private InputAction blockAction;
+    [SerializeField] private float blockstunDuration = 0.2f;
+    private float blockstunTimer;
+    public bool IsInBlockstun => blockstunTimer > 0f;
+
 
     void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        blockAction = GetComponent<PlayerInput>().actions["Block"];
+        health = GetComponent<Health>();
+        health.OnBlocked += StartBlockstun;
     }
+
     void Update()
     {
         if (playerMovement.IsGrounded) airHangsUsed = 0;
@@ -132,6 +144,7 @@ public class PlayerCombat : MonoBehaviour
 
     void HandleCombat()
     {
+        HandleBlock();
         TryStartGrab();
         TryStartAttack();
 
@@ -446,6 +459,43 @@ public class PlayerCombat : MonoBehaviour
     {
         CurrentAnimation = clip;
         AttackId++;
+    }
+
+    public void Interrupt(PlayerState newState)
+    {
+        state = newState;
+        phase = AttackPhase.None;
+        comboStep = 0;
+        queuedNextHit = false;
+        attackHitbox.SetActive(false);
+        isThrowing = false;
+        if (isAirHanging) { playerMovement.SetAirHang(false); isAirHanging = false; }
+        if (heldTarget != null) { heldTarget.Release(); heldTarget = null; }
+        CurrentAnimation = null;
+        AttackId++;   //makes the getHit clip restart on every new hit
+    }
+
+    void HandleBlock()
+    {
+        bool held = blockAction.IsPressed();
+
+        if (blockstunTimer > 0f)
+        {
+            blockstunTimer -= Time.deltaTime;
+            held = true;   // can't drop the guard during blockstun
+        }
+
+        if (state == PlayerState.Normal && held && playerMovement.IsGrounded)
+            state = PlayerState.Blocking;
+        else if (state == PlayerState.Blocking && (!held || !playerMovement.IsGrounded))
+            state = PlayerState.Normal;
+
+        health.GuardFacing = state == PlayerState.Blocking ? playerMovement.FacingDirection : 0;
+    }
+
+    void StartBlockstun()
+    {
+        blockstunTimer = blockstunDuration;
     }
 
     void OnDrawGizmosSelected()

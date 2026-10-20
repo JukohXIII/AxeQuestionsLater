@@ -7,6 +7,8 @@ public class Health : MonoBehaviour
     [Tooltip("Maximum damage at which the entity dies.")]
     [SerializeField] private float maxDamagePercent = 100f;
     private Rigidbody2D rb;
+    public int GuardFacing { get; set; }
+    public System.Action OnBlocked;
 
     public float DamagePercent => damagePercent;
     /// <summary> 
@@ -28,9 +30,15 @@ public class Health : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
     }
-    public void TakeHit(float damageAmount, Vector2 knockbackDirection, float knockbackForce, bool causesKnockdown=false)
+    public void TakeHit(float damageAmount, Vector2 knockbackDirection, float knockbackForce, bool causesKnockdown = false, bool breaksGuard = false)
     {
         if (IsDead || IsInvincible) return;
+        if (!breaksGuard && GuardFacing != 0 && Mathf.Sign(knockbackDirection.x) == -GuardFacing)
+        {
+            rb.linearVelocity = new Vector2(knockbackDirection.x * knockbackForce * 0.3f, 0f);
+            OnBlocked?.Invoke();
+            return;
+        }
 
         damagePercent += damageAmount;
         rb.linearVelocity = knockbackDirection * knockbackForce;

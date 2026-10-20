@@ -11,6 +11,7 @@ public class EnemyHitData
     public Vector2 hitboxOffset = new Vector2(0.8f, 0f);
     public Vector2 hitboxSize = new Vector2(1f, 0.8f);
     public bool causesKnockback;
+    public bool breaksGuard;
 }
 
 [CreateAssetMenu(fileName = "EnemyConfig", menuName = "Enemies/EnemyConfig")]

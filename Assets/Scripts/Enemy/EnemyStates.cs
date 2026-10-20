@@ -18,32 +18,7 @@ public class IdleState : EnemyState
         if (enemyController.DistanceToPlayer() > config.detectionRange)
             return;
 
-        bool inRange = enemyController.IsPlayerInAttackRange();
-        bool inDash = enemyController.IsPlayerInDashRange();
-
-        switch (enemyController.Decider.Current)
-        {
-            case EnemyAction.Attack:
-                if (inRange && enemyController.IsGrounded())
-                    enemyController.StartAttack(AttackKind.Melee);
-                else if (!inRange)
-                    enemyController.ChangeState(enemyController.Chase);
-                break;
-
-            case EnemyAction.DashAttack:
-                if (inDash)
-                    enemyController.StartAttack(AttackKind.Dash);
-                else if (!inRange)
-                    enemyController.ChangeState(enemyController.Chase);
-                break;
-
-            case EnemyAction.Chase:
-                if (!inRange)
-                    enemyController.ChangeState(enemyController.Chase);
-                break;
-
-            // Wait: stay in Idle
-        }
+        enemyController.Decider.Tick();
     }
 }
 
@@ -62,23 +37,10 @@ public class ChaseState : EnemyState
             return;
         }
 
-        EnemyAction action = enemyController.Decider.Current;
-        bool inRange = enemyController.IsPlayerInAttackRange();
+        enemyController.Decider.Tick();
+        if (enemyController.CurrentState != this) return;
 
-        if (action == EnemyAction.Attack && inRange && enemyController.IsGrounded())
-        {
-            enemyController.StartAttack(AttackKind.Melee);
-            return;
-        }
-
-        if (action == EnemyAction.DashAttack && enemyController.IsPlayerInDashRange())
-        {
-            enemyController.StartAttack(AttackKind.Dash);
-            return;
-        }
-
-        // Decided to wait, or in range but not attacking: back to the decision hub
-        if (action == EnemyAction.Wait || inRange)
+        if (enemyController.IsPlayerInAttackRange())
         {
             enemyController.ChangeState(enemyController.Idle);
             return;
@@ -91,12 +53,10 @@ public class ChaseState : EnemyState
         float dx = enemyController.Player.position.x - enemyController.transform.position.x;
         bool underPlayer = Mathf.Abs(dx) < 0.3f;
 
-        // Directly below the player: stop steering, no left-right jitter
         if (playerAbove && underPlayer)
         {
             enemyController.StopHorizontal();
-            if (reachable && enemyController.CanJump())
-                enemyController.Jump();
+            if (reachable && enemyController.CanJump()) enemyController.Jump();
             return;
         }
 
@@ -107,41 +67,35 @@ public class ChaseState : EnemyState
     }
 }
 
-// ATTACK: placeholder, a single timed block.
-// Split into Windup / Hit1 / Hit2 once the attacks are designed.
+// ATTACK: runs whatever EnemyAttackData it was started with
 public class AttackState : EnemyState
 {
     enum Phase { Windup, Active }
 
     Phase phase;
-    AttackKind kind;
+    EnemyAttackData attack;
     float timer;
-    int dashDir;
-    EnemyHitData hit;
+    int moveDir;
     readonly HashSet<Health> alreadyHit = new HashSet<Health>();
 
     public AttackState(EnemyController e) : base(e) { }
 
     public override void Enter()
     {
-        var c = enemyController.Config;
-        kind = enemyController.CurrentAttackKind;
-        hit = kind == AttackKind.Dash ? c.dashHit : c.meleeHit;
+        attack = enemyController.CurrentAttack;
 
         enemyController.StopHorizontal();
 
-        // Direction is locked at the start of the windup: the player can dodge it
-        dashDir = enemyController.DirectionToPlayer();
-        enemyController.Face(dashDir);
+        moveDir = enemyController.DirectionToPlayer();
+        enemyController.Face(moveDir);
 
         alreadyHit.Clear();
         phase = Phase.Windup;
-        timer = kind == AttackKind.Dash ? c.dashWindup : c.meleeWindup;
+        timer = attack.windup;
     }
 
     public override void Tick()
     {
-        var config = enemyController.Config;
         timer -= Time.deltaTime;
 
         if (phase == Phase.Windup)
@@ -149,26 +103,23 @@ public class AttackState : EnemyState
             if (timer > 0f) return;
 
             phase = Phase.Active;
-            timer = kind == AttackKind.Dash ? config.dashDuration : config.meleeActiveDuration;
+            timer = attack.activeDuration;
             return;
         }
 
-        // Active phase
-        if (kind == AttackKind.Dash)
+        if (attack.moveSpeed > 0f)
         {
-            enemyController.MoveHorizontal(dashDir * config.dashSpeed);
+            enemyController.MoveHorizontal(moveDir * attack.moveSpeed);
 
-            // A wall ends the dash early
+            // A wall ends the movement early
             if (enemyController.IsObstacleAhead())
                 timer = 0f;
         }
 
-        bool hitSomeone = enemyController.DealHit(hit, alreadyHit);
-        if (kind == AttackKind.Dash && hitSomeone)
-        {
-            timer = 0f;   // the dash ends as soon as it connects
-        }
-            
+        bool hitSomeone = enemyController.DealHit(attack.hit, alreadyHit);
+        if (attack.endsOnHit && hitSomeone)
+            timer = 0f;   // e.g. a dash ends as soon as it connects
+
         if (timer <= 0f)
         {
             enemyController.StopHorizontal();
@@ -176,12 +127,8 @@ public class AttackState : EnemyState
         }
     }
 
-    public override void Exit()
-    {
-        // TODO: disable the hitbox
-        // Do NOT touch the velocity here: Exit is also called when a hit
-        // interrupts the attack, and it would cancel the knockback.
-    }
+    // The hit zone is only tested during the Active phase, so an attack interrupted
+    // by Hitstun can't hurt anyone. Do NOT touch the velocity here: it would cancel the knockback.
 }
 
 // RECOVERY: punish window, stands still and vulnerable.
@@ -193,11 +140,8 @@ public class RecoveryState : EnemyState
 
     public override void Enter()
     {
-        var c = enemyController.Config;
         enemyController.StopHorizontal();
-        timer = enemyController.CurrentAttackKind == AttackKind.Dash
-            ? c.dashRecoveryDuration
-            : c.recoveryDuration;
+        timer = enemyController.CurrentAttack.recovery;
     }
 
     public override void Tick()
@@ -275,6 +219,42 @@ public class KnockdownState : EnemyState
         timer -= Time.deltaTime;
         if (timer <= 0f)
             enemyController.ChangeState(enemyController.Idle);
+    }
+}
+
+public class RetreatState : EnemyState
+{
+    float timer;
+
+    public RetreatState(EnemyController e) : base(e) { }
+
+    public override void Enter()
+    {
+        timer = enemyController.Config.retreatDuration;
+    }
+
+    public override void Tick()
+    {
+        var config = enemyController.Config;
+        timer -= Time.deltaTime;
+
+        int away = -enemyController.DirectionToPlayer();
+        enemyController.Face(enemyController.DirectionToPlayer());
+        enemyController.Rb.linearVelocity = new Vector2(
+            away * config.moveSpeed * config.retreatSpeedMultiplier,
+            enemyController.Rb.linearVelocity.y
+        );
+
+        if (timer <= 0f)
+        {
+            enemyController.StopHorizontal();
+            enemyController.ChangeState(enemyController.Idle);
+        }
+    }
+
+    public override void Exit()
+    {
+        enemyController.Decider.ForceRedecide();
     }
 }
 

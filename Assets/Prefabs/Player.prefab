@@ -390,7 +390,7 @@ MonoBehaviour:
     active: 0.08
     recovery: 0.17
     damage: 7
-    knockback: 20
+    knockback: 13
     launchDirection: {x: 0.1, y: 1}
     hitboxOffset: {x: 0.3, y: 0.5}
     hitboxSize: {x: 1.1, y: 1}
@@ -510,7 +510,7 @@ MonoBehaviour:
     releaseDelay: 0.16
   upThrow:
     damage: 7
-    knockback: 20
+    knockback: 11
     direction: {x: 0.1, y: 1}
     causesKnockdown: 0
     animationName: Lars_throwUpwards

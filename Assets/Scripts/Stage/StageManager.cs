@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class StageManager : MonoBehaviour
 {
@@ -24,8 +25,25 @@ public class StageManager : MonoBehaviour
         if (enemiesLeft <= 0)
         {
             Debug.Log("Stage clear!");
-            exitWall.enabled = false;
-            goSign.SetActive(true);
+            StartCoroutine(OpenExitWhenGone());
         }
+    }
+
+    IEnumerator OpenExitWhenGone()
+    {
+        while (!AllEnemiesGone())
+            yield return null;   // check again next frame
+
+        exitWall.enabled = false;
+        goSign.SetActive(true);
+    }
+
+    bool AllEnemiesGone()
+    {
+        foreach (Health enemy in enemies)
+        {
+            if (enemy != null) return false;
+        }
+        return true;
     }
 }

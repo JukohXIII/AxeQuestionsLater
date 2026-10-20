@@ -20,8 +20,10 @@ public class EnemyAnimation : MonoBehaviour
         if (state == enemy.Chase)
             animator.Play("Mob_01_walk");
         else if (state == enemy.Attack)
-            animator.Play("Mob_01_attack", 0, 0f);
-        else if (state == enemy.Hitstun || state == enemy.Knockdown || state == enemy.Dead)
+            animator.Play(enemy.CurrentAttackKind == AttackKind.Dash ? "Mob_01_attack_2" : "Mob_01_attack", 0, 0f);
+        else if (state == enemy.Dead)
+            animator.Play("Mob_01_dying", 0, 0f);
+        else if (state == enemy.Hitstun || state == enemy.Knockdown)
             animator.Play("Mob_01_getHit", 0, 0f);
         else
             animator.Play("Mob_01_idle");

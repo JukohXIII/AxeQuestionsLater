@@ -36,4 +36,4 @@ MonoBehaviour:
   dashRecoveryDuration: 1
   hitstunDuration: 0.4
   knockdownDuration: 1.5
-  deathDelay: 1
+  deathDelay: 1.5

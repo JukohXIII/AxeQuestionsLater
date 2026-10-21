@@ -32,7 +32,7 @@ public class EnemyAnimation : MonoBehaviour
         if (state == lastState) return;
         lastState = state;
 
-        if (state == enemy.Chase)
+        if (state == enemy.Chase || state == enemy.Retreat)
             animator.Play("Mob_01_walk");
         else if (state == enemy.Attack)
             animator.Play(enemy.CurrentAttack.animationClip, 0, 0f);

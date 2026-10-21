@@ -3,8 +3,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Vector2 moveInput;
+    // ---------- References ----------
     private Rigidbody2D rb;
+    private Collider2D playerCollider;
+    private PlayerInput playerInput;
+    private InputAction jumpAction;
+    private PlayerCombat playerCombat;
 
     [Header("Ground movement")]
     [SerializeField] private float moveSpeed = 10f;
@@ -41,40 +45,49 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashDuration = 0.15f;
     [SerializeField] private float dashCooldown = 0.4f;
     [SerializeField] private float dashAttackWindow = 0.2f;
-    private bool isDashing;
-    private float dashTimer;
-    private float dashCooldownTimer;
-    private float defaultGravityScale;
-    private PlayerCombat playerCombat;
 
     [Header("Enemy bounce")]
     [SerializeField] private float enemyBounceVelocity = 12f;
     [SerializeField] private LayerMask enemyLayer;
 
-    private bool isGrounded;
-    private PlayerInput playerInput;
-    private InputAction jumpAction;
+    // ---------- Read by other scripts ----------
+    public int FacingDirection => facingDirection;
+    public bool IsGrounded => isGrounded;
+    public bool IsDashing => isDashing;
+    public bool CanDashAttack => isDashing || dashAttackWindowTimer > 0;
+    private bool CanJumpNow => !isDashing && playerCombat.state != PlayerCombat.PlayerState.Grabbing && !playerCombat.IsHurt && !playerGuard.IsInBlockstun;
+    private PlayerGuard playerGuard;
+
+
+    // ---------- Input ----------
+    private Vector2 moveInput;
     private bool jumpReleased;
-    private int airJumpsRemaining;
-    private Collider2D playerCollider;
-    private Collider2D lastPlatform;
-    private Collider2D ignoredPlatform;
     private bool wasDownPressed;
-    private float dropTimer;
-    private bool isFastFalling;
-    private float runBurstTimer;
-    private float burstMovementDirection;
+    private bool downJustPressed;
     private float previousMoveX;
+
+    // ---------- Ground, speed & facing ----------
+    private bool isGrounded;
     private int facingDirection = 1;
     private float maxSpeed;
     private float accel;
     private float decel;
-    private bool downJustPressed;
-    public int FacingDirection => facingDirection;
-    public bool IsGrounded => isGrounded;
-    public bool IsDashing => isDashing;
+    private float runBurstTimer;
+    private float burstMovementDirection;
+
+    // ---------- Jump & fall ----------
+    private int airJumpsRemaining;
+    private bool isFastFalling;
+    private Collider2D lastPlatform;
+    private Collider2D ignoredPlatform;
+    private float dropTimer;
+
+    // ---------- Dash ----------
+    private bool isDashing;
+    private float dashTimer;
+    private float dashCooldownTimer;
     private float dashAttackWindowTimer;
-    public bool CanDashAttack => isDashing || dashAttackWindowTimer > 0;
+    private float defaultGravityScale;
     
 
     void Awake()
@@ -85,11 +98,12 @@ public class PlayerMovement : MonoBehaviour
         jumpAction = playerInput.actions["Jump"];
         defaultGravityScale = rb.gravityScale;
         playerCombat = GetComponent<PlayerCombat>();
+        playerGuard = GetComponent<PlayerGuard>();
     }
 
     void FixedUpdate()
     {
-        checkGrounded();
+        CheckGrounded();
 
         bool downPressed = moveInput.y < -0.5f;
         downJustPressed = downPressed && !wasDownPressed;
@@ -152,7 +166,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void checkGrounded()
+    void CheckGrounded()
     {
         Collider2D groundHit = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayers);
         isGrounded = (rb.linearVelocity.y <= 0.1f) && (groundHit != null) && (groundHit.bounds.max.y - groundCheck.position.y <= groundedTolerance);
@@ -252,12 +266,11 @@ public class PlayerMovement : MonoBehaviour
     void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
-        // Debug.Log(moveInput);
     }
 
     void OnJump(InputValue value)
     {
-        if (value.isPressed && isGrounded && !isDashing && playerCombat.state != PlayerCombat.PlayerState.Grabbing && !playerCombat.IsHurt && !playerCombat.IsInBlockstun)
+        if (value.isPressed && isGrounded && CanJumpNow)
         {
             if (moveInput.y < -0.5f && lastPlatform != null && ignoredPlatform == null)
             {
@@ -271,7 +284,7 @@ public class PlayerMovement : MonoBehaviour
                 isGrounded = false;
             }
         }
-        else if (value.isPressed && !isGrounded && airJumpsRemaining > 0 && !isDashing && playerCombat.state != PlayerCombat.PlayerState.Grabbing && !playerCombat.IsHurt && !playerCombat.IsInBlockstun)
+        else if (value.isPressed && !isGrounded && airJumpsRemaining > 0 && CanJumpNow)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
             airJumpsRemaining--;

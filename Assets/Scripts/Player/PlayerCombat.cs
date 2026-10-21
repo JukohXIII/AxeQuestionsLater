@@ -34,61 +34,60 @@ public class PlayerCombat : MonoBehaviour
 {
 
     public enum PlayerState { Normal, Attacking, Grabbing, Blocking, Hurt, Knockdown, Defeated }
-    private AttackData currentAttack;
-    private Vector2 moveInput;
+    private enum AttackPhase { None, Startup, Active, Recovery }
+
+    // ---------- References ----------
     private PlayerMovement playerMovement;
-    [SerializeField] private float hitStopDuration = 0.05f;
+
+
+    // ---------- State (other scripts read these) ----------
+    [Header("State")]
+    public PlayerState state = PlayerState.Normal;
     public string CurrentAnimation { get; private set; }
     public int AttackId { get; private set; }
-    [SerializeField] private int maxAirHangs = 3;
-    private int airHangsUsed;
-    private bool isAirHanging;
-    private bool turnAfterThrow;
-    private ThrowData pendingThrow;
-    private bool pendingIsBackThrow;
-    private float throwTimer;
-    private bool isThrowing;
     public bool IsHurt => state == PlayerState.Hurt || state == PlayerState.Knockdown || state == PlayerState.Defeated;
-    private Health health;
 
-    [Header("Attack State")]
-    public PlayerState state = PlayerState.Normal;
-    private enum AttackPhase { None, Startup, Active, Recovery }
-    private AttackPhase phase = AttackPhase.None;
+    // ---------- Input ----------
+    private Vector2 moveInput;
     private bool attackPressedThisFrame;
+    private bool grabPressedThisFrame;
+
+    // ---------- Attack phases ----------
+    [SerializeField] private float hitStopDuration = 0.05f;
+    private AttackData currentAttack;
+    private AttackPhase phase = AttackPhase.None;
     private float phaseTimer;
+    private bool isComboAttack;
     private bool queuedNextHit;
-    private int comboStep = 0;
+    private int comboStep;
 
     [Header("Hitbox")]
     [SerializeField] private GameObject attackHitbox;
     [SerializeField] private LayerMask hittableLayers;
-    private HashSet<Collider2D> hitTargetsThisSwing = new HashSet<Collider2D>();
+    private readonly HashSet<Collider2D> hitTargetsThisSwing = new HashSet<Collider2D>();
 
     [Header("Ground Attacks")]
     [SerializeField] private AttackData[] comboAttacks;
     [SerializeField] private AttackData upTiltData;
     [SerializeField] private AttackData downTiltData;
-    private bool isComboAttack;
+    [SerializeField] private AttackData dashAttackData;
 
     [Header("Air Attacks")]
     [SerializeField] private AttackData neutralAirData;
     [SerializeField] private AttackData upAirData;
     [SerializeField] private AttackData downAirData;
     [SerializeField] private AttackData forwardAirData;
-    [SerializeField] private AttackData backAirData;
-
-    [Header("Dash Attack")]
-    [SerializeField] private AttackData dashAttackData;
+    [SerializeField] private int maxAirHangs = 3;
+    private int airHangsUsed;
+    private bool isAirHanging;
 
     [Header("Grab")]
-    private bool grabPressedThisFrame;
     [SerializeField] private AttackData grabAttackData;
-    private bool isGrabAttack;
-    private Grabbable heldTarget;
     [SerializeField] private Vector2 holdOffset = new Vector2(0.8f, 1.2f);
     [SerializeField] private float grabHoldTime = 1.5f;
     [SerializeField] private float minHoldTime = 0.25f;
+    private bool isGrabAttack;
+    private Grabbable heldTarget;
     private float grabTimer;
 
     [Header("Throws")]
@@ -97,20 +96,16 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private ThrowData upThrow;
     [SerializeField] private ThrowData downThrow;
     [SerializeField] private float throwRecovery = 0.3f;
-
-    [Header("Block")]
-    private InputAction blockAction;
-    [SerializeField] private float blockstunDuration = 0.2f;
-    private float blockstunTimer;
-    public bool IsInBlockstun => blockstunTimer > 0f;
+    private ThrowData pendingThrow;
+    private bool pendingIsBackThrow;
+    private bool isThrowing;
+    private float throwTimer;
+    private bool turnAfterThrow;
 
 
     void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
-        blockAction = GetComponent<PlayerInput>().actions["Block"];
-        health = GetComponent<Health>();
-        health.OnBlocked += StartBlockstun;
     }
 
     void Update()
@@ -144,7 +139,6 @@ public class PlayerCombat : MonoBehaviour
 
     void HandleCombat()
     {
-        HandleBlock();
         TryStartGrab();
         TryStartAttack();
 
@@ -163,94 +157,65 @@ public class PlayerCombat : MonoBehaviour
 
     void TryStartAttack()
     {
-        if (state == PlayerState.Normal && attackPressedThisFrame)
+        if (state != PlayerState.Normal || !attackPressedThisFrame) return;
+
+        isComboAttack = false;
+        AttackData attack;
+
+        if (playerMovement.CanDashAttack)
         {
-            if (playerMovement.CanDashAttack)
-            {
-                currentAttack = dashAttackData;
-                isComboAttack = false;
-                playerMovement.EndDash();
-            }
-            else if (!playerMovement.IsGrounded)
-            {
-                if (airHangsUsed < maxAirHangs)
-                {
-                    playerMovement.SetAirHang(true);
-                    airHangsUsed++;
-                    isAirHanging = true;
-                }
-                if (moveInput.y > 0.5f)
-                {
-                    currentAttack = upAirData;
-                    isComboAttack = false;
-                }
-                else if (moveInput.y < -0.5f)
-                {
-                    currentAttack = downAirData;
-                    isComboAttack = false;
-                }
-                // else if (moveInput.x != 0 && playerMovement.FacingDirection == 1)
-                // {
-                //     currentAttack = forwardAirData;
-                //     isComboAttack = false;
-                // }
-                // else if (moveInput.x != 0 && playerMovement.FacingDirection == -1)
-                // {
-                //     currentAttack = backAirData;
-                //     isComboAttack = false;
-                // }
-                else if (moveInput.x != 0)
-                {
-                    currentAttack = forwardAirData;
-                    isComboAttack = false;
-                }
-                else
-                {
-                    currentAttack = neutralAirData;
-                    isComboAttack = false;
-                }
-            }
-            else
-            {
-                if (moveInput.y > 0.5f)
-                {
-                    currentAttack = upTiltData;
-                    isComboAttack = false;
-                }
-                else if (moveInput.y < -0.5f)
-                {
-                    currentAttack = downTiltData;
-                    isComboAttack = false;
-                }
-                else
-                {
-                    comboStep = 1;
-                    currentAttack = comboAttacks[comboStep - 1];
-                    isComboAttack = true;
-                }
-            }
-            state = PlayerState.Attacking;
-            PlayAttackAnimation();
-            phase = AttackPhase.Startup;
-            phaseTimer = currentAttack.startup;
-            isGrabAttack = false;
-            Debug.Log("Playing: " + currentAttack.attackName);
-            Debug.Log("Combo step " + comboStep + " — startup");
+            attack = dashAttackData;
+            playerMovement.EndDash();
         }
+        else if (!playerMovement.IsGrounded)
+        {
+            StartAirHang();
+            attack = ChooseAirAttack();
+        }
+        else
+        {
+            attack = ChooseGroundAttack();
+        }
+
+        BeginAttack(attack, false);
+        Debug.Log("Playing: " + attack.attackName);
     }
 
     void TryStartGrab()
     {
-        if (state == PlayerState.Normal && grabPressedThisFrame && playerMovement.IsGrounded && !playerMovement.IsDashing)
-        {
-            currentAttack = grabAttackData;
-            isGrabAttack = true;
-            state = PlayerState.Attacking;
-            PlayAttackAnimation();
-            phase = AttackPhase.Startup;
-            phaseTimer = currentAttack.startup;
-            isComboAttack = false;
-        }
+        if (state != PlayerState.Normal || !grabPressedThisFrame) return;
+        if (!playerMovement.IsGrounded || playerMovement.IsDashing) return;
+
+        isComboAttack = false;
+        BeginAttack(grabAttackData, true);
+    }
+
+    AttackData ChooseAirAttack()
+    {
+        if (moveInput.y > 0.5f) return upAirData;
+        if (moveInput.y < -0.5f) return downAirData;
+        if (moveInput.x != 0) return forwardAirData;
+        return neutralAirData;
+    }
+
+    AttackData ChooseGroundAttack()
+    {
+        if (moveInput.y > 0.5f) return upTiltData;
+        if (moveInput.y < -0.5f) return downTiltData;
+
+        comboStep = 1;
+        isComboAttack = true;
+        return comboAttacks[0];
+    }
+
+    void BeginAttack(AttackData attack, bool isGrab)
+    {
+        currentAttack = attack;
+        isGrabAttack = isGrab;
+        state = PlayerState.Attacking;
+        phase = AttackPhase.Startup;
+        phaseTimer = attack.startup;
+        PlayAttackAnimation();
     }
 
     void HandleStartupPhase()
@@ -341,11 +306,7 @@ public class PlayerCombat : MonoBehaviour
                     playerMovement.SetFacing(-playerMovement.FacingDirection);
                     turnAfterThrow = false;
                 }
-                if (isAirHanging)
-                {
-                    playerMovement.SetAirHang(false);
-                    isAirHanging = false;
-                }
+                StopAirHang();
                 phase = AttackPhase.None;
                 comboStep = 0;
                 queuedNextHit = false;
@@ -391,22 +352,22 @@ public class PlayerCombat : MonoBehaviour
             }
             if (moveInput.y > 0.5f)
             {
-                Debug.Log("Up throw");
+                // Debug.Log("Up throw");
                 StartThrow(upThrow);
             }
             else if (moveInput.y < -0.5f)
             {
-                Debug.Log("Down throw");
+                // Debug.Log("Down throw");
                 StartThrow(downThrow);
             }
             else if (moveInput.x != 0 && Mathf.Sign(moveInput.x) == playerMovement.FacingDirection)
             {
-                Debug.Log("Forward throw");
+                // Debug.Log("Forward throw");
                 StartThrow(forwardThrow);
             }
             else if (moveInput.x != 0 && Mathf.Sign(moveInput.x) == -playerMovement.FacingDirection)
             {
-                Debug.Log("Back throw");
+                // Debug.Log("Back throw");
                 StartThrow(backThrow, true);
             }
             return;
@@ -419,7 +380,6 @@ public class PlayerCombat : MonoBehaviour
         Vector2 dir = new Vector2(t.direction.x * oldFacing, t.direction.y).normalized;
         if (isBackThrow)
         {
-            // playerMovement.SetFacing(-oldFacing);
             heldTarget.transform.position = (Vector2)transform.position + new Vector2(holdOffset.x * -oldFacing, holdOffset.y);
             turnAfterThrow = true;
         }
@@ -441,6 +401,21 @@ public class PlayerCombat : MonoBehaviour
         throwTimer = t.releaseDelay;
         isThrowing = true;
         SetAnimation(t.animationName);
+    }
+
+    void StartAirHang()
+    {
+        if (airHangsUsed >= maxAirHangs) return;
+        playerMovement.SetAirHang(true);
+        airHangsUsed++;
+        isAirHanging = true;
+    }
+
+    void StopAirHang()
+    {
+        if (!isAirHanging) return;
+        playerMovement.SetAirHang(false);
+        isAirHanging = false;
     }
 
     IEnumerator HitStop()
@@ -469,33 +444,10 @@ public class PlayerCombat : MonoBehaviour
         queuedNextHit = false;
         attackHitbox.SetActive(false);
         isThrowing = false;
-        if (isAirHanging) { playerMovement.SetAirHang(false); isAirHanging = false; }
+        StopAirHang();
         if (heldTarget != null) { heldTarget.Release(); heldTarget = null; }
         CurrentAnimation = null;
         AttackId++;   //makes the getHit clip restart on every new hit
-    }
-
-    void HandleBlock()
-    {
-        bool held = blockAction.IsPressed();
-
-        if (blockstunTimer > 0f)
-        {
-            blockstunTimer -= Time.deltaTime;
-            held = true;   // can't drop the guard during blockstun
-        }
-
-        if (state == PlayerState.Normal && held && playerMovement.IsGrounded)
-            state = PlayerState.Blocking;
-        else if (state == PlayerState.Blocking && (!held || !playerMovement.IsGrounded))
-            state = PlayerState.Normal;
-
-        health.GuardFacing = state == PlayerState.Blocking ? playerMovement.FacingDirection : 0;
-    }
-
-    void StartBlockstun()
-    {
-        blockstunTimer = blockstunDuration;
     }
 
     void OnDrawGizmosSelected()

@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 6956639934662882093}
   - component: {fileID: 4006871800368363726}
   - component: {fileID: 7410913375435318366}
+  - component: {fileID: 7559764411463500383}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -344,9 +345,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24b75205fd04cb44489f1e028a5e9e8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
-  hitStopDuration: 0.15
-  maxAirHangs: 3
   state: 0
+  hitStopDuration: 0.15
   attackHitbox: {fileID: 9119232456851001650}
   hittableLayers:
     serializedVersion: 2
@@ -409,6 +409,18 @@ MonoBehaviour:
     hitboxOffset: {x: 0.7, y: -0.3}
     hitboxSize: {x: 1.1, y: 0.4}
     causesKnockdown: 0
+  dashAttackData:
+    attackName: Dash Attack
+    animationName: 
+    startup: 0.06
+    active: 0.12
+    recovery: 0.35
+    damage: 8
+    knockback: 6
+    launchDirection: {x: 0, y: 0}
+    hitboxOffset: {x: 0.9, y: 0}
+    hitboxSize: {x: 0.9, y: 0.7}
+    causesKnockdown: 1
   neutralAirData:
     attackName: Neutral Aerial
     animationName: Lars_aerialAttack_Forward
@@ -457,30 +469,7 @@ MonoBehaviour:
     hitboxOffset: {x: 0.7, y: 0}
     hitboxSize: {x: 0.7, y: 0.7}
     causesKnockdown: 0
-  backAirData:
-    attackName: Back Aerial
-    animationName: Lars_aerialAttack_Back
-    startup: 0.1
-    active: 0.1
-    recovery: 0.22
-    damage: 7
-    knockback: 3
-    launchDirection: {x: 0, y: 0}
-    hitboxOffset: {x: -0.7, y: 0}
-    hitboxSize: {x: 0.7, y: 0.7}
-    causesKnockdown: 0
-  dashAttackData:
-    attackName: Dash Attack
-    animationName: 
-    startup: 0.06
-    active: 0.12
-    recovery: 0.35
-    damage: 8
-    knockback: 6
-    launchDirection: {x: 0, y: 0}
-    hitboxOffset: {x: 0.9, y: 0}
-    hitboxSize: {x: 0.9, y: 0.7}
-    causesKnockdown: 1
+  maxAirHangs: 3
   grabAttackData:
     attackName: Grab Attack
     animationName: Lars_grab
@@ -567,7 +556,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGetHit
   hitstunDuration: 0.3
   knockdownDuration: 1.2
-  getUpInvincibility: 0.5
 --- !u!114 &7410913375435318366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,6 +572,19 @@ MonoBehaviour:
   flashColor: {r: 1, g: 1, b: 1, a: 1}
   flashDuration: 0.1
   blinkInterval: 0.08
+--- !u!114 &7559764411463500383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6313414769092845965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c4264a36132aad4fb3059ce3bbd59e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerGuard
+  blockstunDuration: 0.2
 --- !u!1 &8023591662331067518
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,7 +628,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1284295000782283263}
   - component: {fileID: 2475927829318115014}
-  - component: {fileID: 2310294356493169245}
   m_Layer: 7
   m_Name: AttackHitbox
   m_TagString: Untagged
@@ -696,15 +696,3 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.7, y: 0.7}
   m_EdgeRadius: 0
---- !u!114 &2310294356493169245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9119232456851001650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5eea29dfc8d8de48a2844b8f14c2191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AttackHitbox

@@ -5,13 +5,16 @@ public class PlayerGetHit : MonoBehaviour
     [SerializeField] private float hitstunDuration = 0.3f;
     [SerializeField] private float knockdownDuration = 1.2f;
 
+    // ---------- References ----------
     private Health health;
     private PlayerCombat playerCombat;
-    private float timer;
     private PlayerMovement playerMovement;
+
+    // ---------- State ----------
+    public bool KnockdownLanded => knockdownLanded;
+    private float timer;
     private bool knockdownLanded;
     private float landCheckDelay;
-    public bool KnockdownLanded => knockdownLanded;
 
     void Awake()
     {

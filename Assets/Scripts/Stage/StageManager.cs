@@ -20,11 +20,10 @@ public class StageManager : MonoBehaviour
     void HandleEnemyDeath()
     {
         enemiesLeft--;
-        Debug.Log("Enemies left: " + enemiesLeft);
 
         if (enemiesLeft <= 0)
         {
-            Debug.Log("Stage clear!");
+            Debug.Log("Stage Clear!");
             StartCoroutine(OpenExitWhenGone());
         }
     }

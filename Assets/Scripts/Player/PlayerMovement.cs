@@ -188,6 +188,7 @@ public class PlayerMovement : MonoBehaviour
     void HandleHorizontalMovement()
     {
         if (playerCombat.state == PlayerCombat.PlayerState.Defeated) return;
+        if (playerCombat.IsHurt && !isGrounded) return;
         bool lockedOnGround = isGrounded && playerCombat.state != PlayerCombat.PlayerState.Normal;
 
         if (moveInput.x == 0 || lockedOnGround  )
@@ -224,7 +225,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         
-        if (!isGrounded && downJustPressed && rb.linearVelocity.y < 0)
+        if (!isGrounded && downJustPressed && rb.linearVelocity.y < 0 && !playerCombat.IsHurt)
         {
             isFastFalling = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -fastFallSpeed);

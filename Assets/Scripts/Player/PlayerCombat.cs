@@ -60,6 +60,8 @@ public class PlayerCombat : MonoBehaviour
     private bool isComboAttack;
     private bool queuedNextHit;
     private int comboStep;
+    [SerializeField] private float comboWindow = 0.3f;   // time after a jab to still continue the combo
+    private float comboTimer;
 
     [Header("Hitbox")]
     [SerializeField] private GameObject attackHitbox;
@@ -110,6 +112,7 @@ public class PlayerCombat : MonoBehaviour
 
     void Update()
     {
+        if (comboTimer > 0f) comboTimer -= Time.deltaTime;
         if (playerMovement.IsGrounded) airHangsUsed = 0;
         HandleCombat();
         attackPressedThisFrame = false;
@@ -178,6 +181,7 @@ public class PlayerCombat : MonoBehaviour
         }
 
         BeginAttack(attack, false);
+        attackPressedThisFrame = false;
         Debug.Log("Playing: " + attack.attackName);
     }
 
@@ -188,6 +192,7 @@ public class PlayerCombat : MonoBehaviour
 
         isComboAttack = false;
         BeginAttack(grabAttackData, true);
+        grabPressedThisFrame = false;
     }
 
     AttackData ChooseAirAttack()
@@ -203,9 +208,10 @@ public class PlayerCombat : MonoBehaviour
         if (moveInput.y > 0.5f) return upTiltData;
         if (moveInput.y < -0.5f) return downTiltData;
 
-        comboStep = 1;
+        bool continueCombo = comboTimer > 0f && comboStep > 0 && comboStep < comboAttacks.Length;
+        comboStep = continueCombo ? comboStep + 1 : 1;
         isComboAttack = true;
-        return comboAttacks[0];
+        return comboAttacks[comboStep - 1];
     }
 
     void BeginAttack(AttackData attack, bool isGrab)
@@ -308,7 +314,8 @@ public class PlayerCombat : MonoBehaviour
                 }
                 StopAirHang();
                 phase = AttackPhase.None;
-                comboStep = 0;
+                comboTimer = isComboAttack ? comboWindow : 0f;   // a short grace window to keep the combo going
+                if (!isComboAttack) comboStep = 0;
                 queuedNextHit = false;
                 Debug.Log("Combo finished");
             }
@@ -318,7 +325,7 @@ public class PlayerCombat : MonoBehaviour
     void HandleQueuedInput()
     {
         // Check for input to queue the next hit
-        if (attackPressedThisFrame && (phase == AttackPhase.Active || phase == AttackPhase.Recovery))
+        if (attackPressedThisFrame && phase != AttackPhase.None)
         {
             queuedNextHit = true;
             Debug.Log("Next hit queued");
@@ -448,6 +455,7 @@ public class PlayerCombat : MonoBehaviour
         if (heldTarget != null) { heldTarget.Release(); heldTarget = null; }
         CurrentAnimation = null;
         AttackId++;   //makes the getHit clip restart on every new hit
+        comboTimer = 0f;
     }
 
     void OnDrawGizmosSelected()

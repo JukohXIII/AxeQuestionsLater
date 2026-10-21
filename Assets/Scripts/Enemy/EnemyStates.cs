@@ -163,8 +163,12 @@ public class AttackState : EnemyState
                 timer = 0f;
         }
 
-        enemyController.DealHit(hit, alreadyHit);
-
+        bool hitSomeone = enemyController.DealHit(hit, alreadyHit);
+        if (kind == AttackKind.Dash && hitSomeone)
+        {
+            timer = 0f;   // the dash ends as soon as it connects
+        }
+            
         if (timer <= 0f)
         {
             enemyController.StopHorizontal();

@@ -133,8 +133,9 @@ public class EnemyController : MonoBehaviour
         ChangeState(Attack);
     }
 
-    public void DealHit(EnemyHitData hit, HashSet<Health> alreadyHit)
+    public bool DealHit(EnemyHitData hit, HashSet<Health> alreadyHit)
     {
+        bool hitSomeone = false;
         Vector2 center = (Vector2)transform.position
             + new Vector2(hit.hitboxOffset.x * FacingDirection, hit.hitboxOffset.y);
 
@@ -150,7 +151,9 @@ public class EnemyController : MonoBehaviour
             if (target.IsInvincible) continue;
 
             target.TakeHit(hit.damage, direction, hit.knockback, hit.causesKnockback, hit.breaksGuard);
+            hitSomeone = true;
         }
+        return hitSomeone;
     }
 
     public bool IsPlayerInDashRange()

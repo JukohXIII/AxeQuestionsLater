@@ -187,6 +187,7 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleHorizontalMovement()
     {
+        if (playerCombat.state == PlayerCombat.PlayerState.Defeated) return;
         bool lockedOnGround = isGrounded && playerCombat.state != PlayerCombat.PlayerState.Normal;
 
         if (moveInput.x == 0 || lockedOnGround  )
@@ -308,6 +309,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (playerCombat.IsHurt) return;
         if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
         {
             foreach (ContactPoint2D contact in collision.contacts)

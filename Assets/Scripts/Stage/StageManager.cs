@@ -7,6 +7,7 @@ public class StageManager : MonoBehaviour
     private int enemiesLeft;
     [SerializeField] private Collider2D exitWall;
     [SerializeField] private GameObject goSign;
+    [SerializeField] private GameObject stageExit;
 
     void Start()
     {
@@ -35,6 +36,7 @@ public class StageManager : MonoBehaviour
 
         exitWall.enabled = false;
         goSign.SetActive(true);
+        if (stageExit != null) stageExit.SetActive(true);
     }
 
     bool AllEnemiesGone()

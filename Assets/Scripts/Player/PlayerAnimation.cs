@@ -14,6 +14,7 @@ public class PlayerAnimation : MonoBehaviour
     private bool wasGrounded = true;
     private float landTimer;
     private PlayerGetHit playerGetHit;
+    private PlayerDefeat playerDefeat;
 
     void Awake()
     {
@@ -21,6 +22,7 @@ public class PlayerAnimation : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         playerCombat = GetComponent<PlayerCombat>();
         playerGetHit = GetComponent<PlayerGetHit>();
+        playerDefeat = GetComponent<PlayerDefeat>();
     }
 
     void Update()
@@ -45,7 +47,11 @@ public class PlayerAnimation : MonoBehaviour
     // Highest priority first
     string ChooseClip()
     {
-        if (playerCombat.state == PlayerCombat.PlayerState.Defeated) return "Lars_defeated";
+        if (playerCombat.state == PlayerCombat.PlayerState.Defeated)
+        {
+            if (playerDefeat.IsRunningAway) return "Lars_walk_withoutAxe";
+                return playerDefeat.DefeatLanded ? "Lars_defeated" : "Lars_getHit";
+        }
         if (playerCombat.state == PlayerCombat.PlayerState.Knockdown)
         {
             return playerGetHit.KnockdownLanded ? "Lars_getKnocked" : "Lars_getHit";

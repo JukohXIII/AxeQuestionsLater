@@ -16,7 +16,7 @@ MonoBehaviour:
   jumpVelocity: 15
   jumpCooldown: 0.8
   detectionRange: 10
-  attackRange: 1.5
+  attackRange: 1.2
   verticalAttackTolerance: 1
   jumpHeightThreshold: 1.5
   obstacleDetectionDistance: 0.5
@@ -31,12 +31,12 @@ MonoBehaviour:
     damage: 10
     knockback: 12
     launchDirection: {x: 1, y: 0.5}
-    hitboxOffset: {x: 0.8, y: 0}
-    hitboxSize: {x: 1, y: 0.8}
+    hitboxOffset: {x: 0.6, y: 0}
+    hitboxSize: {x: 0.9, y: 0.8}
     causesKnockback: 0
     breaksGuard: 0
   dashWindup: 0.9
-  dashSpeed: 14
+  dashSpeed: 16
   dashDuration: 0.35
   dashMaxDistance: 7
   dashCooldown: 5
@@ -44,8 +44,8 @@ MonoBehaviour:
     damage: 15
     knockback: 16
     launchDirection: {x: 1, y: 0.5}
-    hitboxOffset: {x: 0.3, y: 0}
-    hitboxSize: {x: 1.2, y: 0.9}
+    hitboxOffset: {x: 0.15, y: 0}
+    hitboxSize: {x: 0.9, y: 0.9}
     causesKnockback: 1
     breaksGuard: 1
   recoveryDuration: 0.6

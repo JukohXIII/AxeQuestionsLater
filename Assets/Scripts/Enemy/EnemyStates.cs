@@ -207,12 +207,14 @@ public class KnockdownState : EnemyState
         enemyController.StopHorizontal();
         timer = enemyController.Config.knockdownDuration;
         enemyController.Health.IsInvincible = true;
+        enemyController.gameObject.layer = LayerMask.NameToLayer("Prop");
     }
 
     public override void Exit()
     {
         enemyController.Health.IsInvincible = false;
         enemyController.Decider.ForceRedecide();
+        enemyController.gameObject.layer = LayerMask.NameToLayer("Enemy");
     }
 
     public override void Tick()
@@ -269,5 +271,6 @@ public class DeadState : EnemyState
         enemyController.StopHorizontal();
         // TODO: death animation / VFX
         Object.Destroy(enemyController.gameObject, enemyController.Config.deathDelay);
+        enemyController.gameObject.layer = LayerMask.NameToLayer("Prop");
     }
 }

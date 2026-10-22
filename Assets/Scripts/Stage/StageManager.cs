@@ -3,6 +3,9 @@ using System.Collections;
 
 public class StageManager : MonoBehaviour
 {
+    [SerializeField] private VictoryMenu victoryMenu;   // only set in the LAST stage
+    [SerializeField] private float clearDelay = 1.5f;   // let the last death animation play first
+
     [Header("Enemies")]
     [Tooltip("Hades-style waves. If set, the placed enemies below are ignored.")]
     [SerializeField] private EnemySpawner spawner;
@@ -18,7 +21,7 @@ public class StageManager : MonoBehaviour
     {
         if (spawner != null)
         {
-            spawner.OnAllWavesCleared += OpenExit;
+            spawner.OnAllWavesCleared += HandleStageCleared;
             return;
         }
 
@@ -31,7 +34,7 @@ public class StageManager : MonoBehaviour
 
     void OnDestroy()
     {
-        if (spawner != null) spawner.OnAllWavesCleared -= OpenExit;
+        if (spawner != null) spawner.OnAllWavesCleared -= HandleStageCleared;
     }
 
     void HandleEnemyDeath()
@@ -50,7 +53,7 @@ public class StageManager : MonoBehaviour
         while (!AllEnemiesGone())
             yield return null;   // check again next frame
 
-        OpenExit();
+        HandleStageCleared();
     }
 
     void OpenExit()
@@ -68,5 +71,22 @@ public class StageManager : MonoBehaviour
             if (enemy != null) return false;
         }
         return true;
+    }
+
+    void HandleStageCleared()
+    {
+        StartCoroutine(ClearStage());
+    }
+
+    IEnumerator ClearStage()
+    {
+        yield return new WaitForSeconds(clearDelay);
+
+        if (victoryMenu != null)
+        {
+            victoryMenu.Show();   // last stage: you win
+            yield break;
+        }
+        OpenExit();
     }
 }

@@ -9,6 +9,8 @@ public class Health : MonoBehaviour
     private Rigidbody2D rb;
     public int GuardFacing { get; set; }
     public System.Action OnBlocked;
+    public float MaxHealth => maxDamagePercent;
+    public float CurrentHealth => maxDamagePercent - damagePercent;
 
     public float DamagePercent => damagePercent;
     /// <summary> 
@@ -53,5 +55,10 @@ public class Health : MonoBehaviour
         {
             OnHit?.Invoke();
         }
+    }
+
+    public void SetDamage(float amount)
+    {
+        damagePercent = Mathf.Clamp(amount, 0f, maxDamagePercent);
     }
 }

@@ -6,6 +6,12 @@ public class TiptoolPanelToggle : MonoBehaviour
     [SerializeField] private GameObject movesPanel;
     [SerializeField] private PlayerInput playerInput;
 
+    void Awake()
+    {
+        if (playerInput == null)
+            playerInput = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>();
+    }
+
     public void ToggleMovesPanel()
     {
         bool isOpening = !movesPanel.activeSelf;
@@ -13,6 +19,6 @@ public class TiptoolPanelToggle : MonoBehaviour
         Time.timeScale = isOpening ? 0f : 1f;
 
         if (isOpening) playerInput.DeactivateInput();
-        else playerInput.ActivateInput();
+        else if (!playerInput.GetComponent<Health>().IsDead) playerInput.ActivateInput();
     }
 }

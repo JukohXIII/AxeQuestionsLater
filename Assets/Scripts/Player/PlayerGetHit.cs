@@ -45,6 +45,11 @@ public class PlayerGetHit : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        health.SetDamage(RunData.PlayerDamage);   // carry damage over from the previous stage
+    }
+
     void Update()
     {
         if (playerCombat.state == PlayerCombat.PlayerState.Defeated) return;

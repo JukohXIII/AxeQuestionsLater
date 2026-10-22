@@ -67,6 +67,7 @@ public class PlayerCombat : MonoBehaviour
     public bool IsInAttackRecovery =>
         state == PlayerState.Attacking && phase == AttackPhase.Recovery;
 
+    // For enemy AI: reading the player's attack phase
     public bool IsInAttackStartupOrActive =>
         state == PlayerState.Attacking && (phase == AttackPhase.Startup || phase == AttackPhase.Active);
 

@@ -40,4 +40,13 @@ public class EnemyConfig : ScriptableObject
     public float hitstunDuration = 0.4f;
     public float knockdownDuration = 1f;
     public float deathDelay = 1f;
+
+    [Header("Platform navigation")]
+    public bool usePlatformNavigation = true;
+    [Tooltip("Distance kept from a platform's edge when taking off.")]
+    public float launchInset = 0.2f;
+    [Tooltip("How far inside the target platform the enemy aims to land.")]
+    public float landingMargin = 0.3f;
+    [Tooltip("Trust in the predicted jump reach (the prediction is approximate). Lower = safer, fewer risky jumps.")]
+    [Range(0.5f, 1f)] public float jumpReachSafety = 0.85f;
 }

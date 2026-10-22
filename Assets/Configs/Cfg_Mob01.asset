@@ -13,10 +13,8 @@ MonoBehaviour:
   m_Name: Cfg_Mob01
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   moveSpeed: 3
-  jumpVelocity: 15
+  jumpVelocity: 25
   jumpCooldown: 0.8
-  detectionRange: 10
-  attackRange: 1.2
   verticalAttackTolerance: 1
   jumpHeightThreshold: 1.5
   obstacleDetectionDistance: 0.5
@@ -35,3 +33,7 @@ MonoBehaviour:
   hitstunDuration: 0.4
   knockdownDuration: 1.5
   deathDelay: 1.5
+  usePlatformNavigation: 1
+  launchInset: -0.2
+  landingMargin: -0.2
+  jumpReachSafety: 0.85

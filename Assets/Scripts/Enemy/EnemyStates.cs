@@ -22,14 +22,20 @@ public class IdleState : EnemyState
     }
 }
 
-// CHASE: move toward the player, jump if needed.
+// CHASE: move toward the player. Platforms are handled by the navigator.
 public class ChaseState : EnemyState
 {
     public ChaseState(EnemyController e) : base(e) { }
 
+    public override void Enter()
+    {
+        enemyController.Navigator.Reset();
+    }
+
     public override void Tick()
     {
         var config = enemyController.Config;
+        var nav = enemyController.Navigator;
 
         if (enemyController.DistanceToPlayer() > config.detectionRange)
         {
@@ -37,32 +43,27 @@ public class ChaseState : EnemyState
             return;
         }
 
+        // Mid-jump between platforms: committed until landing, no decisions
+        if (nav.IsAirborne && nav.Step()) return;
+
+        // May switch to Attack, Retreat or Idle (wait)
         enemyController.Decider.Tick();
         if (enemyController.CurrentState != this) return;
 
+        // Close enough but nothing chosen: back to the decision hub
         if (enemyController.IsPlayerInAttackRange())
         {
             enemyController.ChangeState(enemyController.Idle);
             return;
         }
 
-        float heightGap = enemyController.VerticalOffsetToPlayer();
-        bool playerAbove = heightGap > config.jumpHeightThreshold;
-        bool reachable = heightGap <= enemyController.MaxJumpHeight();
+        // Player on another platform: follow the platform path
+        if (config.usePlatformNavigation && nav.Step()) return;
 
-        float dx = enemyController.Player.position.x - enemyController.transform.position.x;
-        bool underPlayer = Mathf.Abs(dx) < 0.3f;
-
-        if (playerAbove && underPlayer)
-        {
-            enemyController.StopHorizontal();
-            if (reachable && enemyController.CanJump()) enemyController.Jump();
-            return;
-        }
-
+        // Same platform (or no path): walk toward the player, hop over obstacles
         enemyController.MoveHorizontal(enemyController.DirectionToPlayer() * config.moveSpeed);
 
-        if (enemyController.CanJump() && ((playerAbove && reachable) || enemyController.IsObstacleAhead()))
+        if (enemyController.CanJump() && enemyController.IsObstacleAhead())
             enemyController.Jump();
     }
 }

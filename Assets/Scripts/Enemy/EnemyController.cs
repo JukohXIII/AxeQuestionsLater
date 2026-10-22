@@ -4,6 +4,8 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(Health))]
 public class EnemyController : MonoBehaviour
 {
+
+    public string navInfo;
     [SerializeField] private EnemyConfig config;
     [Tooltip("If empty, found by the 'Player' tag at start.")]
     [SerializeField] private Transform player;
@@ -11,6 +13,11 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [Tooltip("Layer of the player. Used to detect who the attacks hit.")]
     [SerializeField] private LayerMask playerLayer;
+
+    public PlatformNavigator Navigator { get; private set; }
+    public Collider2D PlayerCollider { get; private set; }
+    public float CenterX => collider.bounds.center.x;
+    public float HalfWidth => collider.bounds.extents.x;
 
     [Header("Debug")]
     [SerializeField] private string currentStateName;
@@ -61,6 +68,7 @@ public class EnemyController : MonoBehaviour
         Retreat = CreateRetreat();
 
         Decider = new EnemyDecider(this);
+        Navigator = new PlatformNavigator(this);
 
         // Ensure the enemy is facing the player at start
         Vector3 scale = transform.localScale;
@@ -90,6 +98,7 @@ public class EnemyController : MonoBehaviour
         {
             PlayerCombat = player.GetComponent<PlayerCombat>();
             PlayerMovement = player.GetComponent<PlayerMovement>();
+            PlayerCollider = player.GetComponent<Collider2D>();
         }
         ChangeState(Idle);
     }
@@ -104,6 +113,7 @@ public class EnemyController : MonoBehaviour
             currentStateName = currentState.GetType().Name
                 + (Decider.LastDecision != null ? " [" + Decider.LastDecision.name + "]": "");
 
+        navInfo = Navigator.Describe();
     }
 
     // ---------- State machine ----------
@@ -146,19 +156,26 @@ public class EnemyController : MonoBehaviour
     public bool IsPlayerRecovering =>
         PlayerCombat != null && PlayerCombat.IsInAttackRecovery;
         
-    public bool IsGrounded()
+    public Collider2D GroundCollider()
     {
         Bounds bounds = collider.bounds;
         Vector2 size = new Vector2(bounds.size.x * 0.9f, 0.05f);
-        return Physics2D.BoxCast(bounds.center, size, 0f, Vector2.down, 
-            bounds.extents.y + 0.05f, groundLayer);
+        return Physics2D.BoxCast(bounds.center, size, 0f, Vector2.down,
+            bounds.extents.y + 0.05f, groundLayer).collider;
     }
+
+    public bool IsGrounded() => GroundCollider() != null;
 
     public bool IsObstacleAhead()
     {
         Bounds bounds = collider.bounds;
-        return Physics2D.Raycast(bounds.center, Vector2.right * FacingDirection,
-            bounds.extents.x + config.obstacleDetectionDistance, groundLayer);
+        float distance = bounds.extents.x + config.obstacleDetectionDistance;
+
+        foreach (var hit in Physics2D.RaycastAll(bounds.center, Vector2.right * FacingDirection, distance, groundLayer))
+            if (!hit.collider.usedByEffector)   // one-way platforms are not walls
+                return true;
+
+        return false;
     }
 
     // ---------- Attacks ----------
@@ -222,7 +239,7 @@ public class EnemyController : MonoBehaviour
     public float MaxJumpHeight()
     {
         float gravity = Mathf.Abs(Physics2D.gravity.y) * Rb.gravityScale;
-        return config.jumpVelocity * config.jumpVelocity / (2f*gravity);
+        return JumpPhysics.ApexHeight(config.jumpVelocity, gravity, Rb.linearDamping, Time.fixedDeltaTime);
     }
 
     public bool CanJump() => 
@@ -255,6 +272,8 @@ public class EnemyController : MonoBehaviour
             new Vector3(config.attackRange * 2f, config.verticalAttackTolerance * 2f, 0f));
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, config.threatDistance);
+
+        Navigator?.DrawGizmos();
 
         if (config.decisionOptions == null) return;
         foreach (var option in config.decisionOptions)

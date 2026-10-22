@@ -4,6 +4,8 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(Health))]
 public class EnemyController : MonoBehaviour
 {
+
+    public string navInfo;
     [SerializeField] private EnemyConfig config;
     [Tooltip("If empty, found by the 'Player' tag at start.")]
     [SerializeField] private Transform player;
@@ -11,6 +13,11 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [Tooltip("Layer of the player. Used to detect who the attacks hit.")]
     [SerializeField] private LayerMask playerLayer;
+
+    public PlatformNavigator Navigator { get; private set; }
+    public Collider2D PlayerCollider { get; private set; }
+    public float CenterX => collider.bounds.center.x;
+    public float HalfWidth => collider.bounds.extents.x;
 
     [Header("Debug")]
     [SerializeField] private string currentStateName;
@@ -20,9 +27,10 @@ public class EnemyController : MonoBehaviour
     public Health Health { get; private set; }
     public int FacingDirection { get; private set; } = -1; // 1 for right, -1 for left
 
-    public AttackKind CurrentAttackKind { get; private set; }
-    private float lastDashTime = -999f;
-    public bool IsDashReady => Time.time >= lastDashTime + config.dashCooldown;
+    // Attacks
+    public EnemyAttackData CurrentAttack { get; private set; }
+    private readonly Dictionary<EnemyAttackData, float> lastAttackTime = new Dictionary<EnemyAttackData, float>();
+   
     // States
     public EnemyDecider Decider { get; private set;}
     public IEnemyState Idle { get; private set; }
@@ -32,7 +40,9 @@ public class EnemyController : MonoBehaviour
     public IEnemyState Hitstun { get; private set; }
     public IEnemyState Dead { get; private set; }
     public IEnemyState Knockdown { get; private set; }
-
+    public IEnemyState Retreat { get; private set; }
+    public PlayerCombat PlayerCombat { get; private set; }
+    public PlayerMovement PlayerMovement { get; private set; }
     private IEnemyState currentState;
     public IEnemyState CurrentState => currentState;
     private new BoxCollider2D collider;
@@ -55,8 +65,10 @@ public class EnemyController : MonoBehaviour
         Hitstun = CreateHitstun();
         Dead = CreateDead();
         Knockdown = CreateKnockdown();
+        Retreat = CreateRetreat();
 
         Decider = new EnemyDecider(this);
+        Navigator = new PlatformNavigator(this);
 
         // Ensure the enemy is facing the player at start
         Vector3 scale = transform.localScale;
@@ -81,6 +93,13 @@ public class EnemyController : MonoBehaviour
             var playerGameObj = GameObject.FindGameObjectWithTag("Player");
             if (playerGameObj != null) player = playerGameObj.transform;
         }
+
+        if (player != null)
+        {
+            PlayerCombat = player.GetComponent<PlayerCombat>();
+            PlayerMovement = player.GetComponent<PlayerMovement>();
+            PlayerCollider = player.GetComponent<Collider2D>();
+        }
         ChangeState(Idle);
     }
 
@@ -89,6 +108,12 @@ public class EnemyController : MonoBehaviour
         if (player == null) return; // No player to chase or attack
         if (grabbable != null && grabbable.IsGrabbed) return; // held: enemy freeze
         currentState?.Tick();
+
+        if (currentState != null)
+            currentStateName = currentState.GetType().Name
+                + (Decider.LastDecision != null ? " [" + Decider.LastDecision.name + "]": "");
+
+        navInfo = Navigator.Describe();
     }
 
     // ---------- State machine ----------
@@ -100,6 +125,11 @@ public class EnemyController : MonoBehaviour
         currentState?.Enter();
     }
 
+    public void GoTo(IEnemyState state)
+    {
+        if (currentState != state) ChangeState(state);
+    }
+
     private void HandleHit() => ChangeState(Hitstun);
     private void HandleDeath() => ChangeState(Dead);
     protected virtual IEnemyState CreateIdle() => new IdleState(this);
@@ -109,6 +139,7 @@ public class EnemyController : MonoBehaviour
     protected virtual IEnemyState CreateHitstun() => new HitstunState(this);
     protected virtual IEnemyState CreateDead() => new DeadState(this);
     protected virtual IEnemyState CreateKnockdown() => new KnockdownState(this);
+    protected virtual IEnemyState CreateRetreat() => new RetreatState(this);
 
     // ---------- Perception ----------
     public float DistanceToPlayer() => Vector2.Distance(transform.position, player.position);
@@ -117,19 +148,56 @@ public class EnemyController : MonoBehaviour
     public bool IsPlayerInAttackRange() => Mathf.Abs(player.position.x - transform.position.x) 
         <= config.attackRange && Mathf.Abs(VerticalOffsetToPlayer()) <= config.verticalAttackTolerance;
 
-    public bool IsGrounded()
+    public bool IsPlayerAttackIncoming =>
+        PlayerCombat != null
+        && PlayerCombat.IsInAttackStartupOrActive
+        && DistanceToPlayer() <= config.threatDistance;
+
+    public bool IsPlayerRecovering =>
+        PlayerCombat != null && PlayerCombat.IsInAttackRecovery;
+        
+    public Collider2D GroundCollider()
     {
         Bounds bounds = collider.bounds;
         Vector2 size = new Vector2(bounds.size.x * 0.9f, 0.05f);
-        return Physics2D.BoxCast(bounds.center, size, 0f, Vector2.down, 
-            bounds.extents.y + 0.05f, groundLayer);
+        return Physics2D.BoxCast(bounds.center, size, 0f, Vector2.down,
+            bounds.extents.y + 0.05f, groundLayer).collider;
     }
 
-    public void StartAttack(AttackKind kind)
+    public bool IsGrounded() => GroundCollider() != null;
+
+    public bool IsObstacleAhead()
     {
-        CurrentAttackKind = kind;
-        if (kind == AttackKind.Dash)
-            lastDashTime = Time.time;
+        Bounds bounds = collider.bounds;
+        float distance = bounds.extents.x + config.obstacleDetectionDistance;
+
+        foreach (var hit in Physics2D.RaycastAll(bounds.center, Vector2.right * FacingDirection, distance, groundLayer))
+            if (!hit.collider.usedByEffector)   // one-way platforms are not walls
+                return true;
+
+        return false;
+    }
+
+    // ---------- Attacks ----------
+    public bool IsAttackReady(EnemyAttackData attackData) =>
+        !lastAttackTime.TryGetValue(attackData, out float last) || Time.time >= last + attackData.cooldown;
+    
+    public bool IsPlayerInRangeOf(EnemyAttackData attackData)
+    {
+        float dx = Mathf.Abs(player.position.x - transform.position.x);
+        return dx >= attackData.minRange && dx <= attackData.maxRange && 
+            Mathf.Abs(VerticalOffsetToPlayer()) <= config.verticalAttackTolerance;
+    }
+
+    public bool CanUse(EnemyAttackData attack) =>
+        IsAttackReady(attack)
+        && IsPlayerInRangeOf(attack)
+        && (!attack.requiresGrounded || IsGrounded());
+       
+    public void StartAttack(EnemyAttackData attack)
+    {
+        CurrentAttack = attack;
+        lastAttackTime[attack] = Time.time;
         ChangeState(Attack);
     }
 
@@ -156,25 +224,7 @@ public class EnemyController : MonoBehaviour
         return hitSomeone;
     }
 
-    public bool IsPlayerInDashRange()
-    {
-        float dx = Mathf.Abs(player.position.x - transform.position.x);
-        return IsDashReady
-            && dx > config.attackRange
-            && dx <= config.dashMaxDistance
-            && Mathf.Abs(VerticalOffsetToPlayer()) <= config.verticalAttackTolerance
-            && IsGrounded();
-    }
-
-    public bool IsObstacleAhead()
-    {
-        Bounds bounds = collider.bounds;
-        return Physics2D.Raycast(bounds.center, Vector2.right*FacingDirection, 
-            bounds.extents.x + config.obstacleDetectionDistance, groundLayer);
-    }
-
     // ---------- Actions ----------
-
     public void MoveHorizontal(float velocityX)
     {
         if (velocityX != 0f) Face(velocityX > 0f ? 1 : -1);
@@ -189,7 +239,7 @@ public class EnemyController : MonoBehaviour
     public float MaxJumpHeight()
     {
         float gravity = Mathf.Abs(Physics2D.gravity.y) * Rb.gravityScale;
-        return config.jumpVelocity * config.jumpVelocity / (2f*gravity);
+        return JumpPhysics.ApexHeight(config.jumpVelocity, gravity, Rb.linearDamping, Time.fixedDeltaTime);
     }
 
     public bool CanJump() => 
@@ -220,8 +270,15 @@ public class EnemyController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position,
             new Vector3(config.attackRange * 2f, config.verticalAttackTolerance * 2f, 0f));
-        DrawHitGizmo(config.meleeHit, Color.magenta);
-        DrawHitGizmo(config.dashHit, new Color(1f, 0.5f, 0f));    
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, config.threatDistance);
+
+        Navigator?.DrawGizmos();
+
+        if (config.decisionOptions == null) return;
+        foreach (var option in config.decisionOptions)
+            if (option is AttackOption attackOption && attackOption.attack != null)
+                DrawHitGizmo(attackOption.attack.hit, Color.magenta);
     }
 
     void DrawHitGizmo(EnemyHitData hit, Color color)

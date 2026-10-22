@@ -744,6 +744,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 289627555}
   m_CullTransparentMesh: 1
+--- !u!1 &594272558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 594272560}
+  - component: {fileID: 594272559}
+  m_Layer: 0
+  m_Name: PlatformGraph
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &594272559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594272558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7396d4098eed62245978dc6921b39608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlatformGraph
+  platformLayers:
+    serializedVersion: 2
+    m_Bits: 72
+  minPlatformWidth: 1.5
+  drawGizmos: 1
+--- !u!4 &594272560
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594272558}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.61028, y: -1.6257, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &736598720
 GameObject:
   m_ObjectHideFlags: 0
@@ -2254,11 +2303,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7832841289343478690, guid: 83b20813894f9834f8468931f8864bcd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.1
+      value: -8.34
       objectReference: {fileID: 0}
     - target: {fileID: 7832841289343478690, guid: 83b20813894f9834f8468931f8864bcd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.125
+      value: -3.06
       objectReference: {fileID: 0}
     - target: {fileID: 7832841289343478690, guid: 83b20813894f9834f8468931f8864bcd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2308,6 +2357,14 @@ PrefabInstance:
     - target: {fileID: 476157468979207105, guid: 0b80965afa8d54544bcae64b45ffad66, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 865297667169648023, guid: 0b80965afa8d54544bcae64b45ffad66, type: 3}
+      propertyPath: m_Size.x
+      value: 0.89910126
+      objectReference: {fileID: 0}
+    - target: {fileID: 865297667169648023, guid: 0b80965afa8d54544bcae64b45ffad66, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.05044937
       objectReference: {fileID: 0}
     - target: {fileID: 3046905168719181069, guid: 0b80965afa8d54544bcae64b45ffad66, type: 3}
       propertyPath: player
@@ -2555,3 +2612,4 @@ SceneRoots:
   - {fileID: 4868144399946474480}
   - {fileID: 5484736000811799800}
   - {fileID: 1781203910}
+  - {fileID: 594272560}

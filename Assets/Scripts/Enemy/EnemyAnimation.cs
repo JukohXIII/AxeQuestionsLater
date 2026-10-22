@@ -32,10 +32,10 @@ public class EnemyAnimation : MonoBehaviour
         if (state == lastState) return;
         lastState = state;
 
-        if (state == enemy.Chase)
+        if (state == enemy.Chase || state == enemy.Retreat)
             animator.Play("Mob_01_walk");
         else if (state == enemy.Attack)
-            animator.Play(enemy.CurrentAttackKind == AttackKind.Dash ? "Mob_01_attack_2" : "Mob_01_attack", 0, 0f);
+            animator.Play(enemy.CurrentAttack.animationClip, 0, 0f);
         else if (state == enemy.Dead)
             animator.Play("Mob_01_dying", 0, 0f);
         else if (state == enemy.Hitstun || state == enemy.Knockdown)

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72b47043efdc80747aa28d998143266d, type: 3}
+  m_Name: Atk_Dash
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackData
+  windup: 0.9
+  activeDuration: 0.35
+  recovery: 1
+  moveSpeed: 14
+  hit:
+    damage: 10
+    knockback: 12
+    launchDirection: {x: 1, y: 0.5}
+    hitboxOffset: {x: 0.8, y: 0}
+    hitboxSize: {x: 1, y: 0.8}
+    causesKnockback: 0
+  minRange: 1.5
+  maxRange: 7
+  cooldown: 5
+  requiresGrounded: 1
+  animationClip: Mob_01_attack_2

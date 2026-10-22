@@ -63,6 +63,14 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float comboWindow = 0.3f;   // time after a jab to still continue the combo
     private float comboTimer;
 
+    // For enemy AI: reading the player's attack phase
+    public bool IsInAttackRecovery =>
+        state == PlayerState.Attacking && phase == AttackPhase.Recovery;
+
+    // For enemy AI: reading the player's attack phase
+    public bool IsInAttackStartupOrActive =>
+        state == PlayerState.Attacking && (phase == AttackPhase.Startup || phase == AttackPhase.Active);
+
     [Header("Hitbox")]
     [SerializeField] private GameObject attackHitbox;
     [SerializeField] private LayerMask hittableLayers;

@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 2775216598484916532}
   - component: {fileID: 797732869254870819}
   - component: {fileID: 7293048066322346256}
+  - component: {fileID: 8273643248671535827}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -208,6 +209,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimation
   animator: {fileID: 1134713775080796200}
+--- !u!114 &8273643248671535827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476157468979207105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a24037a3e80777f4d9cb5bce859ba66d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageOverlay
+  target: {fileID: 0}
+  overlayMaterial: {fileID: 0}
+  overlayColor: {r: 1, g: 0, b: 0, a: 1}
+  maxAlpha: 0.6
+  fadeSpeed: 3
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.1
 --- !u!1 &2266157878483471962
 GameObject:
   m_ObjectHideFlags: 0

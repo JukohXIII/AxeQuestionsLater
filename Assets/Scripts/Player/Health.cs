@@ -26,7 +26,7 @@ public class Health : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public Action OnHit;
+    public event Action OnHit;
     public Action OnDeath;
     void Awake()
     {

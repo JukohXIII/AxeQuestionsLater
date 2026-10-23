@@ -49,4 +49,8 @@ public class EnemyConfig : ScriptableObject
     public float landingMargin = 0.3f;
     [Tooltip("Trust in the predicted jump reach (the prediction is approximate). Lower = safer, fewer risky jumps.")]
     [Range(0.5f, 1f)] public float jumpReachSafety = 0.85f;
+
+    [Header("Rewards")]
+    [Tooltip("Souls dropped when this enemy dies.")]
+    public int souls = 5;
 }

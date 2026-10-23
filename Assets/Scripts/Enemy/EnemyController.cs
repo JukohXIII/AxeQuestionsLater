@@ -48,6 +48,9 @@ public class EnemyController : MonoBehaviour
     private new BoxCollider2D collider;
     private float lastJumpTime = -999f;
     private Grabbable grabbable;
+    public static event System.Action<EnemyConfig> OnAnyEnemyDied;
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => OnAnyEnemyDied = null;
 
     // ----------- Lifecycle ----------- //
     protected virtual void Awake()
@@ -131,7 +134,11 @@ public class EnemyController : MonoBehaviour
     }
 
     private void HandleHit() => ChangeState(Hitstun);
-    private void HandleDeath() => ChangeState(Dead);
+    private void HandleDeath()
+    {
+        ChangeState(Dead);
+        OnAnyEnemyDied?.Invoke(config);
+    }
     protected virtual IEnemyState CreateIdle() => new IdleState(this);
     protected virtual IEnemyState CreateChase() => new ChaseState(this);
     protected virtual IEnemyState CreateAttack() => new AttackState(this);

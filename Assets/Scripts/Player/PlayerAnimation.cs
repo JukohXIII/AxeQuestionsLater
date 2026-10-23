@@ -42,6 +42,10 @@ public class PlayerAnimation : MonoBehaviour
             animator.Play(clip, 0, 0f);
             currentClip = clip;
         }
+
+        // STATS: only the attack clip follows the attack speed. Every other clip plays at normal speed.
+        bool playingAttackClip = !string.IsNullOrEmpty(playerCombat.CurrentAnimation) && clip == playerCombat.CurrentAnimation;
+        animator.speed = playingAttackClip ? playerCombat.AttackSpeedMultiplier : 1f;
     }
 
     // Highest priority first

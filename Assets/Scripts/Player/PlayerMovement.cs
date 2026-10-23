@@ -113,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (isGrounded)
         {
-            airJumpsRemaining = maxAirJumps;
+            airJumpsRemaining = Mathf.RoundToInt(PlayerStats.Apply(StatType.AirJumps, maxAirJumps));
             isFastFalling = false;
 
             if (newDirection)
@@ -122,13 +122,13 @@ public class PlayerMovement : MonoBehaviour
                 runBurstTimer = burstMovementDuration;
             }
 
-            maxSpeed = runBurstTimer > 0 ? burstMovementSpeed : moveSpeed;
+            maxSpeed = PlayerStats.Apply(StatType.MoveSpeed, runBurstTimer > 0 ? burstMovementSpeed : moveSpeed);
             accel = runBurstTimer > 0 ? burstMovementAcceleration : acceleration;
             decel = deceleration;
         }
         else
         {
-            maxSpeed = airSpeed;
+            maxSpeed = PlayerStats.Apply(StatType.MoveSpeed, airSpeed);
             accel = airAcceleration;
             decel = airDeceleration;
             runBurstTimer = 0;
@@ -261,7 +261,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isDashing = false;
         rb.gravityScale = defaultGravityScale;
-        dashCooldownTimer = dashCooldown;
+        dashCooldownTimer = PlayerStats.Apply(StatType.DashCooldown, dashCooldown);
         dashAttackWindowTimer = 0;
     }
 

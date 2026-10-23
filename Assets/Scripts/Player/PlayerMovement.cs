@@ -337,6 +337,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void ClearInput()
+    {
+        moveInput = Vector2.zero;
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

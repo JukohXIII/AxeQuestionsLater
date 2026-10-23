@@ -12,6 +12,12 @@ public class TiptoolPanelToggle : MonoBehaviour
             playerInput = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>();
     }
 
+    bool EndScreenOpen()
+    {
+        VictoryMenu victory = FindAnyObjectByType<VictoryMenu>();
+        return victory != null && victory.IsShowing;
+    }
+
     public void ToggleMovesPanel()
     {
         bool isOpening = !movesPanel.activeSelf;
@@ -19,6 +25,6 @@ public class TiptoolPanelToggle : MonoBehaviour
         Time.timeScale = isOpening ? 0f : 1f;
 
         if (isOpening) playerInput.DeactivateInput();
-        else if (!playerInput.GetComponent<Health>().IsDead) playerInput.ActivateInput();
+        else if (!playerInput.GetComponent<Health>().IsDead && !EndScreenOpen()) playerInput.ActivateInput();
     }
 }

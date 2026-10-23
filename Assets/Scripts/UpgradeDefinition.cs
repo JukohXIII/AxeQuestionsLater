@@ -10,6 +10,10 @@ public class UpgradeDefinition : ScriptableObject
     public UpgradeCategory category;
 
     [Header("Display")]
+    [Tooltip("Order in the panel, lowest first.")]
+    public int sortOrder;
+    [Tooltip("Flat upgrades only: show the value as a percentage (0.08 shown as +8%).")]
+    public bool flatAsPercent;
     public string displayName;
     [TextArea] public string description;
     public Sprite icon;
@@ -32,5 +36,13 @@ public class UpgradeDefinition : ScriptableObject
     {
         if (string.IsNullOrWhiteSpace(id))
             Debug.LogWarning($"{name}: upgrade has no id, it can't be saved.", this);
+    }
+
+    // Total bonus at a given level, as shown in the UI
+    public string FormatBonus(int level)
+    {
+        float v = valuePerLevel * level;
+        bool percent = mode == ModifierMode.Percent || flatAsPercent;
+        return percent ? $"{v * 100f:+0.#;-0.#;0}%" : $"{v:+0.##;-0/##;0}";
     }
 }

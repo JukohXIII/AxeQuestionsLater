@@ -5,11 +5,11 @@ using System.Collections.Generic;
 public enum StatType
 {
     // Mirror (Character)
-    MaxHealth, MoveSpeed, AirJumps, DashCooldown, SoulChance, SoulMultiplier,
+    MaxHealth, MoveSpeed, AirJumps, DashCooldown, SoulChance, SoulGain,
     // Sharpening stone (Axe)
     Damage, AttackSpeed, ComboSpeed, ComboWindow,
-    LifeSteal,
-    KnockbackTaken
+    // Cards only stats
+    LifeSteal, KnockbackTaken, Luck
 }
 
 public enum ModifierMode { Flat, Percent }

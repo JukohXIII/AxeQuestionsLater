@@ -8,8 +8,8 @@ public static class StatText
         StatType.MoveSpeed      => "Move speed",
         StatType.AirJumps       => "Air jumps",
         StatType.DashCooldown   => "Dash cooldown",
-        StatType.SoulChance     => "Soul drop chance",
-        StatType.SoulMultiplier => "Souls dropped",
+        StatType.Luck           => "Luck",
+        StatType.SoulGain       => "Souls gain",
         StatType.Damage         => "Damage",
         StatType.AttackSpeed    => "Attack speed",
         StatType.ComboSpeed     => "Combo speed",
@@ -19,13 +19,11 @@ public static class StatText
         _ => stat.ToString()
     };
 
-    // Pour ces stats, une valeur plus basse est un avantage
     static bool LowerIsBetter(StatType s) =>
         s == StatType.DashCooldown || s == StatType.KnockbackTaken;
 
-    // Sans base déclarée : on affiche le bonus total en % (base 1 = multiplicateur, 0 = fraction)
     static float RelativeBase(StatType s) =>
-        (s == StatType.SoulChance || s == StatType.LifeSteal) ? 0f : 1f;
+        (s == StatType.Luck || s == StatType.LifeSteal) ? 0f : 1f;
 
     static string Absolute(StatType s, float v) => s switch
     {

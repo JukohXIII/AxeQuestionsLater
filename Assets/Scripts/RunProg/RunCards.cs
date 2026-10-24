@@ -33,21 +33,24 @@ public static class RunCards
 
     public static List<CardDefinition> Draw(int count)
     {
-      var pool = new List<CardDefinition>();
-        foreach (var card in All)
-            if (card.weight > 0f && CanTake(card)) pool.Add(card);
+        float luck = PlayerStats.Apply(StatType.Luck, 0f);
+        float Weight(CardDefinition c) => c.weight * RarityRules.Weight(c.rarity, luck);
+
+        var pool = new List<CardDefinition>();
+        foreach (var c in All)
+            if (c.weight > 0f && CanTake(c)) pool.Add(c);
 
         var result = new List<CardDefinition>();
         while (result.Count < count && pool.Count > 0)
         {
             float total = 0f;
-            foreach (var c in pool) total += c.weight;
+            foreach (var c in pool) total += Weight(c);
 
             float roll = UnityEngine.Random.value * total;
             int pick = pool.Count - 1;
             for (int i = 0; i < pool.Count; i++)
             {
-                roll -= pool[i].weight;
+                roll -= Weight(pool[i]);
                 if (roll <= 0f) { pick = i; break; }
             }
             result.Add(pool[pick]);

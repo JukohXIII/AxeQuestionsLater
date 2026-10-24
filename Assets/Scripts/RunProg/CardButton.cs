@@ -17,6 +17,7 @@ public class CardButton : MonoBehaviour
         if (button == null) button = GetComponent<Button>();
 
         nameLabel.text = card.displayName;
+        nameLabel.color = RarityRules.TextColor(card.rarity);
         descriptionLabel.text = card.description;
         if (effectsLabel != null) effectsLabel.text = card.EffectsText();
         

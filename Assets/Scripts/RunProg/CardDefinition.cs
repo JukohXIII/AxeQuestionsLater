@@ -18,7 +18,7 @@ public class CardDefinition : ScriptableObject
     public List<CardEffect> effects = new();
     [Min(0)]public int maxStacks = 1;
     [Min(0f)] public float weight = 1f;
-
+    public CardRarity rarity = CardRarity.Common;
     public string EffectsText()
     {
         var stats = new List<StatType>();

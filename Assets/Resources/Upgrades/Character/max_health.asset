@@ -10,16 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64f94d58534e35848a5c59d370d2ff55, type: 3}
-  m_Name: Upgrade_damage
+  m_Name: max_health
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeDefinition
-  id: Damage
-  category: 1
-  displayName: Damage
+  id: max_health
+  category: 0
+  sortOrder: 0
+  flatAsPercent: 0
+  displayName: Vitality
   description: 
   icon: {fileID: 0}
-  stat: 6
+  stat: 0
   mode: 1
-  valuePerLevel: 0.08
-  maxLevel: 20
+  valuePerLevel: 0.15
+  maxLevel: 5
   baseCost: 20
-  costGrowth: 1.35
+  costGrowth: 1.4

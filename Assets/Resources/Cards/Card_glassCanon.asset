@@ -24,3 +24,4 @@ MonoBehaviour:
     value: 0.3
   maxStacks: 2
   weight: 0.7
+  rarity: 2

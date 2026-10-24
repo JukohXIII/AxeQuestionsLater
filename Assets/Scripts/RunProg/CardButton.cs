@@ -10,6 +10,7 @@ public class CardButton : MonoBehaviour
     [SerializeField] private TMP_Text stackLabel;
     [SerializeField] private Image icon;
     [SerializeField] private TMP_Text effectsLabel;
+    [SerializeField] private Outline border;
     private Button button;
 
     public void Bind(CardDefinition card, System.Action<CardDefinition> onPick)
@@ -18,6 +19,7 @@ public class CardButton : MonoBehaviour
 
         nameLabel.text = card.displayName;
         nameLabel.color = RarityRules.TextColor(card.rarity);
+        if (border != null) border.effectColor = RarityRules.TextColor(card.rarity);
         descriptionLabel.text = card.description;
         if (effectsLabel != null) effectsLabel.text = card.EffectsText();
         

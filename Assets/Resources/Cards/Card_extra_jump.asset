@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Card_extra_jump
   m_EditorClassIdentifier: Assembly-CSharp::CardDefinition
   displayName: More jumps !
-  description: Add 1 extra jump
+  description: Gain an extra jump in the air.
   icon: {fileID: 0}
   effects:
   - stat: 2

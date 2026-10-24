@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Card_heavyweight
   m_EditorClassIdentifier: Assembly-CSharp::CardDefinition
   displayName: Heavyweight
-  description: Reduce knockback effect
+  description: Take less knockback from hits.
   icon: {fileID: 0}
   effects:
   - stat: 11
     mode: 1
     value: -0.2
   maxStacks: 3
-  weight: 0.8
+  weight: 1
+  rarity: 0

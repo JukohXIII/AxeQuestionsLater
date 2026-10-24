@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Card_leech
   m_EditorClassIdentifier: Assembly-CSharp::CardDefinition
   displayName: Leech
-  description: Heal a portion of the damage you deal
+  description: Heal a portion of the damage you deal.
   icon: {fileID: 0}
   effects:
   - stat: 10
     mode: 0
-    value: 0.03
+    value: 0.08
   maxStacks: 3
-  weight: 0.5
+  weight: 1
   rarity: 1

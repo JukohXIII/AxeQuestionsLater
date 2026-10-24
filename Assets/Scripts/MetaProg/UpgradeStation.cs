@@ -7,7 +7,7 @@ public class UpgradeStation : MonoBehaviour, IInteractable
     [SerializeField] private string title = "Upgrades";
     [SerializeField] private UpgradePanel panel;
     [Tooltip("Shown while the player is in range (e.g. an 'F' above the station).")]
-    [SerializeField] private GameObject prompt;
+    [SerializeField] private InteractionPrompt prompt;
 
     private PlayerInteractor interactorInRange;
 
@@ -15,7 +15,7 @@ public class UpgradeStation : MonoBehaviour, IInteractable
 
     void Awake()
     {
-        if (prompt != null) prompt.SetActive(false);
+        if (prompt != null) prompt.Hide();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -26,7 +26,7 @@ public class UpgradeStation : MonoBehaviour, IInteractable
 
         interactorInRange = interactor;
         interactor.SetCurrent(this);
-        if (prompt != null) prompt.SetActive(true);
+        if (prompt != null) prompt.Show();
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -41,7 +41,7 @@ public class UpgradeStation : MonoBehaviour, IInteractable
     {
         if (interactorInRange != null) interactorInRange.ClearCurrent(this);
         interactorInRange = null;
-        if (prompt != null) prompt.SetActive(false);
+        if (prompt != null) prompt.Hide();
     }
 
     public void Interact() => panel.Open(category, title);

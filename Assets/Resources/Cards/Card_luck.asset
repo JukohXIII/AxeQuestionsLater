@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Card_luck
   m_EditorClassIdentifier: Assembly-CSharp::CardDefinition
   displayName: Luck
-  description: Increase the chance of dropping more souls
+  description: Rare cards show up more often.
   icon: {fileID: 0}
   effects:
-  - stat: 4
+  - stat: 12
     mode: 0
-    value: 0.1
-  maxStacks: 5
+    value: 0.25
+  maxStacks: 4
   weight: 1
+  rarity: 0

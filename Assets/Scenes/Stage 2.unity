@@ -119,6 +119,26 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &25427193 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4118415052109239247, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+  m_PrefabInstance: {fileID: 760616447}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &25427201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25427193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 0
 --- !u!4 &148818916 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7832841289343478690, guid: 83b20813894f9834f8468931f8864bcd, type: 3}
@@ -511,6 +531,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardOfferCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2658362156676355737, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+      propertyPath: m_MinWidth
+      value: 280
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658362156676355737, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+      propertyPath: m_PreferredWidth
+      value: 280
+      objectReference: {fileID: 0}
     - target: {fileID: 3257261909450498960, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -591,10 +619,43 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3542695643689190501, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4639981910946173865, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+      propertyPath: m_MinWidth
+      value: 280
+      objectReference: {fileID: 0}
+    - target: {fileID: 5983413112734988427, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+      propertyPath: border
+      value: 
+      objectReference: {fileID: 1732557461}
+    - target: {fileID: 6376117382643696647, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+      propertyPath: border
+      value: 
+      objectReference: {fileID: 1594687305}
+    - target: {fileID: 6850829288348409155, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+      propertyPath: border
+      value: 
+      objectReference: {fileID: 25427201}
+    - target: {fileID: 7776862928953637809, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+      propertyPath: m_MinWidth
+      value: 280
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4118415052109239247, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 25427201}
+    - targetCorrespondingSourceObject: {fileID: 2573070636948535367, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1732557461}
+    - targetCorrespondingSourceObject: {fileID: 146969434656506483, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1594687305}
   m_SourcePrefab: {fileID: 100100000, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
 --- !u!114 &760616448 stripped
 MonoBehaviour:
@@ -794,9 +855,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dd59c130a141e64097db45660200c39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoulCollector
-  baseChance: 1
-  baseMultiplier: 3
-  maxChance: 0.5
 --- !u!4 &921347327
 Transform:
   m_ObjectHideFlags: 0
@@ -1179,6 +1237,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1594687297 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 146969434656506483, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+  m_PrefabInstance: {fileID: 760616447}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1594687305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594687297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1625148934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,6 +1415,26 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &1732557453 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2573070636948535367, guid: c3d37f09512acde478b812d3eda5211c, type: 3}
+  m_PrefabInstance: {fileID: 760616447}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1732557461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732557453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1781203907
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem.Samples.RebindUI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class PauseMenu : MonoBehaviour
     private InputAction pauseAction;
     private PlayerInput playerInput;
     private Health playerHealth;
+    private InputAction backAction;
 
     public bool IsPaused => panel.activeSelf || controlsPanel.activeSelf;
 
@@ -28,14 +30,18 @@ public class PauseMenu : MonoBehaviour
         pauseAction.AddBinding("<Keyboard>/escape");
         pauseAction.AddBinding("<Gamepad>/start");
         pauseAction.performed += _ => TogglePause();
+
+        backAction = new InputAction("Back", InputActionType.Button, "<Gamepad>/buttonEast");
+        backAction.performed += _ => Back();
     }
 
-    void OnEnable()  { pauseAction.Enable(); }
-    void OnDisable() { pauseAction.Disable(); }
-    void OnDestroy() { pauseAction.Dispose(); }   // we created it in code, so we clean it up
+    void OnEnable()  { pauseAction.Enable();  backAction.Enable(); }
+    void OnDisable() { pauseAction.Disable(); backAction.Disable(); }
+    void OnDestroy() { pauseAction.Dispose(); backAction.Dispose(); }
 
     public void TogglePause()
     {
+        if (IsRebinding()) return;
         if (controlsPanel.activeSelf) { CloseControls(); return; }
         if (IsPaused) Resume();
         else Pause();
@@ -88,5 +94,19 @@ public class PauseMenu : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(button);
+    }
+
+    void Back()
+    {
+        if (IsRebinding()) return;
+        if (controlsPanel.activeSelf) CloseControls();
+        else if (panel.activeSelf) Resume();
+    }
+
+    bool IsRebinding()
+    {
+        foreach (var row in controlsPanel.GetComponentsInChildren<RebindActionUI>())
+            if (row.ongoingRebind != null) return true;
+        return false;
     }
 }

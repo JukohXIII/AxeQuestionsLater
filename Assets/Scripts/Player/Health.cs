@@ -11,39 +11,33 @@ public class Health : MonoBehaviour
     public System.Action OnBlocked;
     public float MaxHealth => maxDamagePercent;
     public float CurrentHealth => maxDamagePercent - damagePercent;
-
     public float DamagePercent => damagePercent;
-    /// <summary> 
-    /// Returns the damage ratio as a value between 0 and 1, where 0 means no damage and 1 means maximum damage, to use to scale visual health status feedback
-    /// </summary>
     public float DamageRatio => Mathf.Clamp01(damagePercent / maxDamagePercent);
     public bool IsDead { get; private set; }
     //used to determine if the player should be knocked down or not from an attack
     public bool LastHitCausedKnockdown { get; private set; }
     //iframe used to prevent the player/the enemy from taking damage during knockdown or other states
     public bool IsInvincible { get; set; }
-
-    /// <summary>
-    /// 
-    /// </summary>
+    public float KnockbackTakenMultiplier { get; set; } = 1f;
     public event Action OnHit;
     public Action OnDeath;
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
+
     public void TakeHit(float damageAmount, Vector2 knockbackDirection, float knockbackForce, bool causesKnockdown = false, bool breaksGuard = false)
     {
         if (IsDead || IsInvincible) return;
         if (!breaksGuard && GuardFacing != 0 && Mathf.Sign(knockbackDirection.x) == -GuardFacing)
         {
-            rb.linearVelocity = new Vector2(knockbackDirection.x * knockbackForce * 0.3f, 0f);
+            rb.linearVelocity = new Vector2(knockbackDirection.x * knockbackForce * 0.3f * KnockbackTakenMultiplier, 0f);
             OnBlocked?.Invoke();
             return;
         }
 
         damagePercent += damageAmount;
-        rb.linearVelocity = knockbackDirection * knockbackForce;
+        rb.linearVelocity = knockbackDirection * knockbackForce * KnockbackTakenMultiplier;
         LastHitCausedKnockdown = causesKnockdown;
 
         if (damagePercent >= maxDamagePercent)
@@ -61,4 +55,12 @@ public class Health : MonoBehaviour
     {
         damagePercent = Mathf.Clamp(amount, 0f, maxDamagePercent);
     }
+
+    public void Heal(float amount)
+    {
+        if (IsDead || amount <= 0f) return;
+        SetDamage(damagePercent - amount);
+    }
+
+    public void SetMaxDamagePercent(float value ) => maxDamagePercent = Mathf.Max(1f, value);
 }

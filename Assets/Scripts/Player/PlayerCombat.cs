@@ -14,8 +14,8 @@ public class AttackData
     public float damage;
     public float knockback;
     public Vector2 launchDirection;
-    public Vector2 hitboxOffset = new Vector2(0.7f, 0f);
-    public Vector2 hitboxSize = new Vector2(0.7f, 0.7f);
+    public Vector2 hitboxOffset = new (0.7f, 0f);
+    public Vector2 hitboxSize = new (0.7f, 0.7f);
     public bool causesKnockdown;
 }
 
@@ -38,7 +38,7 @@ public class PlayerCombat : MonoBehaviour
 
     // ---------- References ----------
     private PlayerMovement playerMovement;
-
+    private Health health;
 
     // ---------- State (other scripts read these) ----------
     [Header("State")]
@@ -46,6 +46,7 @@ public class PlayerCombat : MonoBehaviour
     public string CurrentAnimation { get; private set; }
     public int AttackId { get; private set; }
     public bool IsHurt => state == PlayerState.Hurt || state == PlayerState.Knockdown || state == PlayerState.Defeated;
+    public float AttackSpeedMultiplier { get; private set; } = 1f;
 
     // ---------- Input ----------
     private Vector2 moveInput;
@@ -116,6 +117,9 @@ public class PlayerCombat : MonoBehaviour
     void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        health = GetComponent<Health>();
+
+        StatBases.Register(StatType.ComboWindow, comboWindow);
     }
 
     void Update()
@@ -222,13 +226,24 @@ public class PlayerCombat : MonoBehaviour
         return comboAttacks[comboStep - 1];
     }
 
+    void UpdateAttackSpeed()
+    {
+        if (isGrabAttack)
+            AttackSpeedMultiplier = 1f;
+        else
+            AttackSpeedMultiplier = PlayerStats.Apply(isComboAttack ? StatType.ComboSpeed : StatType.AttackSpeed, 1f);
+
+        AttackSpeedMultiplier = Mathf.Max(AttackSpeedMultiplier, 0.1f); // never 0: we divide by it
+    }
+
     void BeginAttack(AttackData attack, bool isGrab)
     {
         currentAttack = attack;
         isGrabAttack = isGrab;
+        UpdateAttackSpeed();
         state = PlayerState.Attacking;
         phase = AttackPhase.Startup;
-        phaseTimer = attack.startup;
+        phaseTimer = attack.startup / AttackSpeedMultiplier;
         PlayAttackAnimation();
     }
 
@@ -237,7 +252,7 @@ public class PlayerCombat : MonoBehaviour
         if (phase == AttackPhase.Startup && phaseTimer <= 0)
         {
             phase = AttackPhase.Active;
-            phaseTimer = currentAttack.active;
+            phaseTimer = currentAttack.active / AttackSpeedMultiplier;
             attackHitbox.SetActive(true);
             attackHitbox.transform.localPosition = currentAttack.hitboxOffset;
             attackHitbox.GetComponent<BoxCollider2D>().size = currentAttack.hitboxSize;
@@ -282,8 +297,10 @@ public class PlayerCombat : MonoBehaviour
                                 knockbackDirection = new Vector2(currentAttack.launchDirection.x * playerMovement.FacingDirection, currentAttack.launchDirection.y).normalized;
                             else
                                 knockbackDirection = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
-                            targetHealth.TakeHit(currentAttack.damage, knockbackDirection, currentAttack.knockback, currentAttack.causesKnockdown);
-                            StartCoroutine(HitStop());
+                            float dealt = PlayerStats.Apply(StatType.Damage, currentAttack.damage);
+                            targetHealth.TakeHit(dealt, knockbackDirection, currentAttack.knockback, currentAttack.causesKnockdown);
+                            ApplyLifeSteal(dealt);
+                            StartCoroutine(HitStop(hitStopDuration / AttackSpeedMultiplier));
                         }
                     }
                 }
@@ -291,7 +308,7 @@ public class PlayerCombat : MonoBehaviour
             if (phaseTimer <= 0)
             {
                 phase = AttackPhase.Recovery;
-                phaseTimer = currentAttack.recovery;
+                phaseTimer = currentAttack.recovery / AttackSpeedMultiplier;
                 attackHitbox.SetActive(false);
             }
         }
@@ -307,8 +324,9 @@ public class PlayerCombat : MonoBehaviour
                 queuedNextHit = false;
                 phase = AttackPhase.Startup;
                 currentAttack = comboAttacks[comboStep - 1];
+                UpdateAttackSpeed();
                 PlayAttackAnimation();
-                phaseTimer = currentAttack.startup;
+                phaseTimer = currentAttack.startup / AttackSpeedMultiplier;
                 Debug.Log("Combo step " + comboStep + " — startup");
             }
             else
@@ -322,7 +340,7 @@ public class PlayerCombat : MonoBehaviour
                 }
                 StopAirHang();
                 phase = AttackPhase.None;
-                comboTimer = isComboAttack ? comboWindow : 0f;   // a short grace window to keep the combo going
+                comboTimer = isComboAttack ? PlayerStats.Apply(StatType.ComboWindow, comboWindow) : 0f;    // a short grace window to keep the combo going
                 if (!isComboAttack) comboStep = 0;
                 queuedNextHit = false;
                 Debug.Log("Combo finished");
@@ -391,6 +409,7 @@ public class PlayerCombat : MonoBehaviour
 
     void DoThrow(ThrowData t, bool isBackThrow = false)
     {
+        AttackSpeedMultiplier = 1f;
         int oldFacing = playerMovement.FacingDirection;
         Vector2 dir = new Vector2(t.direction.x * oldFacing, t.direction.y).normalized;
         if (isBackThrow)
@@ -399,8 +418,10 @@ public class PlayerCombat : MonoBehaviour
             turnAfterThrow = true;
         }
         heldTarget.Release();
-        heldTarget.GetComponent<Health>().TakeHit(t.damage, dir, t.knockback, t.causesKnockdown);
-        StartCoroutine(HitStop());
+        float dealt = PlayerStats.Apply(StatType.Damage, t.damage);
+        heldTarget.GetComponent<Health>().TakeHit(dealt, dir, t.knockback, t.causesKnockdown);
+        ApplyLifeSteal(dealt);
+        StartCoroutine(HitStop(hitStopDuration));
         heldTarget = null;
         state = PlayerState.Attacking;
         phase = AttackPhase.Recovery;
@@ -433,10 +454,10 @@ public class PlayerCombat : MonoBehaviour
         isAirHanging = false;
     }
 
-    IEnumerator HitStop()
+    IEnumerator HitStop(float duration)
     {
         Time.timeScale = 0f;
-        yield return new WaitForSecondsRealtime(hitStopDuration);
+        yield return new WaitForSecondsRealtime(duration);
         Time.timeScale = 1f;
     }
 
@@ -464,6 +485,12 @@ public class PlayerCombat : MonoBehaviour
         CurrentAnimation = null;
         AttackId++;   //makes the getHit clip restart on every new hit
         comboTimer = 0f;
+    }
+
+    void ApplyLifeSteal(float damageDealt)
+    {
+        float ratio = PlayerStats.Apply(StatType.LifeSteal, 0f);
+        if (ratio > 0f) health.Heal(damageDealt * ratio);
     }
 
     void OnDrawGizmosSelected()

@@ -31,6 +31,7 @@ public class EnemyKnockbackBounce : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!collision.enabled) return;
         if (knockbackWindow <= 0) return;
         if (((1 << collision.gameObject.layer) & groundLayers) == 0) return;
 

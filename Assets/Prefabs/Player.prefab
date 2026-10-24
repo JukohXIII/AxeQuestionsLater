@@ -348,6 +348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   state: 0
   hitStopDuration: 0.15
+  comboWindow: 0.3
   attackHitbox: {fileID: 9119232456851001650}
   hittableLayers:
     serializedVersion: 2
@@ -365,7 +366,7 @@ MonoBehaviour:
     hitboxSize: {x: 1, y: 0.7}
     causesKnockdown: 0
   - attackName: Neutral Attack-2
-    animationName: Lars_groundAttack_chop
+    animationName: Lars_groundAttack_chop_2
     startup: 0.1
     active: 0.06
     recovery: 0.2

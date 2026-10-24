@@ -1275,6 +1275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
   victoryMenu: {fileID: 494277585}
+  clearDelay: 1.5
   spawner: {fileID: 1515369390}
   enemies:
   - {fileID: 0}

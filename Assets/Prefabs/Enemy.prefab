@@ -176,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HitFlash
   sprite: {fileID: 4066554238971155408}
   flashColor: {r: 1, g: 1, b: 1, a: 1}
-  flashDuration: 0.1
+  flashDuration: 0
   blinkInterval: 0.08
 --- !u!114 &797732869254870819
 MonoBehaviour:

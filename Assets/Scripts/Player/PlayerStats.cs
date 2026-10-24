@@ -7,7 +7,9 @@ public enum StatType
     // Mirror (Character)
     MaxHealth, MoveSpeed, AirJumps, DashCooldown, SoulChance, SoulMultiplier,
     // Sharpening stone (Axe)
-    Damage, AttackSpeed, ComboSpeed, ComboWindow
+    Damage, AttackSpeed, ComboSpeed, ComboWindow,
+    LifeSteal,
+    KnockbackTaken
 }
 
 public enum ModifierMode { Flat, Percent }
@@ -50,6 +52,13 @@ public static class PlayerStats
     {
         float flat = permanent.Flat(statType) + run.Flat(statType);
         float percent = permanent.Percent(statType) + run.Percent(statType);
+        return (baseValue + flat) * Mathf.Max(0f, 1f + percent);
+    }
+
+    public static float Preview(StatType stat, float baseValue, float addFlat, float addPercent)
+    {
+        float flat = permanent.Flat(stat) + run.Flat(stat) + addFlat;
+        float percent = permanent.Percent(stat) + run.Percent(stat) + addPercent;
         return (baseValue + flat) * Mathf.Max(0f, 1f + percent);
     }
 

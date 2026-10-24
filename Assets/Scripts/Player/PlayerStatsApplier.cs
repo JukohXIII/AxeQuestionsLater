@@ -11,6 +11,7 @@ public class PlayerStatsApplier : MonoBehaviour
     {
         health = GetComponent<Health>();
         baseMaxDamagePercent = health.MaxHealth;
+        StatBases.Register(StatType.MaxHealth, baseMaxDamagePercent);
     }
 
     void OnEnable()
@@ -24,5 +25,6 @@ public class PlayerStatsApplier : MonoBehaviour
     void Refresh()
     {
         health.SetMaxDamagePercent(PlayerStats.Apply(StatType.MaxHealth, baseMaxDamagePercent));
+        health.KnockbackTakenMultiplier = PlayerStats.Apply(StatType.KnockbackTaken, 1f);
     }
 }

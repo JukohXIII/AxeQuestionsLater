@@ -9,17 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64f94d58534e35848a5c59d370d2ff55, type: 3}
-  m_Name: Upgrade_airJumps
-  m_EditorClassIdentifier: Assembly-CSharp::UpgradeDefinition
-  id: air_jumps
-  category: 0
+  m_Script: {fileID: 11500000, guid: 02305f10275bb854e8a4d967df6d4159, type: 3}
+  m_Name: Card_extra_jump
+  m_EditorClassIdentifier: Assembly-CSharp::CardDefinition
   displayName: More jumps !
-  description: 
+  description: Add 1 extra jump
   icon: {fileID: 0}
-  stat: 2
-  mode: 0
-  valuePerLevel: 1
-  maxLevel: 2
-  baseCost: 50
-  costGrowth: 2
+  effects:
+  - stat: 2
+    mode: 0
+    value: 1
+  maxStacks: 2
+  weight: 1

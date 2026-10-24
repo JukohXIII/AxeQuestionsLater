@@ -99,6 +99,10 @@ public class PlayerMovement : MonoBehaviour
         defaultGravityScale = rb.gravityScale;
         playerCombat = GetComponent<PlayerCombat>();
         playerGuard = GetComponent<PlayerGuard>();
+
+        StatBases.Register(StatType.MoveSpeed, moveSpeed);
+        StatBases.Register(StatType.AirJumps, maxAirJumps);
+        StatBases.Register(StatType.DashCooldown, dashCooldown);
     }
 
     void FixedUpdate()

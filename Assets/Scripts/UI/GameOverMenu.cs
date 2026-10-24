@@ -13,7 +13,7 @@ public class GameOverMenu : MonoBehaviour
 
     public void Continue()
     {
-        PlayerStats.ClearRun();   // run bonuses (cards) end with the run
+        RunCards.Clear();   // run bonuses (cards) end with the run
         SceneManager.LoadScene(hubScene);
     }
 

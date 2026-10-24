@@ -38,7 +38,7 @@ public class PlayerCombat : MonoBehaviour
 
     // ---------- References ----------
     private PlayerMovement playerMovement;
-
+    private Health health;
 
     // ---------- State (other scripts read these) ----------
     [Header("State")]
@@ -117,6 +117,9 @@ public class PlayerCombat : MonoBehaviour
     void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        health = GetComponent<Health>();
+
+        StatBases.Register(StatType.ComboWindow, comboWindow);
     }
 
     void Update()
@@ -294,8 +297,10 @@ public class PlayerCombat : MonoBehaviour
                                 knockbackDirection = new Vector2(currentAttack.launchDirection.x * playerMovement.FacingDirection, currentAttack.launchDirection.y).normalized;
                             else
                                 knockbackDirection = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
-                            targetHealth.TakeHit(PlayerStats.Apply(StatType.Damage, currentAttack.damage), knockbackDirection, currentAttack.knockback, currentAttack.causesKnockdown);
-                            StartCoroutine(HitStop(hitStopDuration/AttackSpeedMultiplier));
+                            float dealt = PlayerStats.Apply(StatType.Damage, currentAttack.damage);
+                            targetHealth.TakeHit(dealt, knockbackDirection, currentAttack.knockback, currentAttack.causesKnockdown);
+                            ApplyLifeSteal(dealt);
+                            StartCoroutine(HitStop(hitStopDuration / AttackSpeedMultiplier));
                         }
                     }
                 }
@@ -413,7 +418,9 @@ public class PlayerCombat : MonoBehaviour
             turnAfterThrow = true;
         }
         heldTarget.Release();
-        heldTarget.GetComponent<Health>().TakeHit(t.damage, dir, t.knockback, t.causesKnockdown);
+        float dealt = PlayerStats.Apply(StatType.Damage, t.damage);
+        heldTarget.GetComponent<Health>().TakeHit(dealt, dir, t.knockback, t.causesKnockdown);
+        ApplyLifeSteal(dealt);
         StartCoroutine(HitStop(hitStopDuration));
         heldTarget = null;
         state = PlayerState.Attacking;
@@ -478,6 +485,12 @@ public class PlayerCombat : MonoBehaviour
         CurrentAnimation = null;
         AttackId++;   //makes the getHit clip restart on every new hit
         comboTimer = 0f;
+    }
+
+    void ApplyLifeSteal(float damageDealt)
+    {
+        float ratio = PlayerStats.Apply(StatType.LifeSteal, 0f);
+        if (ratio > 0f) health.Heal(damageDealt * ratio);
     }
 
     void OnDrawGizmosSelected()

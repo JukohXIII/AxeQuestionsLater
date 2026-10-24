@@ -40,7 +40,8 @@ public class UpgradeRow : MonoBehaviour
     {
         int level = UpgradeService.GetLevel(definition);
         bool maxed = UpgradeService.IsMaxed(definition);
-
+        buyButton.gameObject.SetActive(!maxed);
+        
         levelLabel.text = $"{level}/{definition.maxLevel}";
         effectLabel.text = maxed
             ? $"{definition.FormatBonus(level)} (MAX)"

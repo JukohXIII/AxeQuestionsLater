@@ -16,7 +16,7 @@ MonoBehaviour:
   category: 0
   sortOrder: 0
   flatAsPercent: 0
-  displayName: 
+  displayName: Move Speed
   description: 
   icon: {fileID: 0}
   stat: 1

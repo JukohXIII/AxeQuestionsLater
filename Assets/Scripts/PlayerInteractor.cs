@@ -15,7 +15,6 @@ public class PlayerInteractor : MonoBehaviour
     // Appelé par PlayerInput (Send Messages) pour l'action "Interact"
     void OnInteract(InputValue value)
     {
-        Debug.Log($"[Interact] OnInteract reçu | pressed={value.isPressed} | current={(current != null ? "oui" : "NULL")}");
         if (value.isPressed && current != null) current.Interact();
     }
 

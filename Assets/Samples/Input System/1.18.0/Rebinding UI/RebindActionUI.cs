@@ -321,7 +321,15 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 action.actionMap.Disable();
 
             // Configure the rebind.
-            m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
+            var rebind = action.PerformInteractiveRebinding(bindingIndex);
+
+            // Only accept input from the same device as the binding's default.
+            string defaultPath = action.bindings[bindingIndex].path;
+            if (defaultPath.StartsWith("<Keyboard>"))
+                rebind.WithControlsHavingToMatchPath("<Keyboard>");
+            else if (defaultPath.StartsWith("<Gamepad>"))
+                rebind.WithControlsHavingToMatchPath("<Gamepad>").WithControlsExcluding("<Gamepad>/start");
+            m_RebindOperation = rebind   // ✅ use the filtered one
                 .OnCancel(
                     operation =>
                     {

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
@@ -7,6 +8,8 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private GameObject panel;
     [SerializeField] private string mainMenuScene = "MainMenu";
     [SerializeField] private GameObject controlsPanel;
+    [SerializeField] private GameObject pauseFirstButton;     // Resume
+    [SerializeField] private GameObject controlsFirstButton;  // first rebind button (Move Up)
 
     private InputAction pauseAction;
     private PlayerInput playerInput;
@@ -44,6 +47,7 @@ public class PauseMenu : MonoBehaviour
         panel.SetActive(true);
         Time.timeScale = 0f;
         playerInput.DeactivateInput();
+        Select(pauseFirstButton);
     }
 
     public void Resume()
@@ -70,11 +74,19 @@ public class PauseMenu : MonoBehaviour
     {
         panel.SetActive(false);
         controlsPanel.SetActive(true);
+        Select(controlsFirstButton);
     }
 
     public void CloseControls()
     {
         controlsPanel.SetActive(false);
         panel.SetActive(true);
+        Select(pauseFirstButton);
+    }
+
+    void Select(GameObject button)
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(button);
     }
 }

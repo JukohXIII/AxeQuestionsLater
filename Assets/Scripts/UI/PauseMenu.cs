@@ -14,7 +14,6 @@ public class PauseMenu : MonoBehaviour
 
     private InputAction pauseAction;
     private PlayerInput playerInput;
-    private Health playerHealth;
     private InputAction backAction;
 
     public bool IsPaused => panel.activeSelf || controlsPanel.activeSelf;
@@ -23,7 +22,6 @@ public class PauseMenu : MonoBehaviour
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         playerInput = player.GetComponent<PlayerInput>();
-        playerHealth = player.GetComponent<Health>();
 
         // Its own action, so it still works while Lars's controls are switched off
         pauseAction = new InputAction("Pause", InputActionType.Button);
@@ -49,7 +47,7 @@ public class PauseMenu : MonoBehaviour
 
     void Pause()
     {
-        if (playerHealth.IsDead || EndScreenOpen()) return;   // no pausing on Game Over or Victory
+        if (!playerInput.inputIsActive) return;   // another menu already has control
         panel.SetActive(true);
         Time.timeScale = 0f;
         playerInput.DeactivateInput();
@@ -68,12 +66,6 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1f;   // don't carry the pause into the menu
         SceneManager.LoadScene(mainMenuScene);
-    }
-
-    bool EndScreenOpen()
-    {
-        VictoryMenu victory = FindAnyObjectByType<VictoryMenu>();
-        return victory != null && victory.IsShowing;
     }
 
     public void OpenControls()

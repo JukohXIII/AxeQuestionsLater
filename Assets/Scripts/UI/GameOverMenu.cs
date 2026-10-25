@@ -8,6 +8,7 @@ public class GameOverMenu : MonoBehaviour
     [SerializeField] private string mainMenuScene = "MainMenu";
     [SerializeField] private GameObject firstButton;
 
+    [SerializeField] private string hubScene = "Hub";
     public void Show()
     {
         panel.SetActive(true);
@@ -16,7 +17,8 @@ public class GameOverMenu : MonoBehaviour
 
     public void Continue()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);   // retry this stage
+        RunCards.Clear();   // run bonuses (cards) end with the run
+        SceneManager.LoadScene(hubScene);
     }
 
     public void MainMenu()

@@ -60,6 +60,7 @@ public class DamageOverlay : MonoBehaviour
         overlay.sprite = target.sprite;
         overlay.flipX = target.flipX;
         overlay.flipY = target.flipY;
+        overlay.enabled = target.enabled;
 
         // Red: a state, read every frame
         float targetAlpha = health.IsDead ? 0f : health.DamageRatio * maxAlpha ;

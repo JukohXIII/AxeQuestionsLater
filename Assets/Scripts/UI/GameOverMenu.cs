@@ -1,14 +1,18 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class GameOverMenu : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
     [SerializeField] private string mainMenuScene = "MainMenu";
+    [SerializeField] private GameObject firstButton;
+
     [SerializeField] private string hubScene = "Hub";
     public void Show()
     {
         panel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(firstButton);
     }
 
     public void Continue()

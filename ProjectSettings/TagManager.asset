@@ -16,10 +16,10 @@ TagManager:
   - Enemy
   - Wall
   - Prop
-  - 
-  - 
-  - 
-  - 
+  - Background
+  - Midground
+  - Characters
+  - Foreground
   - 
   - 
   - 

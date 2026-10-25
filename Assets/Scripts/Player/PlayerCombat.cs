@@ -38,6 +38,8 @@ public class PlayerCombat : MonoBehaviour
 
     // ---------- References ----------
     private PlayerMovement playerMovement;
+    private PauseMenu pauseMenu;
+
     private Health health;
 
     // ---------- State (other scripts read these) ----------
@@ -117,6 +119,7 @@ public class PlayerCombat : MonoBehaviour
     void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        pauseMenu = FindAnyObjectByType<PauseMenu>();
         health = GetComponent<Health>();
 
         StatBases.Register(StatType.ComboWindow, comboWindow);
@@ -458,7 +461,8 @@ public class PlayerCombat : MonoBehaviour
     {
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(duration);
-        Time.timeScale = 1f;
+        if (pauseMenu == null || !pauseMenu.IsPaused)
+            Time.timeScale = 1f;
     }
 
     void PlayAttackAnimation()

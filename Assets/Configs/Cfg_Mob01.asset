@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Cfg_Mob01
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   moveSpeed: 3
-  jumpVelocity: 25
+  jumpVelocity: 32
   jumpCooldown: 0.8
   detectionRange: 40
   attackRange: 1.5

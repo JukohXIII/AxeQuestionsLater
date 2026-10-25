@@ -38,6 +38,7 @@ public class PlayerCombat : MonoBehaviour
 
     // ---------- References ----------
     private PlayerMovement playerMovement;
+    private PauseMenu pauseMenu;
 
 
     // ---------- State (other scripts read these) ----------
@@ -116,6 +117,7 @@ public class PlayerCombat : MonoBehaviour
     void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        pauseMenu = FindAnyObjectByType<PauseMenu>();
     }
 
     void Update()
@@ -437,7 +439,8 @@ public class PlayerCombat : MonoBehaviour
     {
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(hitStopDuration);
-        Time.timeScale = 1f;
+        if (pauseMenu == null || !pauseMenu.IsPaused)
+            Time.timeScale = 1f;
     }
 
     void PlayAttackAnimation()

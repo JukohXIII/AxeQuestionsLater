@@ -29,6 +29,14 @@ public class MovesList : MonoBehaviour
     [SerializeField] private RebindActionUI grab;
     [SerializeField] private RebindActionUI guard;
 
+    [Header("Controller rows")]
+    [SerializeField] private GameObject gamepadList;
+    [SerializeField] private RebindActionUI padJump;
+    [SerializeField] private RebindActionUI padAttack;
+    [SerializeField] private RebindActionUI padDash;
+    [SerializeField] private RebindActionUI padGrab;
+    [SerializeField] private RebindActionUI padGuard;
+
     void OnEnable()
     {
         InputSystem.onActionChange += OnActionChange;
@@ -51,17 +59,19 @@ public class MovesList : MonoBehaviour
         return action.GetBindingDisplayString(index);
     }
 
-    void Refresh()
+    public void Refresh()
     {
+        bool pad = gamepadList.activeSelf;
+
         movesText.text = template
-            .Replace("{attack}", Key(attack))
-            .Replace("{up}", Key(up))
-            .Replace("{down}", Key(down))
-            .Replace("{left}", Key(left))
-            .Replace("{right}", Key(right))
-            .Replace("{jump}", Key(jump))
-            .Replace("{dash}", Key(dash))
-            .Replace("{grab}", Key(grab))
-            .Replace("{guard}", Key(guard));
+            .Replace("{attack}", Key(pad ? padAttack : attack))
+            .Replace("{jump}", Key(pad ? padJump : jump))
+            .Replace("{dash}", Key(pad ? padDash : dash))
+            .Replace("{grab}", Key(pad ? padGrab : grab))
+            .Replace("{guard}", Key(pad ? padGuard : guard))
+            .Replace("{up}", pad ? "Up" : Key(up))
+            .Replace("{down}", pad ? "Down" : Key(down))
+            .Replace("{left}", pad ? "Left" : Key(left))
+            .Replace("{right}", pad ? "Right" : Key(right));
     }
 }

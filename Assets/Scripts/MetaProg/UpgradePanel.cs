@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -16,6 +17,7 @@ public class UpgradePanel : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
 
     private readonly List<UpgradeRow> rows = new List<UpgradeRow>();
+    private bool selectionLocked;
 
     void Awake() => closeButton.onClick.AddListener(Close);
 
@@ -28,7 +30,7 @@ public class UpgradePanel : MonoBehaviour
         foreach (var row in rows) Destroy(row.gameObject);
         rows.Clear();
 
-        foreach(var def in UpgradeService.All.Where(d => d.category == category).OrderBy(d => d.sortOrder))
+        foreach (var def in UpgradeService.All.Where(d => d.category == category).OrderBy(d => d.sortOrder))
         {
             var row = Instantiate(rowPrefab, rowContainer);
             row.Bind(def, this);
@@ -39,8 +41,18 @@ public class UpgradePanel : MonoBehaviour
 
         var es = EventSystem.current;
         if (es != null) es.SetSelectedGameObject(null);
+
+        selectionLocked = true;            // pas de sélection tant que la touche d'ouverture est dans cette frame
         Refresh();
-    } 
+        StartCoroutine(SelectNextFrame());
+    }
+
+    IEnumerator SelectNextFrame()
+    {
+        yield return null;
+        selectionLocked = false;
+        EnsureSelection();
+    }
 
     public void Close()
     {
@@ -50,6 +62,7 @@ public class UpgradePanel : MonoBehaviour
 
     void OnDisable()
     {
+        selectionLocked = false;
         if (playerInput != null) playerInput.ActivateInput();
     }
 
@@ -64,6 +77,7 @@ public class UpgradePanel : MonoBehaviour
     {
         soulsLabel.text = $"Souls: {GameProgress.Souls}";
         foreach (var row in rows) row.Refresh();
+        BuildNavigation();
         EnsureSelection();
     }
 
@@ -77,9 +91,27 @@ public class UpgradePanel : MonoBehaviour
         if (movement != null) movement.ClearInput();
     }
 
-    // Keeps a valid selection for gamepad navigation (a button that becomes disabled
+    void BuildNavigation()
+    {
+        var chain = rows.Where(r => r.BuyButton.gameObject.activeInHierarchy)
+                        .Select(r => r.BuyButton)
+                        .ToList();
+        chain.Add(closeButton);
+
+        for (int i = 0; i < chain.Count; i++)
+        {
+            chain[i].navigation = new Navigation
+            {
+                mode = Navigation.Mode.Explicit,
+                selectOnUp = i > 0 ? chain[i - 1] : null,
+                selectOnDown = i < chain.Count - 1 ? chain[i + 1] : null,
+            };
+        }
+    }
     void EnsureSelection()
     {
+        if (selectionLocked) return;
+
         var es = EventSystem.current;
         if (es == null) return;
 
@@ -87,14 +119,15 @@ public class UpgradePanel : MonoBehaviour
             ? es.currentSelectedGameObject.GetComponent<Selectable>()
             : null;
 
-        if (current == null || !current.IsInteractable())
+        if (current == null || !current.IsInteractable() || !current.gameObject.activeInHierarchy)
             es.SetSelectedGameObject(FirstInteractable());
     }
 
     GameObject FirstInteractable()
     {
         foreach (var row in rows)
-            if (row.BuyButton.interactable) return row.BuyButton.gameObject;
+            if (row.BuyButton.interactable && row.BuyButton.gameObject.activeInHierarchy)
+                return row.BuyButton.gameObject;
         return closeButton.gameObject;
     }
 }

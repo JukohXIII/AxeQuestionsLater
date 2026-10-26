@@ -337,7 +337,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
-  stepDistance: 2
+  stepDistance: 2.25
   minLandingSpeed: 4
   minStepSpeed: 0.5
   minStepInterval: 0.12
@@ -403,7 +403,7 @@ MonoBehaviour:
     damage: 7
     knockback: 13
     launchDirection: {x: 0.1, y: 1}
-    hitboxOffset: {x: 0.3, y: 0.5}
+    hitboxOffset: {x: 0.5, y: 0.5}
     hitboxSize: {x: 1.1, y: 1}
     causesKnockdown: 0
   downTiltData:
@@ -451,8 +451,8 @@ MonoBehaviour:
     damage: 7
     knockback: 3
     launchDirection: {x: 0, y: 0}
-    hitboxOffset: {x: 0, y: 0.7}
-    hitboxSize: {x: 0.7, y: 0.7}
+    hitboxOffset: {x: 0.5, y: 0.5}
+    hitboxSize: {x: 1, y: 1.7}
     causesKnockdown: 0
   downAirData:
     attackName: Down Aerial
@@ -495,29 +495,29 @@ MonoBehaviour:
   grabHoldTime: 1.5
   minHoldTime: 0.25
   forwardThrow:
-    damage: 7
-    knockback: 7
+    damage: 15
+    knockback: 10
     direction: {x: 3, y: 0.3}
     causesKnockdown: 1
     animationName: Lars_throwForwards
     releaseDelay: 0.1
   backThrow:
-    damage: 7
-    knockback: 7
+    damage: 15
+    knockback: 10
     direction: {x: -3, y: 0.3}
     causesKnockdown: 1
     animationName: Lars_throwBack
     releaseDelay: 0.16
   upThrow:
-    damage: 7
-    knockback: 11
+    damage: 15
+    knockback: 15
     direction: {x: 0.1, y: 1}
     causesKnockdown: 0
     animationName: Lars_throwUpwards
     releaseDelay: 0.07
   downThrow:
-    damage: 7
-    knockback: 7
+    damage: 15
+    knockback: 12
     direction: {x: 0.3, y: -1}
     causesKnockdown: 0
     animationName: Lars_throwDownwards

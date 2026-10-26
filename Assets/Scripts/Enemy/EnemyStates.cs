@@ -181,7 +181,7 @@ public class HitstunState : EnemyState
     public override void Tick()
     {
         timer -= Time.deltaTime;
-        bool floating = timer > 0f && !causeKnockdown && !enemyController.IsGrounded();
+        bool floating = timer > 0f && !enemyController.IsGrounded();
         enemyController.Rb.gravityScale = floating ? 0f : savedGravity;
         if (timer <= 0f && enemyController.IsGrounded())
         {

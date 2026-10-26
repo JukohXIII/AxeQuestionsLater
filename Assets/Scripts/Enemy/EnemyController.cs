@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Mathematics;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(Health))]
 public class EnemyController : MonoBehaviour
@@ -18,6 +19,14 @@ public class EnemyController : MonoBehaviour
     public Collider2D PlayerCollider { get; private set; }
     public float CenterX => collider.bounds.center.x;
     public float HalfWidth => collider.bounds.extents.x;
+
+    [Header("Alignment")]
+    [SerializeField] private float alignDeadZone = 0.15f;
+
+    [Header("Separation")]
+    [SerializeField] private float separationRadius = 0.8f;
+    [SerializeField] private float separationSpeed = 2.5f;
+    private static readonly List<EnemyController> active = new();
 
     [Header("Debug")]
     [SerializeField] private string currentStateName;
@@ -50,7 +59,11 @@ public class EnemyController : MonoBehaviour
     private Grabbable grabbable;
     public static event System.Action<EnemyConfig> OnAnyEnemyDied;
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetStatics() => OnAnyEnemyDied = null;
+    private static void ResetStatics()
+    {
+        OnAnyEnemyDied = null;
+        active.Clear();
+    } 
 
     // ----------- Lifecycle ----------- //
     protected virtual void Awake()
@@ -80,11 +93,13 @@ public class EnemyController : MonoBehaviour
     }
 
     void OnEnable(){
+        active.Add(this);
         Health.OnHit += HandleHit;
         Health.OnDeath += HandleDeath;
     }
 
     void OnDisable(){
+        active.Remove(this);
         Health.OnHit -= HandleHit;
         Health.OnDeath -= HandleDeath;
     }
@@ -119,6 +134,39 @@ public class EnemyController : MonoBehaviour
         navInfo = Navigator.Describe();
     }
 
+    void FixedUpdate() => ApplySeparation();
+
+    private float nextSepLog;
+
+    void ApplySeparation()
+    {
+        if (Time.time >= nextSepLog)
+        {
+            nextSepLog = Time.time + 1f;
+        }
+        if (currentState != Idle && currentState != Chase) return;
+        if (grabbable != null && grabbable.IsGrabbed) return;
+
+        float push = 0f;
+        foreach (var other in active)
+        {
+            if (other  == this) continue;
+            if (Mathf.Abs(other.transform.position.y - transform.position.y) > 1f) continue;
+
+            float dx = transform.position.x - other.transform.position.x;
+            float dist = Mathf.Abs(dx);
+            if (dist >= separationRadius) continue;
+
+            float dir = dist < 0.001f ? (GetInstanceID() < other.GetInstanceID() ? -1f : 1f) : Mathf.Sign(dx);
+            push += dir * (1f - dist / separationRadius);
+        }
+        if (push == 0f) return;
+
+        float max = config.moveSpeed + separationSpeed;
+        float vx = Rb.linearVelocity.x + Mathf.Clamp(push, -1f, 1f) * separationSpeed;
+        Rb.linearVelocity = new Vector2(Mathf.Clamp(vx, -max, max), Rb.linearVelocity.y);
+    }
+
     // ---------- State machine ----------
     public void ChangeState(IEnemyState next)
     {
@@ -150,7 +198,13 @@ public class EnemyController : MonoBehaviour
 
     // ---------- Perception ----------
     public float DistanceToPlayer() => Vector2.Distance(transform.position, player.position);
-    public int DirectionToPlayer() => player.position.x >= transform.position.x ? 1 : -1;
+    public int DirectionToPlayer() 
+    {
+        float dx = player.position.x - transform.position.x;
+        if (Mathf.Abs(dx) < alignDeadZone) return FacingDirection;
+        return dx > 0f ? 1 : -1;
+    }
+
     public float VerticalOffsetToPlayer() => player.position.y - transform.position.y;
     public bool IsPlayerInAttackRange() => Mathf.Abs(player.position.x - transform.position.x) 
         <= config.attackRange && Mathf.Abs(VerticalOffsetToPlayer()) <= config.verticalAttackTolerance;
@@ -184,6 +238,9 @@ public class EnemyController : MonoBehaviour
 
         return false;
     }
+
+    public bool IsAlignedWithPlayer() =>
+        Mathf.Abs(player.position.x - transform.position.x) < alignDeadZone;
 
     // ---------- Attacks ----------
     public bool IsAttackReady(EnemyAttackData attackData) =>
@@ -253,10 +310,11 @@ public class EnemyController : MonoBehaviour
     public bool CanJump() => 
         IsGrounded() && Time.time >= lastJumpTime+config.jumpCooldown;
     
-    public void Jump()
+    public void Jump(float velocity = -1f)
     {
         lastJumpTime = Time.time;
-        Rb.linearVelocity = new Vector2(Rb.linearVelocity.x, config.jumpVelocity);
+        float v = velocity > 0f ? velocity : config.jumpVelocity;
+        Rb.linearVelocity = new Vector2(Rb.linearVelocity.x, v);
     }
 
     public void Face(int dir)
@@ -287,6 +345,8 @@ public class EnemyController : MonoBehaviour
         foreach (var option in config.decisionOptions)
             if (option is AttackOption attackOption && attackOption.attack != null)
                 DrawHitGizmo(attackOption.attack.hit, Color.magenta);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(transform.position, new Vector3(separationRadius * 2f, 2f, 0f));
     }
 
     void DrawHitGizmo(EnemyHitData hit, Color color)

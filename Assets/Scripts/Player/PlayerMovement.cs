@@ -51,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Enemy bounce")]
     [SerializeField] private float enemyBounceVelocity = 12f;
     [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private float headSlideSpeed = 6f;
 
     // ---------- Read by other scripts ----------
     public int FacingDirection => facingDirection;
@@ -365,18 +366,19 @@ public class PlayerMovement : MonoBehaviour
         facingDirection = direction;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionStay2D(Collision2D collision)
     {
-        if (playerCombat.IsHurt) return;
-        if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
+       if (playerCombat.IsHurt) return;
+       if (((1 << collision.gameObject.layer) & enemyLayer) == 0) return;
+
+       foreach (ContactPoint2D contact in collision.contacts)
         {
-            foreach (ContactPoint2D contact in collision.contacts)
+            if (contact.normal.y > 0.5f)
             {
-                if (contact.normal.y > 0.5f)
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, enemyBounceVelocity);
-                    break;
-                }
+                float side = transform.position.x - collision.transform.position.x;
+                int dir = Mathf.Abs(side) < 0.05f ? facingDirection : (int)Mathf.Sign(side);
+                rb.linearVelocity = new Vector2(dir * headSlideSpeed, rb.linearVelocity.y);
+                return;
             }
         }
     }

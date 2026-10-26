@@ -12,6 +12,7 @@ public class PlatformEdge
     public float blockedUntil; // set when the link failed
     public float launchMin, launchMax;
     public bool vertical;
+    public float requiredJumpVelocity;
 }
 
 public class PlatformNavigator
@@ -38,6 +39,7 @@ public class PlatformNavigator
     private int edgeIndex;
     private Phase phase;
     private float airbornSince;
+    private const float JumpMargin = 0.4f;
 
     public PlatformNavigator(EnemyController controller)
     {
@@ -54,7 +56,7 @@ public class PlatformNavigator
         phase = Phase.Approach;
     }
 
-  // Returns true if it took control of the movement this frame,
+    // Returns true if it took control of the movement this frame,
     // false if the normal chase should run (same platform, or no way to get there).
     public bool Step()
     {
@@ -111,6 +113,28 @@ public class PlatformNavigator
         return StepApproach();
     }
 
+    private float MinJumpVelocity(float deltaY, float neededDistance, float maxV)
+    {
+        float safety = enemy.Config.jumpReachSafety;
+
+        bool Ok(float v)
+        {
+            if (JumpPhysics.ApexHeight(v, gravity, damping, dt) < deltaY + JumpMargin) return false;
+            float t = JumpPhysics.TimeToDescendThrough(v, deltaY, gravity, damping, dt);
+            return t >= 0f && effSpeed * t * safety >= neededDistance;
+        }
+
+        if (!Ok(maxV)) return maxV;
+
+        float lo = 0f, hi = maxV;
+        for (int i = 0; i < 14; i++)
+        {
+            float mid = (lo + hi) * 0.5f;
+            if (Ok(mid)) hi = mid; else lo = mid;
+        }
+        return hi;
+    }
+
     // ---------- Execution ----------
     private bool StepApproach()
     {
@@ -137,7 +161,7 @@ public class PlatformNavigator
         if (enemy.CanJump())
         {
             if (edge.vertical) edge.landX = takeoffX;   // straight up: land where it took off
-            enemy.Jump();
+            enemy.Jump(edge.requiredJumpVelocity);
             BeginAirborne();
         }
         return true;
@@ -341,12 +365,15 @@ public class PlatformNavigator
         float reach = effSpeed * t * cfg.jumpReachSafety;
         if (reach < needed) { Debug.Log($"{tag} REJET: portee {reach:0.00} < distance {needed:0.00}"); return; }
 
+        float jumpV = MinJumpVelocity(deltaY, needed, cfg.jumpVelocity);
+
         Debug.Log($"{tag} OK");
         Add(new PlatformEdge
         {
             from = a, to = b, launchX = launchX, landX = landX, needsJump = true,
             launchMin = launchMin, launchMax = launchMax, vertical = overlap,
-            cost = 2f + needed * 0.1f
+            cost = 2f + needed * 0.1f,
+            requiredJumpVelocity = jumpV
         });
     }
 
@@ -400,7 +427,8 @@ public class PlatformNavigator
                 launchMin = side * uLaunch, launchMax = side * uLaunch,
                 from = a, to = b, side = side, needsJump = true,
                 launchX = side * uLaunch, landX = side * uLand,
-                cost = 2f + (uLand - uLaunch) * 0.1f
+                cost = 2f + (uLand - uLaunch) * 0.1f,
+                requiredJumpVelocity = cfg.jumpVelocity,
             });
         } 
     }

@@ -161,6 +161,9 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  alignDeadZone: 0.15
+  separationRadius: 1
+  separationSpeed: 2.5
   currentStateName: 
 --- !u!114 &2775216598484916532
 MonoBehaviour:

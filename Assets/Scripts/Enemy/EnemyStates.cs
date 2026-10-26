@@ -61,7 +61,10 @@ public class ChaseState : EnemyState
         if (config.usePlatformNavigation && nav.Step()) return;
 
         // Same platform (or no path): walk toward the player, hop over obstacles
-        enemyController.MoveHorizontal(enemyController.DirectionToPlayer() * config.moveSpeed);
+        if (enemyController.IsAlignedWithPlayer())
+            enemyController.StopHorizontal();
+        else
+            enemyController.MoveHorizontal(enemyController.DirectionToPlayer() * config.moveSpeed);
 
         if (enemyController.CanJump() && enemyController.IsObstacleAhead())
             enemyController.Jump();

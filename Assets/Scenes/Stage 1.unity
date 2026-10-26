@@ -3288,7 +3288,7 @@ MonoBehaviour:
   - {fileID: 830983174}
   - {fileID: 1938403157}
   player: {fileID: 148818916}
-  minDistanceFromPlayer: 6
+  minDistanceFromPlayer: 2
   maxAlive: 2
   waves:
   - entries:

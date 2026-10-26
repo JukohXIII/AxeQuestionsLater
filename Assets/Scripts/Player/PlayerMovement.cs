@@ -92,9 +92,12 @@ public class PlayerMovement : MonoBehaviour
     private float defaultGravityScale;
     
     [Header("Audio")]
-    [SerializeField] private float stepDistance = 1.2f;
+    [SerializeField] private float stepDistance = 10f;
     [SerializeField] private float minLandingSpeed = 4f;
-    private float stepAccumulator;
+    [SerializeField] private float minStepSpeed = 0.5f;
+    [SerializeField] private float minStepInterval = 0.12f;  
+    private bool wasWalking;
+    private float lastStepTime = -1f;    private float stepAccumulator;
     private bool wasGroundedPrev;
     private float prevVelocityY;
 
@@ -251,18 +254,35 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void PlayStep(float volumeScale = 1f)
+    {
+        lastStepTime = Time.time;
+        AudioManager.Play(Sfx.Footstep, volumeScale);
+    }
+
     void HandleFootsteps()
     {
-        if (!isGrounded || isDashing ||playerCombat.state != PlayerCombat.PlayerState.Normal)
+        if (!isGrounded) { stepAccumulator = 0; wasWalking = false; return; };
+
+        bool free = !isDashing && playerCombat.state == PlayerCombat.PlayerState.Normal;
+        bool walking = free && moveInput.x != 0f && Mathf.Abs(rb.linearVelocity.x ) > minStepSpeed;
+        
+        if (!walking)
         {
-            stepAccumulator = 0f;
-            return;
+            if (wasWalking && free && moveInput.x == 0f && Time.time - lastStepTime > minStepInterval)
+                PlayStep();
+
+                wasWalking = false;
+                stepAccumulator = stepDistance;
+                return;
         }
+
+        wasWalking = true;
         stepAccumulator += Mathf.Abs(rb.linearVelocity.x) * Time.fixedDeltaTime;
         if(stepAccumulator >= stepDistance)
         {
             stepAccumulator = 0f;
-            AudioManager.Play(Sfx.Footstep);
+            PlayStep();
         }
     }
 

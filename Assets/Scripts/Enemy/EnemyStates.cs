@@ -165,6 +165,7 @@ public class RecoveryState : EnemyState
 public class HitstunState : EnemyState
 {
     float timer;
+    float groundTime;
     bool causeKnockdown;
     float savedGravity;
 
@@ -172,6 +173,7 @@ public class HitstunState : EnemyState
 
     public override void Enter()
     {
+        groundTime = 0f;
         timer = enemyController.Config.hitstunDuration;
         if (enemyController.Health.LastHitCausedKnockdown) causeKnockdown = true;
         // TODO: hit animation / flash
@@ -181,10 +183,15 @@ public class HitstunState : EnemyState
     public override void Tick()
     {
         timer -= Time.deltaTime;
-        bool floating = timer > 0f && !enemyController.IsGrounded();
+        bool floating = timer > 0f && !causeKnockdown && !enemyController.IsGrounded();
         enemyController.Rb.gravityScale = floating ? 0f : savedGravity;
         if (timer <= 0f && enemyController.IsGrounded())
         {
+            if (causeKnockdown && enemyController.Config.knockdownDelay > 0f)
+            {
+                groundTime += Time.deltaTime;
+                if (groundTime < enemyController.Config.knockdownDelay) return;
+            }
             IEnemyState next = causeKnockdown ? enemyController.Knockdown : enemyController.Idle;
             causeKnockdown = false;
             enemyController.ChangeState(next);

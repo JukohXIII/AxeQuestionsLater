@@ -39,6 +39,7 @@ public class EnemyConfig : ScriptableObject
     [Header("Timing (seconds)")]
     public float hitstunDuration = 0.4f;
     public float knockdownDuration = 1f;
+    public float knockdownDelay = 0.25f;  //Time the enemy stays hittable after landing before Knockdown
     public float deathDelay = 1f;
 
     [Header("Platform navigation")]

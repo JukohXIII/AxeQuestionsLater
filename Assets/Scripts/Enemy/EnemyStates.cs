@@ -93,6 +93,7 @@ public class AttackState : EnemyState
         alreadyHit.Clear();
         phase = Phase.Windup;
         timer = attack.windup;
+        AudioManager.Play(Sfx.EnemyWindup);
     }
 
     public override void Tick()
@@ -104,6 +105,7 @@ public class AttackState : EnemyState
             if (timer > 0f) return;
 
             phase = Phase.Active;
+            AudioManager.Play(Sfx.EnemySwing);
             timer = attack.activeDuration;
             return;
         }

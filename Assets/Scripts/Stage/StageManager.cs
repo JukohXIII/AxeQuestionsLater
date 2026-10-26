@@ -60,6 +60,7 @@ public class StageManager : MonoBehaviour
     {
         Debug.Log("Stage clear!");
         exitWall.enabled = false;
+        // AudioManager.Play(Sfx.ExitOpen);
         goSign.SetActive(true);
         if (stageExit != null) stageExit.SetActive(true);
     }

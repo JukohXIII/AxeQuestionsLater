@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -89,6 +91,12 @@ public class PlayerMovement : MonoBehaviour
     private float dashAttackWindowTimer;
     private float defaultGravityScale;
     
+    [Header("Audio")]
+    [SerializeField] private float stepDistance = 1.2f;
+    [SerializeField] private float minLandingSpeed = 4f;
+    private float stepAccumulator;
+    private bool wasGroundedPrev;
+    private float prevVelocityY;
 
     void Awake()
     {
@@ -108,6 +116,10 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         CheckGrounded();
+
+        if (isGrounded && !wasGroundedPrev && -prevVelocityY > minLandingSpeed)
+            AudioManager.Play(Sfx.Land);
+        wasGroundedPrev = isGrounded;
 
         bool downPressed = moveInput.y < -0.5f;
         downJustPressed = downPressed && !wasDownPressed;
@@ -148,6 +160,8 @@ public class PlayerMovement : MonoBehaviour
 
         HandleDash();
 
+        HandleFootsteps();
+
         float limit = isFastFalling ? fastFallSpeed : maxFallSpeed;
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -limit));
 
@@ -160,6 +174,7 @@ public class PlayerMovement : MonoBehaviour
 
         wasDownPressed = downPressed;
         previousMoveX = moveInput.x;
+        prevVelocityY = rb.linearVelocity.y;
     }
 
     void Update()
@@ -236,6 +251,21 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void HandleFootsteps()
+    {
+        if (!isGrounded || isDashing ||playerCombat.state != PlayerCombat.PlayerState.Normal)
+        {
+            stepAccumulator = 0f;
+            return;
+        }
+        stepAccumulator += Mathf.Abs(rb.linearVelocity.x) * Time.fixedDeltaTime;
+        if(stepAccumulator >= stepDistance)
+        {
+            stepAccumulator = 0f;
+            AudioManager.Play(Sfx.Footstep);
+        }
+    }
+
     void HandleDash()
     {
         if (dashCooldownTimer > 0)
@@ -288,12 +318,14 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
                 isGrounded = false;
+                AudioManager.Play(Sfx.Jump);
             }
         }
         else if (value.isPressed && !isGrounded && airJumpsRemaining > 0 && CanJumpNow)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
             airJumpsRemaining--;
+            AudioManager.Play(Sfx.AirJump);
         }
     }
 
@@ -304,6 +336,7 @@ public class PlayerMovement : MonoBehaviour
             isDashing = true;
             dashTimer = dashDuration;
             rb.gravityScale = 0f;
+            AudioManager.Play(Sfx.AirJump);
         }
     }
 

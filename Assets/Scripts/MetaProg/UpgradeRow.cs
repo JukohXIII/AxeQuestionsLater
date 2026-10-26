@@ -32,7 +32,9 @@ public class UpgradeRow : MonoBehaviour
 
     void OnBuyClicked()
     {
-        UpgradeService.TryBuy(definition);
+        if (UpgradeService.TryBuy(definition))
+            AudioManager.Play(Sfx.UiBuy);
+            
         panel.Refresh(); // the level changes after the souls are spent, so refresh explicitly
     }
 

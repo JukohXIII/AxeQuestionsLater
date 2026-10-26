@@ -37,7 +37,6 @@ public class InteractionPrompt : MonoBehaviour
 
     public void Show()
     {
-        Debug.Log($"[Prompt] Show sur '{name}'", this);
         target = 1f;
     }
     public void Hide() => target = 0f;

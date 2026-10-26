@@ -248,6 +248,7 @@ public class PlayerCombat : MonoBehaviour
         phase = AttackPhase.Startup;
         phaseTimer = attack.startup / AttackSpeedMultiplier;
         PlayAttackAnimation();
+        if (!isGrab) PlaySwingSound();
     }
 
     void HandleStartupPhase()
@@ -282,6 +283,7 @@ public class PlayerCombat : MonoBehaviour
                         if (grabbable != null)
                         {
                             grabbable.Grab();
+                            AudioManager.Play(Sfx.Grab);
                             heldTarget = grabbable;
                             attackHitbox.SetActive(false);
                             state = PlayerState.Grabbing;
@@ -303,6 +305,7 @@ public class PlayerCombat : MonoBehaviour
                             float dealt = PlayerStats.Apply(StatType.Damage, currentAttack.damage);
                             targetHealth.TakeHit(dealt, knockbackDirection, currentAttack.knockback, currentAttack.causesKnockdown);
                             ApplyLifeSteal(dealt);
+                            AudioManager.Play(currentAttack.causesKnockdown ? Sfx.HitHeavy : Sfx.Hit);
                             StartCoroutine(HitStop(hitStopDuration / AttackSpeedMultiplier));
                         }
                     }
@@ -424,6 +427,7 @@ public class PlayerCombat : MonoBehaviour
         float dealt = PlayerStats.Apply(StatType.Damage, t.damage);
         heldTarget.GetComponent<Health>().TakeHit(dealt, dir, t.knockback, t.causesKnockdown);
         ApplyLifeSteal(dealt);
+        AudioManager.Play(Sfx.HitHeavy);
         StartCoroutine(HitStop(hitStopDuration));
         heldTarget = null;
         state = PlayerState.Attacking;
@@ -439,6 +443,7 @@ public class PlayerCombat : MonoBehaviour
         pendingIsBackThrow = isBackThrow;
         throwTimer = t.releaseDelay;
         isThrowing = true;
+        AudioManager.Play(Sfx.Throw);
         SetAnimation(t.animationName);
     }
 
@@ -468,6 +473,7 @@ public class PlayerCombat : MonoBehaviour
     void PlayAttackAnimation()
     {
         SetAnimation(currentAttack.animationName);
+        PlaySwingSound();
     }
 
     void SetAnimation(string clip)
@@ -495,6 +501,11 @@ public class PlayerCombat : MonoBehaviour
     {
         float ratio = PlayerStats.Apply(StatType.LifeSteal, 0f);
         if (ratio > 0f) health.Heal(damageDealt * ratio);
+    }
+
+    void PlaySwingSound()
+    {
+        AudioManager.Play(currentAttack.causesKnockdown ? Sfx.SwingHeavy : Sfx.Swing);
     }
 
     void OnDrawGizmosSelected()

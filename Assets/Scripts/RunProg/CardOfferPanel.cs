@@ -12,6 +12,7 @@ public class CardOfferPanel : MonoBehaviour
     public void Open(List<CardDefinition> offer)
     {
         gameObject.SetActive(true);
+        AudioManager.Play(Sfx.CardOpen);
 
         for (int i = 0; i < slots.Length; i++)
         {
@@ -29,6 +30,7 @@ public class CardOfferPanel : MonoBehaviour
     private void Choose(CardDefinition card)
     {
         RunCards.Take(card);
+        AudioManager.Play(Sfx.CardPick);
         gameObject.SetActive(false);
     }
 

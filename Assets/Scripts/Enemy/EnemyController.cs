@@ -204,6 +204,7 @@ public class EnemyController : MonoBehaviour
     public void StartAttack(EnemyAttackData attack)
     {
         CurrentAttack = attack;
+        AudioManager.Play(Sfx.EnemyWindup);
         lastAttackTime[attack] = Time.time;
         ChangeState(Attack);
     }

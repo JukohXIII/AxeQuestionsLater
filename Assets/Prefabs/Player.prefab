@@ -80,7 +80,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 771011934850212810, guid: a8d09680283cda74ca5e727767022e26, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -139,7 +139,7 @@ Transform:
   m_GameObject: {fileID: 5609380103463945896}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0.305, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -166,6 +166,8 @@ GameObject:
   - component: {fileID: 7559764411463500383}
   - component: {fileID: 4327155027094465679}
   - component: {fileID: 7538941072360265176}
+  - component: {fileID: 6962630897928093816}
+  - component: {fileID: 2308689520880061551}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -251,7 +253,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.22862591, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -261,7 +263,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5427481, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &261553383235914320
 MonoBehaviour:
@@ -335,6 +337,8 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
+  stepDistance: 1.2
+  minLandingSpeed: 4
 --- !u!114 &1912604250374779109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -618,6 +622,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2c78a3e5de187f4ebcd3e668fe27b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsApplier
+--- !u!114 &6962630897928093816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6313414769092845965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7054b462d75c1248b17f32888b59562, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
+--- !u!114 &2308689520880061551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6313414769092845965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bda98f7da1c0be4784df931070094da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAudio
 --- !u!1 &8023591662331067518
 GameObject:
   m_ObjectHideFlags: 0

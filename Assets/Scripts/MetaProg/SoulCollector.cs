@@ -20,6 +20,9 @@ public class SoulCollector : MonoBehaviour
         int whole = Mathf.FloorToInt(remainder);
         remainder -= whole;
 
-        if (whole > 0) GameProgress.AddSouls(whole);
+        if (whole > 0) {
+            GameProgress.AddSouls(whole);
+            AudioManager.Play(Sfx.Soul);
+        }
     }
 }

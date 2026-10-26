@@ -22,6 +22,7 @@ public class UpgradePanel : MonoBehaviour
     public void Open(UpgradeCategory category, string title)
     {
         gameObject.SetActive(true);
+        AudioManager.Play(Sfx.PanelOpen);
         titleLabel.text = title;
 
         foreach (var row in rows) Destroy(row.gameObject);
@@ -41,7 +42,11 @@ public class UpgradePanel : MonoBehaviour
         Refresh();
     } 
 
-    public void Close() => gameObject.SetActive(false);
+    public void Close()
+    {
+        AudioManager.Play(Sfx.UiClick);
+        gameObject.SetActive(false);
+    }
 
     void OnDisable()
     {

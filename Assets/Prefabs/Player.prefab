@@ -319,7 +319,7 @@ MonoBehaviour:
   burstMovementSpeed: 7
   burstMovementDuration: 0.2
   burstMovementAcceleration: 200
-  jumpVelocity: 11
+  jumpVelocity: 12
   jumpCutMultiplier: 0.3
   maxAirJumps: 1
   groundedTolerance: 0.1
@@ -339,6 +339,8 @@ MonoBehaviour:
     m_Bits: 256
   stepDistance: 2
   minLandingSpeed: 4
+  minStepSpeed: 0.5
+  minStepInterval: 0.12
 --- !u!114 &1912604250374779109
 MonoBehaviour:
   m_ObjectHideFlags: 0

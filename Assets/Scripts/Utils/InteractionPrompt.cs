@@ -1,76 +1,120 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class InteractionPrompt : MonoBehaviour
 {
-    [SerializeField] private TextMeshPro label;
-    [SerializeField] private SpriteRenderer background;
+    // Réglages (en code, pas dans l'Inspector)
+    private const float IconHeight = 0.6f;   
+    private const string ActionName = "Interact";
+    private const float Duration = 0.2f;
+    private const float SlideDistance = 0.3f; 
+    private const int SortingOrder = 100;
 
-    [Header("Animation")]
-    [SerializeField] private float duration = 0.2f;
-    [SerializeField] private float slideDistance = 0.3f;
+    [SerializeField] private SpriteRenderer icon;
+    [SerializeField] private ControlGlyphs glyphs;
+    [Tooltip("Optionnel : texte affiché si aucun sprite n'existe pour ce contrôle.")]
+    [SerializeField] private TextMeshPro fallbackLabel;
 
-    [Header("Look")]
-    [SerializeField] private Vector2 padding = new(0.25f, 0.12f);
-    [SerializeField, Range(0f, 1f)] private float backgroundAlpha = 0.75f;
-    [SerializeField] private int sortingOrder = 100;
-
+    private PlayerInput playerInput;
     private Vector3 shownPosition;
-    private Color textColor;
-    private Color backgroundColor;
+    private bool anchored;
+    private Color iconColor = Color.white;
     private float visibility;
     private float target;
 
     void Awake()
     {
+        if (!anchored) shownPosition = transform.localPosition;
+        iconColor = icon.color;
+        icon.sortingOrder = SortingOrder;
+        if (fallbackLabel != null) fallbackLabel.sortingOrder = SortingOrder + 1;
+        RefreshGlyph();
+        Apply();
+    }
+
+    void OnEnable()
+    {
+        InputDeviceTracker.Changed += RefreshGlyph;
+        RefreshGlyph();
+    }
+
+    void OnDisable() => InputDeviceTracker.Changed -= RefreshGlyph;
+
+    public void SetAnchor(Vector3 worldPosition)
+    {
+        anchored = true;
+        transform.position = worldPosition;
         shownPosition = transform.localPosition;
-        textColor = label.color;
-        backgroundColor = background.color;
-
-        background.sortingOrder = sortingOrder;
-        label.sortingOrder = sortingOrder + 1;
-
-        FitBackground();
+        icon.transform.localPosition = Vector3.zero;
         Apply();
     }
 
     public void Show()
     {
+        RefreshGlyph();
+        // AudioManager.Play(Sfx.PromptPop);
         target = 1f;
     }
-    public void Hide() => target = 0f;
 
-    public void SetText(string text)
-    {
-        label.text = text;
-        FitBackground();
-    }
+    public void Hide() => target = 0f;
 
     void Update()
     {
         if (Mathf.Approximately(visibility, target)) return;
-        visibility = Mathf.MoveTowards(visibility, target, Time.unscaledDeltaTime/duration);
+        visibility = Mathf.MoveTowards(visibility, target, Time.unscaledDeltaTime / Duration);
         Apply();
+    }
+
+    void RefreshGlyph()
+    {
+        if (playerInput == null) playerInput = FindFirstObjectByType<PlayerInput>();
+        InputAction action = playerInput != null ? playerInput.actions.FindAction(ActionName) : null;
+
+        Sprite sprite = null;
+        string text = "?";
+
+        var family = InputDeviceTracker.Current;
+        if (action != null && glyphs != null
+            && BindingGlyph.TryGet(action, family, out string control, out string display))
+        {
+            sprite = glyphs.Get(family, control);
+            text = display;
+        }
+
+        icon.sprite = sprite;
+        icon.enabled = sprite != null;
+
+        if (sprite != null)
+        {
+            float spriteHeight = sprite.rect.height / sprite.pixelsPerUnit;
+
+            Vector3 parentScale = icon.transform.parent != null ? icon.transform.parent.lossyScale : Vector3.one;
+            float s = IconHeight / spriteHeight;
+            icon.transform.localScale = new Vector3(s / parentScale.x, s / parentScale.y, 1f);
+        }
+
+        if (fallbackLabel != null)
+        {
+            fallbackLabel.text = text;
+            fallbackLabel.enabled = sprite == null;
+        }
     }
 
     void Apply()
     {
         float eased = Mathf.SmoothStep(0f, 1f, visibility);
+        transform.localPosition = shownPosition + (1f - eased) * SlideDistance * Vector3.down;
 
-        transform.localPosition = shownPosition + (1f - eased) * slideDistance * Vector3.down;
+        Color c = iconColor;
+        c.a = iconColor.a * eased;
+        icon.color = c;
 
-        Color text = textColor;  text.a = textColor.a * eased;   label.color = text;
-        Color b = backgroundColor; b.a = backgroundAlpha * eased; background.color = b;
-    }
-
-    void FitBackground()
-    {
-        label.ForceMeshUpdate();
-        Bounds bounds = label.textBounds;
-
-        background.drawMode = SpriteDrawMode.Sliced;
-        background.size = (Vector2)bounds.size + padding * 2f;
-        background.transform.position = label.transform.TransformPoint(bounds.center);
+        if (fallbackLabel != null)
+        {
+            Color t = fallbackLabel.color;
+            t.a = eased;
+            fallbackLabel.color = t;
+        }
     }
 }

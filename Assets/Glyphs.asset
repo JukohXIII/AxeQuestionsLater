@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c66f20b1868537d4cb1cf6576d61d8c0, type: 3}
+  m_Name: Glyphs
+  m_EditorClassIdentifier: Assembly-CSharp::ControlGlyphs
+  keyboard:
+  - control: f
+    sprite: {fileID: -9125861541802950594, guid: 861499b2edc900a469cc14c801770a4a, type: 3}
+  xbox:
+  - control: buttonNorth
+    sprite: {fileID: -1852535901072925621, guid: 7dd2e4c993fd8f0489305c1cafc21a3d, type: 3}
+  playstation:
+  - control: buttonNorth
+    sprite: {fileID: 9116933214442999143, guid: 1a64a91b4e456174eb9b7b4d7aa73076, type: 3}

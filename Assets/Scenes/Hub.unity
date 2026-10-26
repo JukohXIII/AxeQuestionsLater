@@ -3048,12 +3048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractionPrompt
   icon: {fileID: 2140779870}
   glyphs: {fileID: 11400000, guid: 7cd6bcf0bd59bf94d8794299266e02f8, type: 2}
-  iconHeight: 0.6
-  actionName: Interact
   fallbackLabel: {fileID: 0}
-  duration: 0.2
-  slideDistance: 0.3
-  sortingOrder: 100
 --- !u!1 &1608224560
 GameObject:
   m_ObjectHideFlags: 0
@@ -3263,7 +3258,7 @@ Transform:
   m_GameObject: {fileID: 1637392877}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.232, y: 3.394, z: 0}
+  m_LocalPosition: {x: -0.232, y: 2.198, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3342,12 +3337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractionPrompt
   icon: {fileID: 1637392879}
   glyphs: {fileID: 11400000, guid: 7cd6bcf0bd59bf94d8794299266e02f8, type: 2}
-  iconHeight: 0.6
-  actionName: Interact
   fallbackLabel: {fileID: 0}
-  duration: 0.2
-  slideDistance: 0.3
-  sortingOrder: 100
 --- !u!1 &1781203907
 GameObject:
   m_ObjectHideFlags: 0
@@ -4041,12 +4031,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractionPrompt
   icon: {fileID: 1637392879}
   glyphs: {fileID: 11400000, guid: 7cd6bcf0bd59bf94d8794299266e02f8, type: 2}
-  iconHeight: 0.6
-  actionName: Interact
   fallbackLabel: {fileID: 0}
-  duration: 0.2
-  slideDistance: 0.3
-  sortingOrder: 100
 --- !u!1 &2122693490
 GameObject:
   m_ObjectHideFlags: 0
@@ -4420,17 +4405,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1088983613226790436, guid: eb78f1384feb3ed4fac6f5bab7518ccd, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3170523173257624494, guid: eb78f1384feb3ed4fac6f5bab7518ccd, type: 3}
       propertyPath: m_Name
       value: GameCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 3170523173257624494, guid: eb78f1384feb3ed4fac6f5bab7518ccd, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6233345483605572456, guid: eb78f1384feb3ed4fac6f5bab7518ccd, type: 3}
       propertyPath: m_Pivot.x
@@ -4512,10 +4489,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8904343298993767312, guid: eb78f1384feb3ed4fac6f5bab7518ccd, type: 3}
-      propertyPath: playerInput
-      value: 
-      objectReference: {fileID: 148818920}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

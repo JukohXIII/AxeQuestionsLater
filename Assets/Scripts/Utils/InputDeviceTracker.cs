@@ -49,7 +49,6 @@ public static class InputDeviceTracker
     {
         if (family == Current) return;
         Current = family;
-        Debug.Log($"[Device] -> {family}");
         Changed?.Invoke();
     }
 }

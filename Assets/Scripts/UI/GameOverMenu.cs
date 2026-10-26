@@ -18,6 +18,7 @@ public class GameOverMenu : MonoBehaviour
     public void Continue()
     {
         RunCards.Clear();   // run bonuses (cards) end with the run
+        RunData.PlayerDamage = 0f;
         SceneManager.LoadScene(hubScene);
     }
 

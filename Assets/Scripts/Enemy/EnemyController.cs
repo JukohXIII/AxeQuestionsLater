@@ -28,6 +28,11 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float separationSpeed = 2.5f;
     private static readonly List<EnemyController> active = new();
 
+    [Header("Head slide")]
+    [SerializeField] private float headSlideSpeed = 4f;
+    private bool onPlayerHead;
+    private int headSlideDir;
+
     [Header("Debug")]
     [SerializeField] private string currentStateName;
     public EnemyConfig Config => config;
@@ -134,7 +139,10 @@ public class EnemyController : MonoBehaviour
         navInfo = Navigator.Describe();
     }
 
-    void FixedUpdate() => ApplySeparation();
+    void FixedUpdate() {
+        ApplySeparation();
+        ApplyHeadSlide();
+    }
 
     private float nextSepLog;
 
@@ -325,6 +333,32 @@ public class EnemyController : MonoBehaviour
         scale.x = Mathf.Abs(scale.x) * dir;
         transform.localScale = scale;
     }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (currentState == Dead || currentState == Attack) return;
+        if (grabbable != null && grabbable.IsGrabbed) return;
+        if ((playerLayer.value & (1 << collision.gameObject.layer)) == 0) return;
+
+        foreach (ContactPoint2D contact in collision.contacts)
+        {
+            if (contact.normal.y > 0.5f)
+            {
+                float side = transform.position.x - collision.transform.position.x;
+                headSlideDir = Mathf.Abs(side) < 0.05f ? FacingDirection : (int)Mathf.Sign(side);
+                onPlayerHead = true;
+                return;
+            }
+        }
+    }
+
+    void ApplyHeadSlide()
+    {
+        if (!onPlayerHead) return;
+        onPlayerHead = false;
+        Rb.linearVelocity = new Vector2(headSlideDir * headSlideSpeed, Rb.linearVelocity.y);
+    }
+
 
     // ---------- Debug ----------
 

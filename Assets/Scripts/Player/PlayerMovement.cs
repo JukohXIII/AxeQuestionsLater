@@ -49,7 +49,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashAttackWindow = 0.2f;
 
     [Header("Enemy bounce")]
-    [SerializeField] private float enemyBounceVelocity = 12f;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private float headSlideSpeed = 6f;
 

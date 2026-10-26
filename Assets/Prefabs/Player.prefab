@@ -337,7 +337,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
-  stepDistance: 1.2
+  stepDistance: 2
   minLandingSpeed: 4
 --- !u!114 &1912604250374779109
 MonoBehaviour:

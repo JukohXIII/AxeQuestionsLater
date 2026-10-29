@@ -307,7 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f05d84880ddafc74eafd04d53f69cb13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 7
+  moveSpeed: 5
   acceleration: 50
   deceleration: 70
   groundLayers:
@@ -316,7 +316,7 @@ MonoBehaviour:
   groundCheck: {fileID: 2580093581522310351}
   groundCheckRadius: 0.1
   visual: {fileID: 7294449927147972949}
-  burstMovementSpeed: 7
+  burstMovementSpeed: 6
   burstMovementDuration: 0.2
   burstMovementAcceleration: 200
   jumpVelocity: 12
@@ -326,17 +326,17 @@ MonoBehaviour:
   dropTime: 0.3
   maxFallSpeed: 15
   fastFallSpeed: 15
-  airSpeed: 8
+  airSpeed: 3.5
   airAcceleration: 50
   airDeceleration: 5
   dashSpeed: 15
-  dashDuration: 0.15
+  dashDuration: 0.1
   dashCooldown: 0.4
   dashAttackWindow: 0.2
-  enemyBounceVelocity: 12
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
+  headSlideSpeed: 6
   stepDistance: 2.25
   minLandingSpeed: 4
   minStepSpeed: 0.5
@@ -387,9 +387,9 @@ MonoBehaviour:
     animationName: Lars_groundAttack_overhead
     startup: 0.16
     active: 0.1
-    recovery: 0.35
+    recovery: 0.45
     damage: 12
-    knockback: 2
+    knockback: 7
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0.8, y: 0}
     hitboxSize: {x: 1, y: 0.7}
@@ -399,8 +399,8 @@ MonoBehaviour:
     animationName: Lars_strongAttack_UpTilt
     startup: 0.1
     active: 0.08
-    recovery: 0.17
-    damage: 7
+    recovery: 0.45
+    damage: 10
     knockback: 13
     launchDirection: {x: 0, y: 1}
     hitboxOffset: {x: 0.5, y: 0.5}
@@ -424,8 +424,8 @@ MonoBehaviour:
     startup: 0.16
     active: 0.1
     recovery: 0.35
-    damage: 8
-    knockback: 6
+    damage: 12
+    knockback: 10
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0.9, y: 0}
     hitboxSize: {x: 0.9, y: 0.7}
@@ -433,10 +433,10 @@ MonoBehaviour:
   neutralAirData:
     attackName: Neutral Aerial
     animationName: Lars_aerialAttack_Forward
-    startup: 0.1
+    startup: 0.05
     active: 0.1
-    recovery: 0.22
-    damage: 7
+    recovery: 0.1
+    damage: 4
     knockback: 3
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0.7, y: 0}
@@ -447,7 +447,7 @@ MonoBehaviour:
     animationName: Lars_aerialAttack_Up
     startup: 0.1
     active: 0.1
-    recovery: 0.22
+    recovery: 0.45
     damage: 7
     knockback: 3
     launchDirection: {x: 0, y: 0}
@@ -471,7 +471,7 @@ MonoBehaviour:
     animationName: Lars_aerialAttack_Forward
     startup: 0.1
     active: 0.1
-    recovery: 0.22
+    recovery: 0.3
     damage: 7
     knockback: 4
     launchDirection: {x: 0, y: 0}

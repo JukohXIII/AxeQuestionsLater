@@ -3350,10 +3350,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1125441722380241321, guid: 62e281e4898d0b241a944e7e666c7dd8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 11.58
-      objectReference: {fileID: 0}
     - target: {fileID: 1374432765595255657, guid: 62e281e4898d0b241a944e7e666c7dd8, type: 3}
       propertyPath: m_Name
       value: StageWalls

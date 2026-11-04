@@ -16,6 +16,7 @@ MonoBehaviour:
   activeDuration: 0.35
   recovery: 1
   moveSpeed: 14
+  endsOnHit: 1
   hit:
     damage: 10
     knockback: 12
@@ -23,6 +24,7 @@ MonoBehaviour:
     hitboxOffset: {x: 0.8, y: 0}
     hitboxSize: {x: 1, y: 0.8}
     causesKnockback: 0
+    breaksGuard: 0
   minRange: 1.5
   maxRange: 7
   cooldown: 5

@@ -39,7 +39,6 @@ public class PlayerCombat : MonoBehaviour
     // ---------- References ----------
     private PlayerMovement playerMovement;
     private PauseMenu pauseMenu;
-
     private Health health;
 
     // ---------- State (other scripts read these) ----------
@@ -65,12 +64,16 @@ public class PlayerCombat : MonoBehaviour
     private int comboStep;
     [SerializeField] private float comboWindow = 0.3f;   // time after a jab to still continue the combo
     private float comboTimer;
+    [Range(0f, 1f)] [SerializeField] private float cancelPoint = 0.4f;
+    private float recoveryTime;
 
     // For enemy AI: reading the player's attack phase
     public bool IsInAttackRecovery =>
         state == PlayerState.Attacking && phase == AttackPhase.Recovery;
 
-    // For enemy AI: reading the player's attack phase
+    public bool CanCancel =>
+        state == PlayerState.Attacking && phase == AttackPhase.Recovery && phaseTimer <= recoveryTime * (1f - cancelPoint);
+
     public bool IsInAttackStartupOrActive =>
         state == PlayerState.Attacking && (phase == AttackPhase.Startup || phase == AttackPhase.Active);
 
@@ -175,7 +178,13 @@ public class PlayerCombat : MonoBehaviour
 
     void TryStartAttack()
     {
-        if (state != PlayerState.Normal || !attackPressedThisFrame) return;
+        if (state != PlayerState.Normal && !CanCancel) return;
+        if (!attackPressedThisFrame && !queuedNextHit) return;
+
+        if (CanCancel)
+        {
+            EndAttack();
+        }
 
         isComboAttack = false;
         AttackData attack;
@@ -313,6 +322,7 @@ public class PlayerCombat : MonoBehaviour
             }
             if (phaseTimer <= 0)
             {
+                recoveryTime = currentAttack.recovery / AttackSpeedMultiplier;
                 phase = AttackPhase.Recovery;
                 phaseTimer = currentAttack.recovery / AttackSpeedMultiplier;
                 attackHitbox.SetActive(false);
@@ -324,33 +334,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (phase == AttackPhase.Recovery && phaseTimer <= 0)
         {
-            if (isComboAttack && queuedNextHit && comboStep < 3)
-            {
-                comboStep++;
-                queuedNextHit = false;
-                phase = AttackPhase.Startup;
-                currentAttack = comboAttacks[comboStep - 1];
-                UpdateAttackSpeed();
-                PlayAttackAnimation();
-                phaseTimer = currentAttack.startup / AttackSpeedMultiplier;
-                Debug.Log("Combo step " + comboStep + " — startup");
-            }
-            else
-            {
-                state = PlayerState.Normal;
-                CurrentAnimation = null;
-                if (turnAfterThrow)
-                {
-                    playerMovement.SetFacing(-playerMovement.FacingDirection);
-                    turnAfterThrow = false;
-                }
-                StopAirHang();
-                phase = AttackPhase.None;
-                comboTimer = isComboAttack ? PlayerStats.Apply(StatType.ComboWindow, comboWindow) : 0f;    // a short grace window to keep the combo going
-                if (!isComboAttack) comboStep = 0;
-                queuedNextHit = false;
-                Debug.Log("Combo finished");
-            }
+            EndAttack();
         }
     }
 
@@ -431,6 +415,7 @@ public class PlayerCombat : MonoBehaviour
         StartCoroutine(HitStop(hitStopDuration));
         heldTarget = null;
         state = PlayerState.Attacking;
+        recoveryTime = throwRecovery;
         phase = AttackPhase.Recovery;
         phaseTimer = throwRecovery;
         isComboAttack = false;
@@ -506,6 +491,23 @@ public class PlayerCombat : MonoBehaviour
     void PlaySwingSound()
     {
         AudioManager.Play(currentAttack.causesKnockdown ? Sfx.SwingHeavy : Sfx.Swing);
+    }
+
+    public void EndAttack()
+    {
+        state = PlayerState.Normal;
+        CurrentAnimation = null;
+        if (turnAfterThrow)
+        {
+            playerMovement.SetFacing(-playerMovement.FacingDirection);
+            turnAfterThrow = false;
+        }
+        StopAirHang();
+        phase = AttackPhase.None;
+        comboTimer = isComboAttack ? PlayerStats.Apply(StatType.ComboWindow, comboWindow) : 0f;    // a short grace window to keep the combo going
+        if (!isComboAttack) comboStep = 0;
+        queuedNextHit = false;
+        Debug.Log("Combo finished");
     }
 
     void OnDrawGizmosSelected()

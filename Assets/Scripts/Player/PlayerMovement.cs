@@ -351,8 +351,12 @@ public class PlayerMovement : MonoBehaviour
 
     void OnDash(InputValue value)
     {
-        if (value.isPressed && isGrounded && !isDashing && dashCooldownTimer <= 0 && playerCombat.state == PlayerCombat.PlayerState.Normal)
+        if (value.isPressed && isGrounded && !isDashing && dashCooldownTimer <= 0 && (playerCombat.state == PlayerCombat.PlayerState.Normal || playerCombat.CanCancel))
         {
+            if (playerCombat.CanCancel)
+            {
+                playerCombat.EndAttack();
+            }
             isDashing = true;
             dashTimer = dashDuration;
             rb.gravityScale = 0f;

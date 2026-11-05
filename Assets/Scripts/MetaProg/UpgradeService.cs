@@ -25,7 +25,7 @@ public static class UpgradeService
     // Rebuilds the permanent bonuses from the saved levels
     public static void ApplyAll()
     {
-        PlayerStats.CLearPermanent();
+        PlayerStats.ClearPermanent();
         foreach(var def in All)
         {
             int level = GameProgress.GetLevel(def.id);

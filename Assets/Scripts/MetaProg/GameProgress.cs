@@ -115,4 +115,15 @@ public class GameProgress
             Debug.LogError($"Save failed: {e.Message}");
         }
     }
+
+    public static void ResetAll()
+    {
+        data = new SaveData();
+        dirty = false;
+
+        try { if(File.Exists(FilePath)) File.Delete(FilePath); }
+        catch (Exception e){ Debug.LogError($"Reset failed: {e.Message}");}
+    
+        SoulsChanged?.Invoke();
+    }
 }

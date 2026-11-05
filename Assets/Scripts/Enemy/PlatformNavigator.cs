@@ -94,7 +94,7 @@ public class PlatformNavigator
         {
             path = FindPath(me, target);
             string plan = path == null
-            ? "AUCUN"
+            ? "NONE"
             : string.Join(" ", path.ConvertAll(e => $"#{e.from.index}->#{e.to.index}"));
             string blocked = "";
             foreach (var list in adjacency)
@@ -102,7 +102,7 @@ public class PlatformNavigator
                     if (Time.time < e.blockedUntil)
                         blocked += $" #{e.from.index}->#{e.to.index}({e.blockedUntil - Time.time:0}s)";
 
-            string msg = $"[Nav] plan : moi #{me.index}(y={me.topY:0.0}) -> cible #{target.index}(y={target.topY:0.0}) = {plan} | bloques:{(blocked == "" ? " aucun" : blocked)}";
+            string msg = $"[Nav] plan : me #{me.index}(y={me.topY:0.0}) -> target #{target.index}(y={target.topY:0.0}) = {plan} | blocks:{(blocked == "" ? " none" : blocked)}";
             if (msg != lastPlanLog) { lastPlanLog = msg; Debug.Log(msg, enemy); }
             goalNode = target;
             edgeIndex = 0;

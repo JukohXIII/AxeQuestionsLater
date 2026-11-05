@@ -74,6 +74,6 @@ public static class PlayerStats
         Changed?.Invoke();
     }
 
-    public static void CLearPermanent() { permanent.Clear(); Changed?.Invoke(); }
+    public static void ClearPermanent() { permanent.Clear(); Changed?.Invoke(); }
     public static void ClearRun() { run.Clear(); Changed?.Invoke(); }
 }

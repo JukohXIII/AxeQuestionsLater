@@ -1,5 +1,3 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -48,9 +46,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashCooldown = 0.4f;
     [SerializeField] private float dashAttackWindow = 0.2f;
 
-    [Header("Enemy bounce")]
+    [Header("Enemy overlap")]
     [SerializeField] private LayerMask enemyLayer;
-    [SerializeField] private float headSlideSpeed = 6f;
+    private const float EnemyOverlapSpeedMultiplier = 0.5f; // movement speed while overlapping an enemy
+    private readonly Collider2D[] overlapBuffer = new Collider2D[4];
+    private ContactFilter2D enemyFilter;
 
     // ---------- Read by other scripts ----------
     public int FacingDirection => facingDirection;
@@ -114,6 +114,8 @@ public class PlayerMovement : MonoBehaviour
         StatBases.Register(StatType.MoveSpeed, moveSpeed);
         StatBases.Register(StatType.AirJumps, maxAirJumps);
         StatBases.Register(StatType.DashCooldown, dashCooldown);
+
+        enemyFilter = new ContactFilter2D { useLayerMask = true, layerMask = enemyLayer, useTriggers = false };
     }
 
     void FixedUpdate()
@@ -152,7 +154,8 @@ public class PlayerMovement : MonoBehaviour
             decel = airDeceleration;
             runBurstTimer = 0;
         }
-        
+        if (IsOverlappingEnemy()) maxSpeed *= EnemyOverlapSpeedMultiplier;
+
         HandleHorizontalMovement();
 
         HandleBurstMovement();
@@ -369,21 +372,12 @@ public class PlayerMovement : MonoBehaviour
         facingDirection = direction;
     }
 
-    void OnCollisionStay2D(Collision2D collision)
+    public bool IsOverlappingEnemy()
     {
-       if (playerCombat.IsHurt) return;
-       if (((1 << collision.gameObject.layer) & enemyLayer) == 0) return;
+        if (playerCombat.state == PlayerCombat.PlayerState.Grabbing) return false;
 
-       foreach (ContactPoint2D contact in collision.contacts)
-        {
-            if (contact.normal.y > 0.5f)
-            {
-                float side = transform.position.x - collision.transform.position.x;
-                int dir = Mathf.Abs(side) < 0.05f ? facingDirection : (int)Mathf.Sign(side);
-                rb.linearVelocity = new Vector2(dir * headSlideSpeed, rb.linearVelocity.y);
-                return;
-            }
-        }
+        Bounds bounds = playerCollider.bounds;
+        return Physics2D.OverlapBox(bounds.center, bounds.size, 0f, enemyFilter, overlapBuffer) > 0;
     }
 
     public void SetAirHang(bool hang)

@@ -22,7 +22,6 @@ public class PlayerGetHit : MonoBehaviour
         health = GetComponent<Health>();
         playerCombat = GetComponent<PlayerCombat>();
         playerMovement = GetComponent<PlayerMovement>();
-        SetPassThroughEnemies(false);
     }
 
     void OnEnable()  { health.OnHit += HandleHit; }
@@ -30,7 +29,6 @@ public class PlayerGetHit : MonoBehaviour
 
     void HandleHit()
     {
-        SetPassThroughEnemies(true);   // so he doesn't get stuck on enemies while in hitstun
         if (health.LastHitCausedKnockdown)
         {
             playerCombat.Interrupt(PlayerCombat.PlayerState.Knockdown);
@@ -68,12 +66,6 @@ public class PlayerGetHit : MonoBehaviour
         if (timer > 0f) return;
 
         if (state == PlayerCombat.PlayerState.Knockdown) health.IsInvincible = false;
-        SetPassThroughEnemies(false);
         playerCombat.Interrupt(PlayerCombat.PlayerState.Normal);
-    }
-
-    void SetPassThroughEnemies(bool on)
-    {
-        Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemy"), on);
     }
 }

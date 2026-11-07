@@ -17,6 +17,7 @@ public class AttackData
     public Vector2 hitboxOffset = new (0.7f, 0f);
     public Vector2 hitboxSize = new (0.7f, 0.7f);
     public bool causesKnockdown;
+    [Range(0f, 1f)] public float cancelPoint = 0.4f;
 }
 
 [System.Serializable]
@@ -60,11 +61,11 @@ public class PlayerCombat : MonoBehaviour
     private AttackPhase phase = AttackPhase.None;
     private float phaseTimer;
     private bool isComboAttack;
-    private bool queuedNextHit;
+    float queuedTimer;
+    [SerializeField] private float attackBufferTime = 0.2f;
     private int comboStep;
     [SerializeField] private float comboWindow = 0.3f;   // time after a jab to still continue the combo
     private float comboTimer;
-    [Range(0f, 1f)] [SerializeField] private float cancelPoint = 0.4f;
     private float recoveryTime;
 
     // For enemy AI: reading the player's attack phase
@@ -72,7 +73,7 @@ public class PlayerCombat : MonoBehaviour
         state == PlayerState.Attacking && phase == AttackPhase.Recovery;
 
     public bool CanCancel =>
-        state == PlayerState.Attacking && phase == AttackPhase.Recovery && phaseTimer <= recoveryTime * (1f - cancelPoint);
+        state == PlayerState.Attacking && phase == AttackPhase.Recovery && phaseTimer <= recoveryTime * (1f - currentAttack.cancelPoint);
     
     public bool CanDashCancel =>
         state == PlayerState.Attacking && phase == AttackPhase.Recovery;
@@ -134,6 +135,7 @@ public class PlayerCombat : MonoBehaviour
     void Update()
     {
         if (comboTimer > 0f) comboTimer -= Time.deltaTime;
+        if (queuedTimer > 0f) queuedTimer -= Time.deltaTime;
         if (playerMovement.IsGrounded) airHangsUsed = 0;
         HandleCombat();
         attackPressedThisFrame = false;
@@ -182,7 +184,7 @@ public class PlayerCombat : MonoBehaviour
     void TryStartAttack()
     {
         if (state != PlayerState.Normal && !CanCancel) return;
-        if (!attackPressedThisFrame && !queuedNextHit) return;
+        if (!attackPressedThisFrame && queuedTimer <= 0f) return;
 
         if (CanCancel)
         {
@@ -350,7 +352,7 @@ public class PlayerCombat : MonoBehaviour
         // Check for input to queue the next hit
         if (attackPressedThisFrame && phase != AttackPhase.None)
         {
-            queuedNextHit = true;
+            queuedTimer = attackBufferTime;
             Debug.Log("Next hit queued");
         }
     }
@@ -476,10 +478,11 @@ public class PlayerCombat : MonoBehaviour
 
     public void Interrupt(PlayerState newState)
     {
+        if (playerMovement.IsDashing) playerMovement.EndDash();
         state = newState;
         phase = AttackPhase.None;
         comboStep = 0;
-        queuedNextHit = false;
+        queuedTimer = 0f;
         attackHitbox.SetActive(false);
         isThrowing = false;
         StopAirHang();
@@ -513,9 +516,11 @@ public class PlayerCombat : MonoBehaviour
         phase = AttackPhase.None;
         comboTimer = isComboAttack ? PlayerStats.Apply(StatType.ComboWindow, comboWindow) : 0f;    // a short grace window to keep the combo going
         if (!isComboAttack) comboStep = 0;
-        queuedNextHit = false;
+        queuedTimer = 0f;
         Debug.Log("Combo finished");
     }
+
+    public void ClearAttackBuffer() => queuedTimer = 0f;
 
     void OnDrawGizmosSelected()
     {

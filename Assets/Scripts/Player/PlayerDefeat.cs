@@ -70,7 +70,7 @@ public class PlayerDefeat : MonoBehaviour
         if (defeatTimer <= runAwayTime && !IsRunningAway) StartRunningAway();
         if (IsRunningAway) rb.linearVelocity = new Vector2(-runAwaySpeed, rb.linearVelocity.y);
 
-        if (IsRunningAway && (IsOffScreen() || defeatTimer <= -3f))   // -3: safety, in case he gets stuck
+        if (IsRunningAway && (IsOffScreen() || defeatTimer <= -2f))   // -2: safety, in case he gets stuck
         {
             gameOverShown = true;
             FindAnyObjectByType<GameOverMenu>().Show();

@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction jumpAction;
     private PlayerCombat playerCombat;
+    private Health health;
 
     [Header("Ground movement")]
     [SerializeField] private float moveSpeed = 10f;
@@ -34,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Fall movement")]
     [SerializeField] private float maxFallSpeed = 15f;
     [SerializeField] private float fastFallSpeed = 25f;
+    [SerializeField] private float fallGravityMultiplier = 1.7f;
 
     [Header("Air movement")]
     [SerializeField] private float airSpeed = 8f;
@@ -104,7 +106,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float minStepSpeed = 0.5f;
     [SerializeField] private float minStepInterval = 0.12f;  
     private bool wasWalking;
-    private float lastStepTime = -1f;    private float stepAccumulator;
+    private float lastStepTime = -1f;
+    private float stepAccumulator;
     private bool wasGroundedPrev;
     private float prevVelocityY;
 
@@ -117,6 +120,7 @@ public class PlayerMovement : MonoBehaviour
         defaultGravityScale = rb.gravityScale;
         playerCombat = GetComponent<PlayerCombat>();
         playerGuard = GetComponent<PlayerGuard>();
+        health = GetComponent<Health>();
 
         StatBases.Register(StatType.MoveSpeed, moveSpeed);
         StatBases.Register(StatType.AirJumps, maxAirJumps);
@@ -173,6 +177,8 @@ public class PlayerMovement : MonoBehaviour
         HandleFall();
 
         HandleDash();
+
+        HandleFallGravity();
 
         HandleFootsteps();
 
@@ -273,6 +279,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void HandleFallGravity()
+    {
+        if (rb.linearVelocity.y < 0 && rb.gravityScale > 0)
+        {
+            rb.linearVelocity += (fallGravityMultiplier - 1) * Physics2D.gravity * Time.fixedDeltaTime * rb.gravityScale;
+        }
+    }
+
     void PlayStep(float volumeScale = 1f)
     {
         lastStepTime = Time.time;
@@ -333,6 +347,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void EndDash()
     {
+        if (isDashing)
+        {
+            health.IsInvincible = false;
+            health.HideInvincibleBlink = false;
+        }
         isDashing = false;
         rb.gravityScale = defaultGravityScale;
         dashCooldownTimer = PlayerStats.Apply(StatType.DashCooldown, dashCooldown);
@@ -428,6 +447,8 @@ public class PlayerMovement : MonoBehaviour
                 airDashesRemaining--;
             }
             isDashing = true;
+            health.IsInvincible = true;
+            health.HideInvincibleBlink = true;
             dashTimer = dashDuration;
             rb.gravityScale = 0f;
             AudioManager.Play(Sfx.AirJump);
@@ -435,6 +456,8 @@ public class PlayerMovement : MonoBehaviour
         }
         return false;
     }
+
+    public void ClearDashBuffer() => dashBufferTimer = 0f;
 
     void OnDrawGizmosSelected()
     {

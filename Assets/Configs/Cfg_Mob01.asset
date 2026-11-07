@@ -34,8 +34,11 @@ MonoBehaviour:
   retreatSpeedMultiplier: 1.5
   hitstunDuration: 0.4
   knockdownDuration: 1.5
+  knockdownDelay: 0.25
+  hitstunFallGravity: 10
   deathDelay: 1.5
   usePlatformNavigation: 1
   launchInset: -0.2
   landingMargin: -0.2
   jumpReachSafety: 0.85
+  souls: 5

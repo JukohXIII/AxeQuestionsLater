@@ -188,6 +188,10 @@ public class HitstunState : EnemyState
         timer -= Time.deltaTime;
         bool floating = timer > 0f && !causeKnockdown && !enemyController.IsGrounded();
         enemyController.Rb.gravityScale = floating ? 0f : savedGravity;
+        if (!floating && !enemyController.IsGrounded() && enemyController.Rb.linearVelocity.y < 0f)
+        {
+            enemyController.Rb.linearVelocity += Vector2.down * enemyController.Config.hitstunFallGravity * Time.deltaTime;
+        }
         if (timer <= 0f && enemyController.IsGrounded())
         {
             if (causeKnockdown && enemyController.Config.knockdownDelay > 0f)

@@ -35,6 +35,11 @@ public class PlayerGuard : MonoBehaviour
             blockstunTimer -= Time.deltaTime;
             held = true;   // can't drop the guard during blockstun
         }
+        if (held)
+        {
+            playerCombat.ClearAttackBuffer();   // can't queue an attack while holding guard
+            playerMovement.ClearDashBuffer();
+        }
 
         var state = playerCombat.state;
         if (state == PlayerCombat.PlayerState.Normal && held && playerMovement.IsGrounded)

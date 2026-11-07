@@ -20,7 +20,7 @@ public class HitVisualCue : MonoBehaviour
 
     void Update()
     {
-        if (health.IsInvincible)
+        if (health.IsInvincible && !health.HideInvincibleBlink)
         {
             blinkTimer += Time.deltaTime;
             bool white = (int)(blinkTimer / blinkInterval) % 2 == 0;

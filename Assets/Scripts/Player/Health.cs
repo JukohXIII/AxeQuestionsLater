@@ -21,6 +21,8 @@ public class Health : MonoBehaviour
     public float KnockbackTakenMultiplier { get; set; } = 1f;
     public event Action OnHit;
     public Action OnDeath;
+    public bool HideInvincibleBlink { get; set; }
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();

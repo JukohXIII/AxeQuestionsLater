@@ -73,6 +73,9 @@ public class PlayerCombat : MonoBehaviour
 
     public bool CanCancel =>
         state == PlayerState.Attacking && phase == AttackPhase.Recovery && phaseTimer <= recoveryTime * (1f - cancelPoint);
+    
+    public bool CanDashCancel =>
+        state == PlayerState.Attacking && phase == AttackPhase.Recovery;
 
     public bool IsInAttackStartupOrActive =>
         state == PlayerState.Attacking && (phase == AttackPhase.Startup || phase == AttackPhase.Active);
@@ -189,13 +192,17 @@ public class PlayerCombat : MonoBehaviour
         isComboAttack = false;
         AttackData attack;
 
-        if (playerMovement.CanDashAttack)
+        if (playerMovement.CanDashAttack && playerMovement.IsGrounded)
         {
             attack = dashAttackData;
             playerMovement.EndDash();
         }
         else if (!playerMovement.IsGrounded)
         {
+            if (playerMovement.IsDashing)
+            {
+                playerMovement.EndDash();
+            }
             StartAirHang();
             attack = ChooseAirAttack();
         }

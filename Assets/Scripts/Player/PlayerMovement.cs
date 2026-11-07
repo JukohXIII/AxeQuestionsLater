@@ -45,6 +45,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashDuration = 0.15f;
     [SerializeField] private float dashCooldown = 0.4f;
     [SerializeField] private float dashAttackWindow = 0.2f;
+    [SerializeField] private float dashBufferTime = 0.25f;
+    private float dashBufferTimer;
+
+    [Header ("Air dash")]
+    [SerializeField] private int maxAirDashes = 1;
+    [SerializeField] private float dashEndSpeed = 5f;
+    private int airDashesRemaining;
 
     [Header("Enemy overlap")]
     [SerializeField] private LayerMask enemyLayer;
@@ -135,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded)
         {
             airJumpsRemaining = Mathf.RoundToInt(PlayerStats.Apply(StatType.AirJumps, maxAirJumps));
+            airDashesRemaining = maxAirDashes;
             isFastFalling = false;
 
             if (newDirection)
@@ -188,6 +196,14 @@ public class PlayerMovement : MonoBehaviour
         if (jumpAction.WasReleasedThisFrame())
         {
             jumpReleased = true;
+        }
+        if (dashBufferTimer > 0)
+        {
+            dashBufferTimer -= Time.unscaledDeltaTime;
+            if (TryDash())
+            {
+                dashBufferTimer = 0;
+            }
         }
     }
 
@@ -305,6 +321,7 @@ public class PlayerMovement : MonoBehaviour
             if (dashTimer <= 0)
             {
                 EndDash();
+                rb.linearVelocity = new Vector2(facingDirection * dashEndSpeed, rb.linearVelocity.y);
                 dashAttackWindowTimer = dashAttackWindow;
             }
             else
@@ -354,16 +371,16 @@ public class PlayerMovement : MonoBehaviour
 
     void OnDash(InputValue value)
     {
-        if (value.isPressed && isGrounded && !isDashing && dashCooldownTimer <= 0 && (playerCombat.state == PlayerCombat.PlayerState.Normal || playerCombat.CanCancel))
+        if (value.isPressed)
         {
-            if (playerCombat.CanCancel)
+            if (playerCombat.state == PlayerCombat.PlayerState.Attacking)
             {
-                playerCombat.EndAttack();
+                dashBufferTimer = dashBufferTime;
             }
-            isDashing = true;
-            dashTimer = dashDuration;
-            rb.gravityScale = 0f;
-            AudioManager.Play(Sfx.AirJump);
+            else
+            {
+                TryDash();
+            }
         }
     }
 
@@ -396,6 +413,27 @@ public class PlayerMovement : MonoBehaviour
     public void ClearInput()
     {
         moveInput = Vector2.zero;
+    }
+
+    public bool TryDash()
+    {
+        if ((isGrounded || airDashesRemaining > 0) && !isDashing && dashCooldownTimer <= 0 && (playerCombat.state == PlayerCombat.PlayerState.Normal || playerCombat.CanDashCancel))
+        {
+            if (playerCombat.CanDashCancel)
+            {
+                playerCombat.EndAttack();
+            }
+            if (!isGrounded)
+            {
+                airDashesRemaining--;
+            }
+            isDashing = true;
+            dashTimer = dashDuration;
+            rb.gravityScale = 0f;
+            AudioManager.Play(Sfx.AirJump);
+            return true;
+        }
+        return false;
     }
 
     void OnDrawGizmosSelected()

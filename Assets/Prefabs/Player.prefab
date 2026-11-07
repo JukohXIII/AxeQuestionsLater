@@ -330,13 +330,15 @@ MonoBehaviour:
   airAcceleration: 50
   airDeceleration: 5
   dashSpeed: 15
-  dashDuration: 0.1
+  dashDuration: 0.2
   dashCooldown: 0.4
   dashAttackWindow: 0.2
+  dashBufferTime: 0.25
+  maxAirDashes: 1
+  dashEndSpeed: 5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
-  headSlideSpeed: 6
   stepDistance: 2.25
   minLandingSpeed: 4
   minStepSpeed: 0.5
@@ -356,6 +358,7 @@ MonoBehaviour:
   state: 0
   hitStopDuration: 0.15
   comboWindow: 0.3
+  cancelPoint: 0.4
   attackHitbox: {fileID: 9119232456851001650}
   hittableLayers:
     serializedVersion: 2

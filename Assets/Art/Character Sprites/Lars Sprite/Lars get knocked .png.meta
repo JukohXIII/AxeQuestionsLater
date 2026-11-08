@@ -1,0 +1,255 @@
+fileFormatVersion: 2
+guid: 17c647d2b788f60409e3f35d14ed61e8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2773619441115240916
+    second: Lars get knocked _0
+  - first:
+      213: 244636127421643667
+    second: Lars get knocked _1
+  - first:
+      213: 2538367743830355813
+    second: Lars get knocked _2
+  - first:
+      213: 6373668774288039439
+    second: Lars get knocked _3
+  - first:
+      213: -3123993560602048031
+    second: Lars get knocked _4
+  - first:
+      213: -5997035538196299364
+    second: Lars get knocked _5
+  - first:
+      213: 7951346067789357524
+    second: Lars get knocked _6
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 8
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Lars get knocked _0
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 15
+        width: 75
+        height: 99
+      alignment: 9
+      pivot: {x: 0.3866667, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d99ac9bf20ed7620800000000000000
+      internalID: 2773619441115240916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars get knocked _2
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 15
+        width: 77
+        height: 99
+      alignment: 9
+      pivot: {x: 0.4025974, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56f6150a3081a3320800000000000000
+      internalID: 2538367743830355813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars get knocked _4
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 13
+        width: 67
+        height: 67
+      alignment: 9
+      pivot: {x: 0.5970149, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e905b3886855a4d0800000000000000
+      internalID: -3123993560602048031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars get knocked _5
+      rect:
+        serializedVersion: 2
+        x: 403
+        y: 13
+        width: 67
+        height: 65
+      alignment: 9
+      pivot: {x: 0.5970149, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c918a60a3ff36cca0800000000000000
+      internalID: -5997035538196299364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars get knocked _6
+      rect:
+        serializedVersion: 2
+        x: 531
+        y: 13
+        width: 67
+        height: 67
+      alignment: 9
+      pivot: {x: 0.5970149, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d1a8c0ee1bd85e60800000000000000
+      internalID: 7951346067789357524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: f879261fa71cbd848acffc3e22b51f5b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Lars get knocked _0: 2773619441115240916
+      Lars get knocked _1: 244636127421643667
+      Lars get knocked _2: 2538367743830355813
+      Lars get knocked _3: 6373668774288039439
+      Lars get knocked _4: -3123993560602048031
+      Lars get knocked _5: -5997035538196299364
+      Lars get knocked _6: 7951346067789357524
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

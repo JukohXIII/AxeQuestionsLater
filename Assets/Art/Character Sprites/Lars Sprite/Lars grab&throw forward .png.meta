@@ -1,0 +1,381 @@
+fileFormatVersion: 2
+guid: a6f23bf8abdd03c4fb570476915efd6d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -9060323601674710214
+    second: Lars grab&throw forward _0
+  - first:
+      213: 3586470094606047795
+    second: Lars grab&throw forward _1
+  - first:
+      213: -6650438007223454100
+    second: Lars grab&throw forward _2
+  - first:
+      213: 5324360404302329449
+    second: Lars grab&throw forward _3
+  - first:
+      213: -2125841001632010780
+    second: Lars grab&throw forward _4
+  - first:
+      213: -7629188513118206256
+    second: Lars grab&throw forward _5
+  - first:
+      213: 6502635830563423078
+    second: Lars grab&throw forward _6
+  - first:
+      213: -239294628488963341
+    second: Lars grab&throw forward _7
+  - first:
+      213: 4659973750467277743
+    second: Lars grab&throw forward _8
+  - first:
+      213: 7983381190164695625
+    second: Lars grab&throw forward _9
+  - first:
+      213: -3624901260421925075
+    second: Lars grab&throw forward _10
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 8
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Lars grab&throw forward _0
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 143
+        width: 83
+        height: 83
+      alignment: 9
+      pivot: {x: 0.21686746, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a33571c10b3434280800000000000000
+      internalID: -9060323601674710214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars grab&throw forward _1
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 143
+        width: 68
+        height: 80
+      alignment: 9
+      pivot: {x: 0.2647059, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33a1e829c83b5c130800000000000000
+      internalID: 3586470094606047795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars grab&throw forward _2
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 143
+        width: 66
+        height: 84
+      alignment: 9
+      pivot: {x: 0.22727273, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6670b23ed5e4b3a0800000000000000
+      internalID: -6650438007223454100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars grab&throw forward _3
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 143
+        width: 66
+        height: 82
+      alignment: 9
+      pivot: {x: 0.24242425, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 966789af39de3e940800000000000000
+      internalID: 5324360404302329449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars grab&throw forward _4
+      rect:
+        serializedVersion: 2
+        x: 533
+        y: 143
+        width: 66
+        height: 82
+      alignment: 9
+      pivot: {x: 0.24242425, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ed63c84fde7f72e0800000000000000
+      internalID: -2125841001632010780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars grab&throw forward _5
+      rect:
+        serializedVersion: 2
+        x: 661
+        y: 143
+        width: 67
+        height: 83
+      alignment: 9
+      pivot: {x: 0.23880596, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d6491fe77daf1690800000000000000
+      internalID: -7629188513118206256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars grab&throw forward _6
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 15
+        width: 65
+        height: 88
+      alignment: 9
+      pivot: {x: 0.26153848, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 663c570e5d00e3a50800000000000000
+      internalID: 6502635830563423078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars grab&throw forward _7
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 15
+        width: 67
+        height: 91
+      alignment: 9
+      pivot: {x: 0.35820895, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fa9140adcaddacf0800000000000000
+      internalID: -239294628488963341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars grab&throw forward _8
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 15
+        width: 70
+        height: 80
+      alignment: 9
+      pivot: {x: 0.31428573, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa33f3bbf6d8ba040800000000000000
+      internalID: 4659973750467277743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars grab&throw forward _9
+      rect:
+        serializedVersion: 2
+        x: 406
+        y: 15
+        width: 90
+        height: 72
+      alignment: 9
+      pivot: {x: 0.26666668, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94a4d4a05eaaace60800000000000000
+      internalID: 7983381190164695625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 0dd6b2329d4b4bd42a24948a03991097
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Lars grab&throw forward _0: -9060323601674710214
+      Lars grab&throw forward _1: 3586470094606047795
+      Lars grab&throw forward _10: -3624901260421925075
+      Lars grab&throw forward _2: -6650438007223454100
+      Lars grab&throw forward _3: 5324360404302329449
+      Lars grab&throw forward _4: -2125841001632010780
+      Lars grab&throw forward _5: -7629188513118206256
+      Lars grab&throw forward _6: 6502635830563423078
+      Lars grab&throw forward _7: -239294628488963341
+      Lars grab&throw forward _8: 4659973750467277743
+      Lars grab&throw forward _9: 7983381190164695625
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

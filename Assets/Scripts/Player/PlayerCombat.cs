@@ -65,6 +65,9 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float attackBufferTime = 0.2f;
     private int comboStep;
     [SerializeField] private float comboWindow = 0.3f;   // time after a jab to still continue the combo
+    
+    [Tooltip("Global tempo for all attacks. Below 1 = slower. Upgrades stack on top.")]
+    [SerializeField] private float baseAttackSpeed = 0.85f;
     private float comboTimer;
     private float recoveryTime;
 
@@ -252,7 +255,7 @@ public class PlayerCombat : MonoBehaviour
         if (isGrabAttack)
             AttackSpeedMultiplier = 1f;
         else
-            AttackSpeedMultiplier = PlayerStats.Apply(isComboAttack ? StatType.ComboSpeed : StatType.AttackSpeed, 1f);
+            AttackSpeedMultiplier = PlayerStats.Apply(isComboAttack ? StatType.ComboSpeed : StatType.AttackSpeed, 1f) * baseAttackSpeed;
 
         AttackSpeedMultiplier = Mathf.Max(AttackSpeedMultiplier, 0.1f); // never 0: we divide by it
     }

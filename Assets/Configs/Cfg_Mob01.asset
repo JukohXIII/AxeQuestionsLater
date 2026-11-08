@@ -34,7 +34,7 @@ MonoBehaviour:
   retreatSpeedMultiplier: 1.5
   hitstunDuration: 0.4
   knockdownDuration: 1.5
-  knockdownDelay: 0.25
+  knockdownDelay: 0.6
   hitstunFallGravity: 10
   deathDelay: 1.5
   usePlatformNavigation: 1

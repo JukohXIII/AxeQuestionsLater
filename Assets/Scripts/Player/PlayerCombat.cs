@@ -18,6 +18,7 @@ public class AttackData
     public Vector2 hitboxSize = new (0.7f, 0.7f);
     public bool causesKnockdown;
     [Range(0f, 1f)] public float cancelPoint = 0.4f;
+    public float lungeSpeed = 0f;
 }
 
 [System.Serializable]
@@ -94,6 +95,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private AttackData upTiltData;
     [SerializeField] private AttackData downTiltData;
     [SerializeField] private AttackData dashAttackData;
+    [SerializeField] private float closeLungeMultiplier = 0.5f;
 
     [Header("Air Attacks")]
     [SerializeField] private AttackData neutralAirData;
@@ -269,6 +271,14 @@ public class PlayerCombat : MonoBehaviour
         phase = AttackPhase.Startup;
         phaseTimer = attack.startup / AttackSpeedMultiplier;
         PlayAttackAnimation();
+        Vector2 checkPos = (Vector2)transform.position + new Vector2(attack.hitboxOffset.x * playerMovement.FacingDirection, attack.hitboxOffset.y);
+        bool enemyInRange = Physics2D.OverlapBox(checkPos, attack.hitboxSize, 0f, hittableLayers);
+        if (!isGrab && attack.lungeSpeed > 0f)
+        {
+            float speed = enemyInRange ? attack.lungeSpeed * closeLungeMultiplier : attack.lungeSpeed;
+            playerMovement.Lunge(speed);
+        }
+        
         if (!isGrab) PlaySwingSound();
     }
 

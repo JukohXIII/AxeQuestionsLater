@@ -408,6 +408,11 @@ public class PlayerMovement : MonoBehaviour
         facingDirection = direction;
     }
 
+    public void Lunge(float speed)
+    {
+        rb.linearVelocity = new Vector2(facingDirection * speed, rb.linearVelocity.y);
+    }
+
     public bool IsOverlappingEnemy()
     {
         if (playerCombat.state == PlayerCombat.PlayerState.Grabbing) return false;

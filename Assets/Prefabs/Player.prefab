@@ -330,7 +330,7 @@ MonoBehaviour:
   airSpeed: 3.5
   airAcceleration: 50
   airDeceleration: 5
-  dashSpeed: 15
+  dashSpeed: 13
   dashDuration: 0.2
   dashCooldown: 0.4
   dashAttackWindow: 0.2
@@ -374,10 +374,11 @@ MonoBehaviour:
     damage: 5
     knockback: 1
     launchDirection: {x: 0, y: 0}
-    hitboxOffset: {x: 0.8, y: 0}
-    hitboxSize: {x: 1, y: 0.7}
+    hitboxOffset: {x: 0.4, y: 0}
+    hitboxSize: {x: 1.3, y: 0.8}
     causesKnockdown: 0
     cancelPoint: 0.4
+    lungeSpeed: 4
   - attackName: Neutral Attack-2
     animationName: Lars_groundAttack_chop_2
     startup: 0.1
@@ -386,22 +387,24 @@ MonoBehaviour:
     damage: 7
     knockback: 1.5
     launchDirection: {x: 0, y: 0}
-    hitboxOffset: {x: 0.8, y: 0}
-    hitboxSize: {x: 1, y: 0.7}
+    hitboxOffset: {x: 0.6, y: 0.3}
+    hitboxSize: {x: 1.3, y: 1.4}
     causesKnockdown: 0
     cancelPoint: 0.4
+    lungeSpeed: 4
   - attackName: Neutral Attack-3
     animationName: Lars_groundAttack_overhead
     startup: 0.16
     active: 0.1
     recovery: 0.3
     damage: 12
-    knockback: 14
+    knockback: 15
     launchDirection: {x: 1, y: 0.3}
-    hitboxOffset: {x: 0.8, y: 0}
-    hitboxSize: {x: 1, y: 0.7}
+    hitboxOffset: {x: 0.6, y: 0.3}
+    hitboxSize: {x: 1.3, y: 2}
     causesKnockdown: 1
     cancelPoint: 1
+    lungeSpeed: 6
   upTiltData:
     attackName: Up Tilt
     animationName: Lars_strongAttack_UpTilt
@@ -415,6 +418,7 @@ MonoBehaviour:
     hitboxSize: {x: 1.1, y: 1}
     causesKnockdown: 0
     cancelPoint: 0.7
+    lungeSpeed: 0
   downTiltData:
     attackName: Down Tilt
     animationName: Lars_strongAttack_DownTilt
@@ -428,6 +432,7 @@ MonoBehaviour:
     hitboxSize: {x: 1.1, y: 0.4}
     causesKnockdown: 0
     cancelPoint: 0.4
+    lungeSpeed: 0
   dashAttackData:
     attackName: Dash Attack
     animationName: Lars_groundAttack_overhead
@@ -435,12 +440,14 @@ MonoBehaviour:
     active: 0.1
     recovery: 0.35
     damage: 12
-    knockback: 10
+    knockback: 15
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0.9, y: 0}
     hitboxSize: {x: 0.9, y: 0.7}
     causesKnockdown: 1
     cancelPoint: 0.4
+    lungeSpeed: 0
+  closeLungeMultiplier: 0.7
   neutralAirData:
     attackName: Neutral Aerial
     animationName: Lars_aerialAttack_Forward
@@ -454,6 +461,7 @@ MonoBehaviour:
     hitboxSize: {x: 0.7, y: 0.7}
     causesKnockdown: 0
     cancelPoint: 0.4
+    lungeSpeed: 0
   upAirData:
     attackName: Up Aerial
     animationName: Lars_aerialAttack_Up
@@ -467,6 +475,7 @@ MonoBehaviour:
     hitboxSize: {x: 1, y: 1.7}
     causesKnockdown: 0
     cancelPoint: 0.4
+    lungeSpeed: 0
   downAirData:
     attackName: Down Aerial
     animationName: Lars_aerialAttack_Down
@@ -480,6 +489,7 @@ MonoBehaviour:
     hitboxSize: {x: 0.7, y: 0.7}
     causesKnockdown: 0
     cancelPoint: 0.4
+    lungeSpeed: 0
   forwardAirData:
     attackName: Forward Aerial
     animationName: Lars_aerialAttack_Forward
@@ -493,6 +503,7 @@ MonoBehaviour:
     hitboxSize: {x: 0.7, y: 0.7}
     causesKnockdown: 0
     cancelPoint: 0.4
+    lungeSpeed: 0
   maxAirHangs: 3
   grabAttackData:
     attackName: Grab Attack
@@ -507,6 +518,7 @@ MonoBehaviour:
     hitboxSize: {x: 0.7, y: 0.7}
     causesKnockdown: 0
     cancelPoint: 0.4
+    lungeSpeed: 0
   holdOffset: {x: 0.9, y: 0.2}
   grabHoldTime: 1.5
   minHoldTime: 0.25
@@ -610,6 +622,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGuard
   blockstunDuration: 0.2
+  maxStamina: 100
+  staminaPerDamage: 2
+  regenRate: 30
+  regenDelay: 0.5
+  recoverThreshold: 0.3
 --- !u!114 &4327155027094465679
 MonoBehaviour:
   m_ObjectHideFlags: 0

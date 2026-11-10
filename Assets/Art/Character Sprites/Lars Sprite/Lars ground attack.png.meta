@@ -1,0 +1,405 @@
+fileFormatVersion: 2
+guid: 9b7c51a6602826743973b138e9d4b86e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7876408802647903603
+    second: Lars ground attack_0
+  - first:
+      213: 6884317255403842886
+    second: Lars ground attack_1
+  - first:
+      213: 6815378817498460254
+    second: Lars ground attack_2
+  - first:
+      213: 1410517028921969856
+    second: Lars ground attack_3
+  - first:
+      213: 5438341226352546595
+    second: Lars ground attack_4
+  - first:
+      213: -5431759612544085570
+    second: Lars ground attack_5
+  - first:
+      213: 6318263897891965695
+    second: Lars ground attack_6
+  - first:
+      213: -3660315626364234342
+    second: Lars ground attack_7
+  - first:
+      213: 3744079690669918209
+    second: Lars ground attack_8
+  - first:
+      213: 6986262552817626570
+    second: Lars ground attack_9
+  - first:
+      213: -6832991869319874858
+    second: Lars ground attack_10
+  - first:
+      213: 7171079376445560752
+    second: Lars ground attack_11
+  - first:
+      213: -5081395681722227179
+    second: Lars ground attack_12
+  - first:
+      213: 3339725122789962627
+    second: Lars ground attack_13
+  - first:
+      213: -611416819407742307
+    second: Lars ground attack_14
+  - first:
+      213: 7131496372591026021
+    second: Lars ground attack_15
+  - first:
+      213: -2195408905630296943
+    second: Lars ground attack_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 8
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Lars ground attack_0
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 156
+        width: 71
+        height: 82
+      alignment: 9
+      pivot: {x: 0.45070422, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37d86933310ae4d60800000000000000
+      internalID: 7876408802647903603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars ground attack_1
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 156
+        width: 95
+        height: 72
+      alignment: 9
+      pivot: {x: 0.021052632, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64d2071b1120a8f50800000000000000
+      internalID: 6884317255403842886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars ground attack_3
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 156
+        width: 92
+        height: 75
+      alignment: 9
+      pivot: {x: 0.51086956, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cc888ab3c9239310800000000000000
+      internalID: 1410517028921969856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars ground attack_4
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 156
+        width: 74
+        height: 120
+      alignment: 9
+      pivot: {x: 0.41891894, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3231b14288ed87b40800000000000000
+      internalID: 5438341226352546595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars ground attack_5
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 156
+        width: 91
+        height: 89
+      alignment: 9
+      pivot: {x: 0.021978023, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb11ffc39638e94b0800000000000000
+      internalID: -5431759612544085570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars ground attack_8
+      rect:
+        serializedVersion: 2
+        x: 981
+        y: 156
+        width: 64
+        height: 121
+      alignment: 9
+      pivot: {x: 0.453125, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 108822544a4a5f330800000000000000
+      internalID: 3744079690669918209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars ground attack_9
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 15
+        width: 116
+        height: 117
+      alignment: 9
+      pivot: {x: 0.10344827, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acdee48e6c034f060800000000000000
+      internalID: 6986262552817626570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars ground attack_10
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 15
+        width: 106
+        height: 117
+      alignment: 9
+      pivot: {x: 0.018867925, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d67e0cf8165c21a0800000000000000
+      internalID: -6832991869319874858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars ground attack_11
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 15
+        width: 113
+        height: 116
+      alignment: 9
+      pivot: {x: 0.017699115, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b7da29e2bac48360800000000000000
+      internalID: 7171079376445560752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars ground attack_12
+      rect:
+        serializedVersion: 2
+        x: 630
+        y: 15
+        width: 121
+        height: 84
+      alignment: 9
+      pivot: {x: 0.016528925, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5162eb3cc814b79b0800000000000000
+      internalID: -5081395681722227179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: c16de91d0fb9ee7418c4fea654d17cb1
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Lars ground attack_0: 7876408802647903603
+      Lars ground attack_1: 6884317255403842886
+      Lars ground attack_10: -6832991869319874858
+      Lars ground attack_11: 7171079376445560752
+      Lars ground attack_12: -5081395681722227179
+      Lars ground attack_13: 3339725122789962627
+      Lars ground attack_14: -611416819407742307
+      Lars ground attack_15: 7131496372591026021
+      Lars ground attack_16: -2195408905630296943
+      Lars ground attack_2: 6815378817498460254
+      Lars ground attack_3: 1410517028921969856
+      Lars ground attack_4: 5438341226352546595
+      Lars ground attack_5: -5431759612544085570
+      Lars ground attack_6: 6318263897891965695
+      Lars ground attack_7: -3660315626364234342
+      Lars ground attack_8: 3744079690669918209
+      Lars ground attack_9: 6986262552817626570
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

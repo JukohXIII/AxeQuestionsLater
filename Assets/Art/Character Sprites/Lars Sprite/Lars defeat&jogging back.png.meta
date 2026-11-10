@@ -1,0 +1,479 @@
+fileFormatVersion: 2
+guid: 9c783f7f36979f94b9518b3bca94e4e9
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6788434218197551665
+    second: Lars defeat&jogging back_0
+  - first:
+      213: 5170658757328283160
+    second: Lars defeat&jogging back_1
+  - first:
+      213: -5648073970586771004
+    second: Lars defeat&jogging back_2
+  - first:
+      213: 3475408123097564630
+    second: Lars defeat&jogging back_3
+  - first:
+      213: 3763003566746458022
+    second: Lars defeat&jogging back_4
+  - first:
+      213: 1718389863945345914
+    second: Lars defeat&jogging back_5
+  - first:
+      213: -3022047460049042574
+    second: Lars defeat&jogging back_6
+  - first:
+      213: 5654371510430789082
+    second: Lars defeat&jogging back_7
+  - first:
+      213: 6798502842372516109
+    second: Lars defeat&jogging back_8
+  - first:
+      213: -1536534700305480245
+    second: Lars defeat&jogging back_9
+  - first:
+      213: 4785138780233386350
+    second: Lars defeat&jogging back_10
+  - first:
+      213: -1425915860529565715
+    second: Lars defeat&jogging back_11
+  - first:
+      213: -4754883457345636255
+    second: Lars defeat&jogging back_12
+  - first:
+      213: -4879375663846516155
+    second: Lars defeat&jogging back_13
+  - first:
+      213: 8915114937466699796
+    second: Lars defeat&jogging back_14
+  - first:
+      213: -1834117464736408416
+    second: Lars defeat&jogging back_15
+  - first:
+      213: 2694794475292463841
+    second: Lars defeat&jogging back_16
+  - first:
+      213: 3255617423374132877
+    second: Lars defeat&jogging back_17
+  - first:
+      213: -4966618438039066463
+    second: Lars defeat&jogging back_18
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 8
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_3
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 209
+        width: 85
+        height: 132
+      alignment: 9
+      pivot: {x: 0.30588236, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d5ccb246412b3030800000000000000
+      internalID: 3475408123097564630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_6
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 208
+        width: 59
+        height: 141
+      alignment: 9
+      pivot: {x: 0.44067797, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 273c769b8d78f06d0800000000000000
+      internalID: -3022047460049042574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_7
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 208
+        width: 81
+        height: 132
+      alignment: 9
+      pivot: {x: 0.32098764, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adde05b3eec587e40800000000000000
+      internalID: 5654371510430789082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_8
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 208
+        width: 118
+        height: 95
+      alignment: 9
+      pivot: {x: 0.22033899, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d09e81ca052295e50800000000000000
+      internalID: 6798502842372516109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_9
+      rect:
+        serializedVersion: 2
+        x: 772
+        y: 208
+        width: 126
+        height: 73
+      alignment: 9
+      pivot: {x: 0.20634922, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc50b3bb4d12daae0800000000000000
+      internalID: -1536534700305480245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_11
+      rect:
+        serializedVersion: 2
+        x: 956
+        y: 208
+        width: 126
+        height: 66
+      alignment: 9
+      pivot: {x: 0.20634922, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: def2a856411263ce0800000000000000
+      internalID: -1425915860529565715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_12
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 206
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 168388020b2430eb0800000000000000
+      internalID: -4754883457345636255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_13
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 16
+        width: 39
+        height: 83
+      alignment: 9
+      pivot: {x: 0.71794873, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54a1ebe8fa9f84cb0800000000000000
+      internalID: -4879375663846516155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_14
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 16
+        width: 40
+        height: 85
+      alignment: 9
+      pivot: {x: 0.675, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4104b732dc9d8bb70800000000000000
+      internalID: 8915114937466699796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_15
+      rect:
+        serializedVersion: 2
+        x: 419
+        y: 16
+        width: 45
+        height: 83
+      alignment: 9
+      pivot: {x: 0.75555557, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0acdb0622e7eb86e0800000000000000
+      internalID: -1834117464736408416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_16
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 16
+        width: 51
+        height: 83
+      alignment: 9
+      pivot: {x: 0.6666667, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e21e723c45d56520800000000000000
+      internalID: 2694794475292463841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_17
+      rect:
+        serializedVersion: 2
+        x: 783
+        y: 16
+        width: 54
+        height: 82
+      alignment: 9
+      pivot: {x: 0.6296296, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d86a9cc2cc64e2d20800000000000000
+      internalID: 3255617423374132877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars defeat&jogging back_18
+      rect:
+        serializedVersion: 2
+        x: 976
+        y: 16
+        width: 43
+        height: 83
+      alignment: 9
+      pivot: {x: 0.60465115, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a8a6c948d6031bb0800000000000000
+      internalID: -4966618438039066463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: d3edf65ffec3e9946b9a4173dd3e197d
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Lars defeat&jogging back_0: 6788434218197551665
+      Lars defeat&jogging back_1: 5170658757328283160
+      Lars defeat&jogging back_10: 4785138780233386350
+      Lars defeat&jogging back_11: -1425915860529565715
+      Lars defeat&jogging back_12: -4754883457345636255
+      Lars defeat&jogging back_13: -4879375663846516155
+      Lars defeat&jogging back_14: 8915114937466699796
+      Lars defeat&jogging back_15: -1834117464736408416
+      Lars defeat&jogging back_16: 2694794475292463841
+      Lars defeat&jogging back_17: 3255617423374132877
+      Lars defeat&jogging back_18: -4966618438039066463
+      Lars defeat&jogging back_2: -5648073970586771004
+      Lars defeat&jogging back_3: 3475408123097564630
+      Lars defeat&jogging back_4: 3763003566746458022
+      Lars defeat&jogging back_5: 1718389863945345914
+      Lars defeat&jogging back_6: -3022047460049042574
+      Lars defeat&jogging back_7: 5654371510430789082
+      Lars defeat&jogging back_8: 6798502842372516109
+      Lars defeat&jogging back_9: -1536534700305480245
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

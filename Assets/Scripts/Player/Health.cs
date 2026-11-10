@@ -22,6 +22,7 @@ public class Health : MonoBehaviour
     public event Action OnHit;
     public Action OnDeath;
     public bool HideInvincibleBlink { get; set; }
+    public float LastBlockedDamage { get; private set; }
 
     void Awake()
     {
@@ -34,6 +35,7 @@ public class Health : MonoBehaviour
         if (!breaksGuard && GuardFacing != 0 && Mathf.Sign(knockbackDirection.x) == -GuardFacing)
         {
             rb.linearVelocity = new Vector2(knockbackDirection.x * knockbackForce * 0.3f * KnockbackTakenMultiplier, 0f);
+            LastBlockedDamage = damageAmount;
             OnBlocked?.Invoke();
             return;
         }

@@ -63,7 +63,9 @@ public class PlayerCombat : MonoBehaviour
     private float phaseTimer;
     private bool isComboAttack;
     float queuedTimer;
+    Vector2 queuedMove;
     [SerializeField] private float attackBufferTime = 0.2f;
+    [SerializeField] private float lateSwapWindow = 0.08f;
     private int comboStep;
     [SerializeField] private float comboWindow = 0.3f;   // time after a jab to still continue the combo
     
@@ -219,6 +221,7 @@ public class PlayerCombat : MonoBehaviour
         }
 
         BeginAttack(attack, false);
+        queuedMove = Vector2.zero;
         attackPressedThisFrame = false;
         Debug.Log("Playing: " + attack.attackName);
     }
@@ -233,18 +236,25 @@ public class PlayerCombat : MonoBehaviour
         grabPressedThisFrame = false;
     }
 
+    Vector2 AttackDirection()
+    {
+        // Use the stick now; if it's neutral, use the direction saved with the buffered press
+        return moveInput.magnitude > 0.5f ? moveInput : queuedMove;
+    }
     AttackData ChooseAirAttack()
     {
-        if (moveInput.y > 0.5f) return upAirData;
-        if (moveInput.y < -0.5f) return downAirData;
-        if (moveInput.x != 0) return forwardAirData;
+        Vector2 dir = AttackDirection();
+        if (dir.y > 0.5f) return upAirData;
+        if (dir.y < -0.5f) return downAirData;
+        if (dir.x != 0) return forwardAirData;
         return neutralAirData;
     }
 
     AttackData ChooseGroundAttack()
     {
-        if (moveInput.y > 0.5f) return upTiltData;
-        if (moveInput.y < -0.5f) return downTiltData;
+        Vector2 dir = AttackDirection();
+        if (dir.y > 0.5f) return upTiltData;
+        if (dir.y < -0.5f) return downTiltData;
 
         bool continueCombo = comboTimer > 0f && comboStep > 0 && comboStep < comboAttacks.Length;
         comboStep = continueCombo ? comboStep + 1 : 1;
@@ -362,12 +372,26 @@ public class PlayerCombat : MonoBehaviour
 
     void HandleQueuedInput()
     {
-        // Check for input to queue the next hit
-        if (attackPressedThisFrame && phase != AttackPhase.None)
+        if (!attackPressedThisFrame || phase == AttackPhase.None) return;
+
+        if (phase == AttackPhase.Startup)
         {
-            queuedTimer = attackBufferTime;
-            Debug.Log("Next hit queued");
+            float elapsed = currentAttack.startup / AttackSpeedMultiplier - phaseTimer;
+            bool tiltInput = Mathf.Abs(moveInput.y) > 0.5f;
+            if (elapsed <= lateSwapWindow && isComboAttack && tiltInput && playerMovement.IsGrounded)
+                SwapToTilt();
+            return;   // any other press during startup is dropped
         }
+
+        queuedTimer = attackBufferTime;
+        queuedMove = moveInput;
+    }
+
+    void SwapToTilt()
+    {
+        isComboAttack = false;        // the tilt ends the jab combo
+        playerMovement.Lunge(0f);     // cancel the jab's forward step
+        BeginAttack(moveInput.y > 0 ? upTiltData : downTiltData, false);
     }
 
     void HandleGrabbing()
@@ -496,6 +520,7 @@ public class PlayerCombat : MonoBehaviour
         phase = AttackPhase.None;
         comboStep = 0;
         queuedTimer = 0f;
+        queuedMove = Vector2.zero;
         attackHitbox.SetActive(false);
         isThrowing = false;
         StopAirHang();
@@ -533,7 +558,11 @@ public class PlayerCombat : MonoBehaviour
         Debug.Log("Combo finished");
     }
 
-    public void ClearAttackBuffer() => queuedTimer = 0f;
+    public void ClearAttackBuffer() 
+    {
+        queuedTimer = 0f;
+        queuedMove = Vector2.zero;
+    }
 
     void OnDrawGizmosSelected()
     {

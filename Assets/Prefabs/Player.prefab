@@ -90,7 +90,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!95 &6039470422745858709
 Animator:
@@ -378,6 +378,7 @@ MonoBehaviour:
     hitboxOffset: {x: 0.4, y: 0}
     hitboxSize: {x: 1.3, y: 0.8}
     causesKnockdown: 0
+    heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 4
   - attackName: Neutral Attack-2
@@ -391,6 +392,7 @@ MonoBehaviour:
     hitboxOffset: {x: 0.6, y: 0.3}
     hitboxSize: {x: 1.3, y: 1.4}
     causesKnockdown: 0
+    heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 4
   - attackName: Neutral Attack-3
@@ -403,7 +405,8 @@ MonoBehaviour:
     launchDirection: {x: 1, y: 0.3}
     hitboxOffset: {x: 0.6, y: 0.3}
     hitboxSize: {x: 1.3, y: 2}
-    causesKnockdown: 1
+    causesKnockdown: 0
+    heavyHit: 1
     cancelPoint: 1
     lungeSpeed: 6
   upTiltData:
@@ -418,6 +421,7 @@ MonoBehaviour:
     hitboxOffset: {x: 0.5, y: 0.5}
     hitboxSize: {x: 1.1, y: 1}
     causesKnockdown: 0
+    heavyHit: 0
     cancelPoint: 0.7
     lungeSpeed: 0
   downTiltData:
@@ -432,6 +436,7 @@ MonoBehaviour:
     hitboxOffset: {x: 0.7, y: -0.3}
     hitboxSize: {x: 1.1, y: 0.4}
     causesKnockdown: 0
+    heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 0
   dashAttackData:
@@ -445,7 +450,8 @@ MonoBehaviour:
     launchDirection: {x: 0, y: 0}
     hitboxOffset: {x: 0.9, y: 0}
     hitboxSize: {x: 0.9, y: 0.7}
-    causesKnockdown: 1
+    causesKnockdown: 0
+    heavyHit: 1
     cancelPoint: 0.4
     lungeSpeed: 0
   closeLungeMultiplier: 0.7
@@ -461,6 +467,7 @@ MonoBehaviour:
     hitboxOffset: {x: 0.7, y: 0}
     hitboxSize: {x: 0.7, y: 0.7}
     causesKnockdown: 0
+    heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 0
   upAirData:
@@ -475,6 +482,7 @@ MonoBehaviour:
     hitboxOffset: {x: 0.5, y: 0.5}
     hitboxSize: {x: 1, y: 1.7}
     causesKnockdown: 0
+    heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 0
   downAirData:
@@ -489,6 +497,7 @@ MonoBehaviour:
     hitboxOffset: {x: 0, y: -0.7}
     hitboxSize: {x: 0.7, y: 0.7}
     causesKnockdown: 0
+    heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 0
   forwardAirData:
@@ -503,6 +512,7 @@ MonoBehaviour:
     hitboxOffset: {x: 0.7, y: 0}
     hitboxSize: {x: 0.7, y: 0.7}
     causesKnockdown: 0
+    heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 0
   maxAirHangs: 3
@@ -518,6 +528,7 @@ MonoBehaviour:
     hitboxOffset: {x: 0.9, y: 0}
     hitboxSize: {x: 0.7, y: 0.7}
     causesKnockdown: 0
+    heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 0
   holdOffset: {x: 0.9, y: 0.2}

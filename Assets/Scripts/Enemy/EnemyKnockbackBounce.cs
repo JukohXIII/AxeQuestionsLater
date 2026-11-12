@@ -64,7 +64,7 @@ public class EnemyKnockbackBounce : MonoBehaviour
 
         if (((1 << collision.gameObject.layer) & groundLayers) == 0) return;
 
-        if (impactSpeed > minBounceSpeed)
+        if (impactSpeed > minBounceSpeed && enemy.CurrentState == enemy.Hitstun)
             rb.linearVelocity = Vector2.Reflect(lastVelocity, normal) * bounceDamping;
     }
 }

@@ -7,6 +7,7 @@ public class EnemyAnimation : MonoBehaviour
     private IEnemyState lastState;
     private Grabbable grabbable;
     private bool wasGrabbed;
+    private bool lastDeadSettled;
 
     void Awake()
     {
@@ -29,15 +30,17 @@ public class EnemyAnimation : MonoBehaviour
             lastState = null; // force the normal clip to play again after release
         }
         IEnemyState state = enemy.CurrentState;
-        if (state == lastState) return;
+        bool deadSettled = state == enemy.Dead && enemy.Dead is DeadState d && d.Settled;
+        if (state == lastState && deadSettled == lastDeadSettled) return;
         lastState = state;
+        lastDeadSettled = deadSettled;
 
         if (state == enemy.Chase || state == enemy.Retreat)
             animator.Play("Mob_01_walk");
         else if (state == enemy.Attack)
             animator.Play(enemy.CurrentAttack.animationClip, 0, 0f);
         else if (state == enemy.Dead)
-            animator.Play("Mob_01_dying", 0, 0f);
+            animator.Play(deadSettled ? "Mob_01_dying" : "Mob_01_getHit", 0, 0f);
         else if (state == enemy.Hitstun || state == enemy.Knockdown)
             animator.Play("Mob_01_getHit", 0, 0f);
         else

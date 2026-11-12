@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 797732869254870819}
   - component: {fileID: 7293048066322346256}
   - component: {fileID: 8273643248671535827}
+  - component: {fileID: 5295843806168472376}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -238,6 +239,25 @@ MonoBehaviour:
   fadeSpeed: 3
   flashColor: {r: 1, g: 1, b: 1, a: 1}
   flashDuration: 0.1
+--- !u!114 &5295843806168472376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476157468979207105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b05b4c747340e54ca0997afb9d2d548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThrownCollateral
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  damage: 5
+  knockback: 8
+  duration: 0.6
+  hitboxSize: {x: 1, y: 1}
 --- !u!1 &2266157878483471962
 GameObject:
   m_ObjectHideFlags: 0

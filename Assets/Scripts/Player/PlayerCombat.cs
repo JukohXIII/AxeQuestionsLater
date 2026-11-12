@@ -17,6 +17,7 @@ public class AttackData
     public Vector2 hitboxOffset = new (0.7f, 0f);
     public Vector2 hitboxSize = new (0.7f, 0.7f);
     public bool causesKnockdown;
+    public bool heavyHit;
     [Range(0f, 1f)] public float cancelPoint = 0.4f;
     public float lungeSpeed = 0f;
 }
@@ -346,7 +347,7 @@ public class PlayerCombat : MonoBehaviour
                             float dealt = PlayerStats.Apply(StatType.Damage, currentAttack.damage);
                             targetHealth.TakeHit(dealt, knockbackDirection, currentAttack.knockback, currentAttack.causesKnockdown);
                             ApplyLifeSteal(dealt);
-                            AudioManager.Play(currentAttack.causesKnockdown ? Sfx.HitHeavy : Sfx.Hit);
+                            AudioManager.Play(currentAttack.heavyHit ? Sfx.HitHeavy : Sfx.Hit);
                             StartCoroutine(HitStop(hitStopDuration / AttackSpeedMultiplier));
                         }
                     }
@@ -454,6 +455,7 @@ public class PlayerCombat : MonoBehaviour
             turnAfterThrow = true;
         }
         heldTarget.Release();
+        if (heldTarget.TryGetComponent(out ThrownCollateral collateral)) collateral.Launch();
         float dealt = PlayerStats.Apply(StatType.Damage, t.damage);
         heldTarget.GetComponent<Health>().TakeHit(dealt, dir, t.knockback, t.causesKnockdown);
         ApplyLifeSteal(dealt);
@@ -538,7 +540,7 @@ public class PlayerCombat : MonoBehaviour
 
     void PlaySwingSound()
     {
-        AudioManager.Play(currentAttack.causesKnockdown ? Sfx.SwingHeavy : Sfx.Swing);
+        AudioManager.Play(currentAttack.heavyHit ? Sfx.SwingHeavy : Sfx.Swing);
     }
 
     public void EndAttack()

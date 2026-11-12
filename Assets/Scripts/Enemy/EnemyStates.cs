@@ -192,13 +192,14 @@ public class HitstunState : EnemyState
         {
             enemyController.Rb.linearVelocity += Vector2.down * enemyController.Config.hitstunFallGravity * Time.deltaTime;
         }
-        if (timer <= 0f && enemyController.IsGrounded())
+        if (timer <= 0f)
         {
-            if (causeKnockdown && enemyController.Config.knockdownDelay > 0f)
-            {
-                groundTime += Time.deltaTime;
-                if (groundTime < enemyController.Config.knockdownDelay) return;
-            }
+            bool settled = enemyController.IsGrounded() && enemyController.Rb.linearVelocity.magnitude < 0.5f;
+            groundTime = settled ? groundTime + Time.deltaTime : 0f;
+
+            float needed = causeKnockdown ? enemyController.Config.knockdownDelay : enemyController.Config.settleTime;
+            if (groundTime < needed) return;
+
             IEnemyState next = causeKnockdown ? enemyController.Knockdown : enemyController.Idle;
             causeKnockdown = false;
             enemyController.ChangeState(next);
@@ -280,13 +281,27 @@ public class RetreatState : EnemyState
 // DEAD: terminal state.
 public class DeadState : EnemyState
 {
+    bool settled;
+    public bool Settled => settled;
+
     public DeadState(EnemyController e) : base(e) { }
 
     public override void Enter()
     {
-        enemyController.StopHorizontal();
-        // TODO: death animation / VFX
-        Object.Destroy(enemyController.gameObject, enemyController.Config.deathDelay);
+        settled = false;
         enemyController.gameObject.layer = LayerMask.NameToLayer("Prop");
+        // no StopHorizontal: let the killing blow carry the body
+    }
+
+    public override void Tick()
+    {
+        if (settled) return;
+        if (enemyController.IsGrounded() && enemyController.Rb.linearVelocity.magnitude < 0.5f)
+        {
+            settled = true;
+            enemyController.StopHorizontal();
+            // TODO: death animation / VFX
+            Object.Destroy(enemyController.gameObject, enemyController.Config.deathDelay);
+        }
     }
 }

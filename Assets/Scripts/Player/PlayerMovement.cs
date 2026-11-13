@@ -81,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded;
     private int facingDirection = 1;
     private float maxSpeed;
+    private float carrySpeed;
     private float accel;
     private float decel;
     private float runBurstTimer;
@@ -158,10 +159,11 @@ public class PlayerMovement : MonoBehaviour
             maxSpeed = PlayerStats.Apply(StatType.MoveSpeed, runBurstTimer > 0 ? burstMovementSpeed : moveSpeed);
             accel = runBurstTimer > 0 ? burstMovementAcceleration : acceleration;
             decel = deceleration;
+            carrySpeed = Mathf.Min(Mathf.Abs(rb.linearVelocity.x), maxSpeed);
         }
         else
         {
-            maxSpeed = PlayerStats.Apply(StatType.MoveSpeed, airSpeed);
+            maxSpeed = Mathf.Max(PlayerStats.Apply(StatType.MoveSpeed, airSpeed), carrySpeed);
             accel = airAcceleration;
             decel = airDeceleration;
             runBurstTimer = 0;

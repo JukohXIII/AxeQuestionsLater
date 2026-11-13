@@ -327,9 +327,9 @@ MonoBehaviour:
   maxFallSpeed: 15
   fastFallSpeed: 15
   fallGravityMultiplier: 1.7
-  airSpeed: 3.5
-  airAcceleration: 50
-  airDeceleration: 5
+  airSpeed: 2.5
+  airAcceleration: 20
+  airDeceleration: 2
   dashSpeed: 13
   dashDuration: 0.2
   dashCooldown: 0.4

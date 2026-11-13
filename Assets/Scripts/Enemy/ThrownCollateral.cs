@@ -26,7 +26,6 @@ public class ThrownCollateral : MonoBehaviour
     {
         active = true;
         elapsed = 0f;
-        alreadyHit.Clear();
     }
 
     void FixedUpdate()
@@ -43,12 +42,14 @@ public class ThrownCollateral : MonoBehaviour
 
         foreach (Collider2D hit in Physics2D.OverlapBoxAll(transform.position, hitboxSize, 0f, enemyLayers))
         {
-            if (hit == self || alreadyHit.Contains(hit)) continue;
+            if (hit == self) continue;
             if (!hit.TryGetComponent(out Health h) || h.IsDead) continue;
 
             alreadyHit.Add(hit);
             float side = Mathf.Sign(hit.transform.position.x - transform.position.x);
             h.TakeHit(damage, new Vector2(side, 0.5f).normalized, knockback, false);
+            active = false;
+            return;
         }
     }
 }

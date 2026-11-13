@@ -1,0 +1,415 @@
+fileFormatVersion: 2
+guid: fcfe18edf94313d4787df985a62cb193
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5646557666959923183
+    second: Lars throw & recieve axe_0
+  - first:
+      213: 8417994802109586748
+    second: Lars throw & recieve axe_1
+  - first:
+      213: 3769476590752025913
+    second: Lars throw & recieve axe_2
+  - first:
+      213: 6122744581939262772
+    second: Lars throw & recieve axe_3
+  - first:
+      213: -5766384604360485926
+    second: Lars throw & recieve axe_4
+  - first:
+      213: -4083752924956725834
+    second: Lars throw & recieve axe_5
+  - first:
+      213: -725850852654058136
+    second: Lars throw & recieve axe_6
+  - first:
+      213: -3739624411064082169
+    second: Lars throw & recieve axe_7
+  - first:
+      213: -8798174326017317208
+    second: Lars throw & recieve axe_8
+  - first:
+      213: 7871312156856892816
+    second: Lars throw & recieve axe_9
+  - first:
+      213: -7984680623708208569
+    second: Lars throw & recieve axe_10
+  - first:
+      213: 5170352778727966902
+    second: Lars throw & recieve axe_11
+  - first:
+      213: 4771593521697933473
+    second: Lars throw & recieve axe_12
+  - first:
+      213: -6322668833760103957
+    second: Lars throw & recieve axe_13
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 8
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Lars throw & recieve axe_0
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 143
+        width: 91
+        height: 86
+      alignment: 9
+      pivot: {x: 0.52747256, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe797e6084a9c5e40800000000000000
+      internalID: 5646557666959923183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars throw & recieve axe_1
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 143
+        width: 91
+        height: 87
+      alignment: 9
+      pivot: {x: 0.5714286, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3d93dc0ca9b2d470800000000000000
+      internalID: 8417994802109586748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars throw & recieve axe_2
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 143
+        width: 105
+        height: 72
+      alignment: 9
+      pivot: {x: 0.01904762, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93dccecdcfedf4430800000000000000
+      internalID: 3769476590752025913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars throw & recieve axe_4
+      rect:
+        serializedVersion: 2
+        x: 637
+        y: 143
+        width: 48
+        height: 84
+      alignment: 9
+      pivot: {x: 0.1875, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad3dfc201cfa9ffa0800000000000000
+      internalID: -5766384604360485926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars throw & recieve axe_5
+      rect:
+        serializedVersion: 2
+        x: 836
+        y: 143
+        width: 83
+        height: 72
+      alignment: 9
+      pivot: {x: 0.024096385, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bded75f9589357c0800000000000000
+      internalID: -4083752924956725834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars throw & recieve axe_6
+      rect:
+        serializedVersion: 2
+        x: 981
+        y: 143
+        width: 91
+        height: 86
+      alignment: 9
+      pivot: {x: 0.52747256, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 865f3a7ce724de5f0800000000000000
+      internalID: -725850852654058136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars throw & recieve axe_7
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 15
+        width: 94
+        height: 87
+      alignment: 9
+      pivot: {x: 0.5851064, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7016529596f2a1cc0800000000000000
+      internalID: -3739624411064082169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars throw & recieve axe_8
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 15
+        width: 93
+        height: 89
+      alignment: 9
+      pivot: {x: 0.58064514, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a6a6c1b01b96e580800000000000000
+      internalID: -8798174326017317208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars throw & recieve axe_10
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 15
+        width: 87
+        height: 87
+      alignment: 9
+      pivot: {x: 0.55172414, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7428de20747b03190800000000000000
+      internalID: -7984680623708208569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars throw & recieve axe_11
+      rect:
+        serializedVersion: 2
+        x: 602
+        y: 15
+        width: 84
+        height: 89
+      alignment: 9
+      pivot: {x: 0.53571427, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b8c8836578c0c740800000000000000
+      internalID: 5170352778727966902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lars throw & recieve axe_12
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 15
+        width: 54
+        height: 84
+      alignment: 9
+      pivot: {x: 0.2777778, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a84c59e60b183240800000000000000
+      internalID: 4771593521697933473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 8f15cc60e1eac17478a41ceb897dfa5b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Lars throw & recieve axe_0: 5646557666959923183
+      Lars throw & recieve axe_1: 8417994802109586748
+      Lars throw & recieve axe_10: -7984680623708208569
+      Lars throw & recieve axe_11: 5170352778727966902
+      Lars throw & recieve axe_12: 4771593521697933473
+      Lars throw & recieve axe_13: -6322668833760103957
+      Lars throw & recieve axe_2: 3769476590752025913
+      Lars throw & recieve axe_3: 6122744581939262772
+      Lars throw & recieve axe_4: -5766384604360485926
+      Lars throw & recieve axe_5: -4083752924956725834
+      Lars throw & recieve axe_6: -725850852654058136
+      Lars throw & recieve axe_7: -3739624411064082169
+      Lars throw & recieve axe_8: -8798174326017317208
+      Lars throw & recieve axe_9: 7871312156856892816
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

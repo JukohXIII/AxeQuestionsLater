@@ -13,6 +13,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [Tooltip("Layer of the player. Used to detect who the attacks hit.")]
     [SerializeField] private LayerMask playerLayer;
+    [Tooltip("Where projectiles spawn. Make it a child so it is mirrored with the sprite. If empty, the enemy's position.")]
+    [SerializeField] private Transform muzzle;
 
     public PlatformNavigator Navigator { get; private set; }
     public Collider2D PlayerCollider { get; private set; }
@@ -26,11 +28,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float separationRadius = 0.8f;
     [SerializeField] private float separationSpeed = 2.5f;
     private static readonly List<EnemyController> active = new();
-
-    [Header("Head slide")]
-    [SerializeField] private float headSlideSpeed = 4f;
-    private bool onPlayerHead;
-    private int headSlideDir;
 
     [Header("Debug")]
     [SerializeField] private string currentStateName;
@@ -141,6 +138,7 @@ public class EnemyController : MonoBehaviour
 
     void ApplySeparation()
     {
+        if (config.moveSpeed <= 0f) return;   // static enemies are never pushed around
         if (currentState != Idle && currentState != Chase) return;
         if (grabbable != null && grabbable.IsGrabbed) return;
 
@@ -261,6 +259,19 @@ public class EnemyController : MonoBehaviour
         ChangeState(Attack);
     }
 
+    public void FireProjectile(EnemyAttackData attack)
+    {
+        Face(DirectionToPlayer());
+
+        Vector2 origin = muzzle != null ? (Vector2)muzzle.position : (Vector2)transform.position;
+        Vector2 target = PlayerCollider != null ? (Vector2)PlayerCollider.bounds.center : (Vector2)player.position;
+        Vector2 direction = (target - origin).normalized;
+        if (direction == Vector2.zero) direction = Vector2.right * FacingDirection;
+
+        EnemyProjectile projectile = Instantiate(attack.projectilePrefab, origin, Quaternion.identity);
+        projectile.Launch(direction, attack.projectileSpeed, attack.hit, playerLayer, groundLayer);
+    }
+
     public bool DealHit(EnemyHitData hit, HashSet<Health> alreadyHit)
     {
         bool hitSomeone = false;
@@ -320,32 +331,6 @@ public class EnemyController : MonoBehaviour
         scale.x = Mathf.Abs(scale.x) * dir;
         transform.localScale = scale;
     }
-
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        if (currentState == Dead || currentState == Attack) return;
-        if (grabbable != null && grabbable.IsGrabbed) return;
-        if ((playerLayer.value & (1 << collision.gameObject.layer)) == 0) return;
-
-        foreach (ContactPoint2D contact in collision.contacts)
-        {
-            if (contact.normal.y > 0.5f)
-            {
-                float side = transform.position.x - collision.transform.position.x;
-                headSlideDir = Mathf.Abs(side) < 0.05f ? FacingDirection : (int)Mathf.Sign(side);
-                onPlayerHead = true;
-                return;
-            }
-        }
-    }
-
-    void ApplyHeadSlide()
-    {
-        if (!onPlayerHead) return;
-        onPlayerHead = false;
-        Rb.linearVelocity = new Vector2(headSlideDir * headSlideSpeed, Rb.linearVelocity.y);
-    }
-
 
     // ---------- Debug ----------
 

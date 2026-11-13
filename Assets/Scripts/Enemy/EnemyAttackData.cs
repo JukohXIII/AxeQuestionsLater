@@ -43,6 +43,11 @@ public class EnemyAttackData : ScriptableObject
     public float cooldown = 0f;
     public bool requiresGrounded = true;
 
+    [Header("Projectile (optional)")]
+    [Tooltip("If set, the attack fires this at the end of the windup instead of using the melee hit zone. Only damage, knockback, launchDirection and breaksGuard of 'hit' are used.")]
+    public EnemyProjectile projectilePrefab;
+    public float projectileSpeed = 7f;
+
     [Header("Animation")]
     public string animationClip = "Mob_01_attack";
 }

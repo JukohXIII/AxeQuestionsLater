@@ -107,6 +107,14 @@ public class AttackState : EnemyState
         {
             if (timer > 0f) return;
 
+            // Ranged attack: fire once, then straight to recovery
+            if (attack.projectilePrefab != null)
+            {
+                enemyController.FireProjectile(attack);
+                enemyController.ChangeState(enemyController.Recovery);
+                return;
+            }
+
             phase = Phase.Active;
             AudioManager.Play(Sfx.EnemySwing);
             timer = attack.activeDuration;
@@ -273,5 +281,26 @@ public class DeadState : EnemyState
             // TODO: death animation / VFX
             Object.Destroy(enemyController.gameObject, enemyController.Config.deathDelay);
         }
+    }
+}
+
+// TURRET IDLE: never moves on its own. Faces the player and fires whenever the attack is ready.
+public class TurretIdleState : EnemyState
+{
+    readonly EnemyAttackData attack;
+
+    public TurretIdleState(EnemyController e, EnemyAttackData attack) : base(e) { this.attack = attack; }
+
+    public override void Tick()
+    {
+        if (enemyController.IsGrounded())
+            enemyController.StopHorizontal();
+
+        if (enemyController.DistanceToPlayer() > enemyController.Config.detectionRange) return;
+
+        enemyController.Face(enemyController.DirectionToPlayer());
+
+        if (enemyController.CanUse(attack))
+            enemyController.StartAttack(attack);
     }
 }

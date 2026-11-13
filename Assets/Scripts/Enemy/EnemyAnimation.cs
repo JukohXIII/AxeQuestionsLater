@@ -41,7 +41,7 @@ public class EnemyAnimation : MonoBehaviour
             animator.Play(enemy.CurrentAttack.animationClip, 0, 0f);
         else if (state == enemy.Dead)
             animator.Play(deadSettled ? "Mob_01_dying" : "Mob_01_getHit", 0, 0f);
-        else if (state == enemy.Hitstun || state == enemy.Knockdown)
+        else if (state == enemy.Hitstun)
             animator.Play("Mob_01_getHit", 0, 0f);
         else
             animator.Play("Mob_01_idle");

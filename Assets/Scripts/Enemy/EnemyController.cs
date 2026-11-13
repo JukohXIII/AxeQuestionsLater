@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.Mathematics;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(Health))]
 public class EnemyController : MonoBehaviour
@@ -53,7 +52,6 @@ public class EnemyController : MonoBehaviour
     public IEnemyState Recovery { get; private set; }
     public IEnemyState Hitstun { get; private set; }
     public IEnemyState Dead { get; private set; }
-    public IEnemyState Knockdown { get; private set; }
     public IEnemyState Retreat { get; private set; }
     public PlayerCombat PlayerCombat { get; private set; }
     public PlayerMovement PlayerMovement { get; private set; }
@@ -85,7 +83,6 @@ public class EnemyController : MonoBehaviour
         Recovery = CreateRecovery();
         Hitstun = CreateHitstun();
         Dead = CreateDead();
-        Knockdown = CreateKnockdown();
         Retreat = CreateRetreat();
 
         Decider = new EnemyDecider(this);
@@ -139,19 +136,11 @@ public class EnemyController : MonoBehaviour
         navInfo = Navigator.Describe();
     }
 
-    void FixedUpdate() {
-        ApplySeparation();
-        ApplyHeadSlide();
-    }
-
-    private float nextSepLog;
+    void FixedUpdate() 
+        => ApplySeparation();
 
     void ApplySeparation()
     {
-        if (Time.time >= nextSepLog)
-        {
-            nextSepLog = Time.time + 1f;
-        }
         if (currentState != Idle && currentState != Chase) return;
         if (grabbable != null && grabbable.IsGrabbed) return;
 
@@ -201,7 +190,6 @@ public class EnemyController : MonoBehaviour
     protected virtual IEnemyState CreateRecovery() => new RecoveryState(this);
     protected virtual IEnemyState CreateHitstun() => new HitstunState(this);
     protected virtual IEnemyState CreateDead() => new DeadState(this);
-    protected virtual IEnemyState CreateKnockdown() => new KnockdownState(this);
     protected virtual IEnemyState CreateRetreat() => new RetreatState(this);
 
     // ---------- Perception ----------
@@ -269,7 +257,6 @@ public class EnemyController : MonoBehaviour
     public void StartAttack(EnemyAttackData attack)
     {
         CurrentAttack = attack;
-        AudioManager.Play(Sfx.EnemyWindup);
         lastAttackTime[attack] = Time.time;
         ChangeState(Attack);
     }

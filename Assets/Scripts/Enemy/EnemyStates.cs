@@ -168,8 +168,8 @@ public class RecoveryState : EnemyState
 public class HitstunState : EnemyState
 {
     float timer;
-    float groundTime;
-    bool causeKnockdown;
+    float groundTime;   // time spent grounded and nearly still once the hitstun is over
+    bool launched;      // hit by a heavy attack: flies on a normal arc instead of hovering
     float savedGravity;
 
     public HitstunState(EnemyController e) : base(e) { }
@@ -178,7 +178,7 @@ public class HitstunState : EnemyState
     {
         groundTime = 0f;
         timer = enemyController.Config.hitstunDuration;
-        if (enemyController.Health.LastHitCausedKnockdown) causeKnockdown = true;
+        if (enemyController.Health.LastHitCausedKnockdown) launched = true;
         // TODO: hit animation / flash
         savedGravity = enemyController.Rb.gravityScale;
     }
@@ -186,7 +186,7 @@ public class HitstunState : EnemyState
     public override void Tick()
     {
         timer -= Time.deltaTime;
-        bool floating = timer > 0f && !causeKnockdown && !enemyController.IsGrounded();
+        bool floating = timer > 0f && !launched && !enemyController.IsGrounded();
         enemyController.Rb.gravityScale = floating ? 0f : savedGravity;
         if (!floating && !enemyController.IsGrounded() && enemyController.Rb.linearVelocity.y < 0f)
         {
@@ -194,15 +194,14 @@ public class HitstunState : EnemyState
         }
         if (timer <= 0f)
         {
+            // Wait until the enemy has actually landed and stopped sliding
             bool settled = enemyController.IsGrounded() && enemyController.Rb.linearVelocity.magnitude < 0.5f;
             groundTime = settled ? groundTime + Time.deltaTime : 0f;
 
-            float needed = causeKnockdown ? enemyController.Config.knockdownDelay : enemyController.Config.settleTime;
-            if (groundTime < needed) return;
+            if (groundTime < enemyController.Config.settleTime) return;
 
-            IEnemyState next = causeKnockdown ? enemyController.Knockdown : enemyController.Idle;
-            causeKnockdown = false;
-            enemyController.ChangeState(next);
+            launched = false;
+            enemyController.ChangeState(enemyController.Idle);
         }
     }
 
@@ -210,35 +209,6 @@ public class HitstunState : EnemyState
     {
         enemyController.Rb.gravityScale = savedGravity;
         enemyController.Decider.ForceRedecide();
-    }
-}
-
-public class KnockdownState : EnemyState
-{
-    float timer;
-
-    public KnockdownState(EnemyController e) : base(e) { }
-
-    public override void Enter()
-    {
-        enemyController.StopHorizontal();
-        timer = enemyController.Config.knockdownDuration;
-        enemyController.Health.IsInvincible = true;
-        enemyController.gameObject.layer = LayerMask.NameToLayer("Prop");
-    }
-
-    public override void Exit()
-    {
-        enemyController.Health.IsInvincible = false;
-        enemyController.Decider.ForceRedecide();
-        enemyController.gameObject.layer = LayerMask.NameToLayer("Enemy");
-    }
-
-    public override void Tick()
-    {
-        timer -= Time.deltaTime;
-        if (timer <= 0f)
-            enemyController.ChangeState(enemyController.Idle);
     }
 }
 

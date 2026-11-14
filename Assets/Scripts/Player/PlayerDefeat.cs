@@ -17,6 +17,7 @@ public class PlayerDefeat : MonoBehaviour
     private PlayerCombat playerCombat;
     private PlayerMovement playerMovement;
     private Rigidbody2D rb;
+    private PlayerAxe playerAxe;
 
     // ---------- State (PlayerAnimation reads these) ----------
     public bool DefeatLanded { get; private set; }
@@ -33,6 +34,7 @@ public class PlayerDefeat : MonoBehaviour
         playerCombat = GetComponent<PlayerCombat>();
         playerMovement = GetComponent<PlayerMovement>();
         rb = GetComponent<Rigidbody2D>();
+        playerAxe = GetComponent<PlayerAxe>();
         Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Wall"), false);
     }
 
@@ -43,6 +45,7 @@ public class PlayerDefeat : MonoBehaviour
     {
         Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemy"), true);
         playerCombat.Interrupt(PlayerCombat.PlayerState.Defeated);
+        playerAxe.RemoveAxe();   // the defeat clip draws the axe in his hands
         GetComponent<PlayerInput>().DeactivateInput();   // no more control
 
         defeatTimer = defeatPoseTime + runAwayTime;

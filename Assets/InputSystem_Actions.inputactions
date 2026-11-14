@@ -104,6 +104,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ThrowAxe",
+                    "type": "Button",
+                    "id": "29ca825c-826d-4115-bfa9-e8537298d92d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -544,6 +553,17 @@
                     "processors": "",
                     "groups": ";Joystick",
                     "action": "Block",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4b1d9bd-bbf5-41c6-a45f-74ed0bae101e",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrowAxe",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -36,13 +36,14 @@ public class ThrowData
 public class PlayerCombat : MonoBehaviour
 {
 
-    public enum PlayerState { Normal, Attacking, Grabbing, Blocking, Hurt, Knockdown, Defeated }
+    public enum PlayerState { Normal, Attacking, Grabbing, Blocking, Hurt, Knockdown, Defeated, AxeThrow }
     private enum AttackPhase { None, Startup, Active, Recovery }
 
     // ---------- References ----------
     private PlayerMovement playerMovement;
     private PauseMenu pauseMenu;
     private Health health;
+    private PlayerAxe playerAxe;
 
     // ---------- State (other scripts read these) ----------
     [Header("State")]
@@ -136,6 +137,7 @@ public class PlayerCombat : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         pauseMenu = FindAnyObjectByType<PauseMenu>();
         health = GetComponent<Health>();
+        playerAxe = GetComponent<PlayerAxe>();
 
         StatBases.Register(StatType.ComboWindow, comboWindow);
     }
@@ -191,6 +193,7 @@ public class PlayerCombat : MonoBehaviour
 
     void TryStartAttack()
     {
+        if (!playerAxe.HasAxe) return;
         if (state != PlayerState.Normal && !CanCancel) return;
         if (!attackPressedThisFrame && queuedTimer <= 0f) return;
 
@@ -229,6 +232,7 @@ public class PlayerCombat : MonoBehaviour
 
     void TryStartGrab()
     {
+        if (!playerAxe.HasAxe) return;
         if (state != PlayerState.Normal || !grabPressedThisFrame) return;
         if (!playerMovement.IsGrounded || playerMovement.IsDashing) return;
 

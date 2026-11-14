@@ -278,7 +278,7 @@ public class EnemyController : MonoBehaviour
             alreadyHit.Add(target);
             if (target.IsInvincible) continue;
 
-            target.TakeHit(hit.damage, direction, hit.knockback, hit.causesKnockback, hit.breaksGuard);
+            target.TakeHit(hit.damage, direction, hit.knockback, hit.causesKnockback, hit.breaksGuard, hit.guardCost);
             hitSomeone = true;
         }
         return hitSomeone;

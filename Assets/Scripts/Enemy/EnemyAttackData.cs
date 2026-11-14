@@ -12,6 +12,8 @@ public class EnemyHitData
     public Vector2 hitboxSize = new Vector2(1f, 0.8f);
     public bool causesKnockback;
     public bool breaksGuard;
+    [Tooltip("Guard segments a blocked hit removes. 0.5 = half a segment.")]
+    public float guardCost = 0.5f;
 }
 
 

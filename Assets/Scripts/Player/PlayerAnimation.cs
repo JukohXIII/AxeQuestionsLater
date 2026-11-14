@@ -8,6 +8,7 @@ public class PlayerAnimation : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerMovement playerMovement;
     private PlayerCombat playerCombat;
+    private PlayerAxe playerAxe;
 
     private string currentClip;
     private int lastAttackId;
@@ -23,6 +24,7 @@ public class PlayerAnimation : MonoBehaviour
         playerCombat = GetComponent<PlayerCombat>();
         playerGetHit = GetComponent<PlayerGetHit>();
         playerDefeat = GetComponent<PlayerDefeat>();
+        playerAxe = GetComponent<PlayerAxe>();
     }
 
     void Update()
@@ -62,11 +64,13 @@ public class PlayerAnimation : MonoBehaviour
         }
         if (playerCombat.state == PlayerCombat.PlayerState.Hurt) return "Lars_getHit";
         if (playerCombat.state == PlayerCombat.PlayerState.Blocking) return "Lars_block";
+        if (playerAxe.IsThrowing) return "Lars_throwAxe";
         if (!string.IsNullOrEmpty(playerCombat.CurrentAnimation)) return playerCombat.CurrentAnimation;
         if (playerMovement.IsDashing) return "Lars_dash";
         if (!playerMovement.IsGrounded) return rb.linearVelocity.y > 0.1f ? "Lars_jump_up" : "Lars_fall";
         if (landTimer > 0f) return "Lars_land";
-        if (Mathf.Abs(rb.linearVelocity.x) > 0.1f) return "Lars_walk";
-        return "Lars_idle";
+        if (Mathf.Abs(rb.linearVelocity.x) > 0.1f) return playerAxe.HasAxe ? "Lars_walk" : "Lars_walk_withoutAxe";
+        if (playerAxe.IsCatching) return "Lars_receiveAxe";
+        return playerAxe.HasAxe ? "Lars_idle" : "Lars_idle_withoutAxe";
     }
 }

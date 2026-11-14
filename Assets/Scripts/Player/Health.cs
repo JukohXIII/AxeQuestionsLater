@@ -22,20 +22,20 @@ public class Health : MonoBehaviour
     public event Action OnHit;
     public Action OnDeath;
     public bool HideInvincibleBlink { get; set; }
-    public float LastBlockedDamage { get; private set; }
+    public float LastGuardCost { get; private set; }
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void TakeHit(float damageAmount, Vector2 knockbackDirection, float knockbackForce, bool causesKnockdown = false, bool breaksGuard = false)
+    public void TakeHit(float damageAmount, Vector2 knockbackDirection, float knockbackForce, bool causesKnockdown = false, bool breaksGuard = false, float guardCost = 1f)
     {
         if (IsDead || IsInvincible) return;
         if (!breaksGuard && GuardFacing != 0 && Mathf.Sign(knockbackDirection.x) == -GuardFacing)
         {
             rb.linearVelocity = new Vector2(knockbackDirection.x * knockbackForce * 0.3f * KnockbackTakenMultiplier, 0f);
-            LastBlockedDamage = damageAmount;
+            LastGuardCost = guardCost;
             OnBlocked?.Invoke();
             return;
         }

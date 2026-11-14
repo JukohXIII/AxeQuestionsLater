@@ -4,11 +4,10 @@ using UnityEngine.InputSystem;
 public class PlayerGuard : MonoBehaviour
 {
     [SerializeField] private float blockstunDuration = 0.2f;
-    [SerializeField] private float maxStamina = 100;
-    [SerializeField] private float staminaPerDamage = 2;
-    [SerializeField] private float regenRate = 30;
+    [SerializeField] private float maxStamina = 6;
+    [SerializeField] private float regenRate = 1.8f;
     [SerializeField] private float regenDelay = 0.5f;
-    [SerializeField] private float recoverThreshold = 0.3f;
+    [SerializeField] private float recoverThreshold = 0.34f;
 
 
     // ---------- References ----------
@@ -16,6 +15,7 @@ public class PlayerGuard : MonoBehaviour
     private PlayerMovement playerMovement;
     private Health health;
     private InputAction blockAction;
+    private PlayerAxe playerAxe;
 
     // ---------- State ----------
     public bool IsInBlockstun => blockstunTimer > 0f;
@@ -25,6 +25,8 @@ public class PlayerGuard : MonoBehaviour
     bool guardBroken;
     public float StaminaRatio => stamina / maxStamina;
     public bool IsGuardBroken => guardBroken;
+    public float MaxStamina => maxStamina;
+    public float Stamina => stamina;
 
     void Awake()
     {
@@ -33,6 +35,7 @@ public class PlayerGuard : MonoBehaviour
         health = GetComponent<Health>();
         blockAction = GetComponent<PlayerInput>().actions["Block"];
         stamina = maxStamina;
+        playerAxe = GetComponent<PlayerAxe>();
     }
 
     void OnEnable()  { health.OnBlocked += GuardHit; }
@@ -41,20 +44,21 @@ public class PlayerGuard : MonoBehaviour
     void Update()
     {
         bool held = blockAction.IsPressed();
+        bool canBlock = !guardBroken && playerAxe.HasAxe;
 
         if (blockstunTimer > 0f)
         {
             blockstunTimer -= Time.deltaTime;
             held = true;   // can't drop the guard during blockstun
         }
-        if (held && !guardBroken)
+        if (held && canBlock)
         {
             playerCombat.ClearAttackBuffer();   // can't queue an attack while holding guard
             playerMovement.ClearDashBuffer();
         }
 
         var state = playerCombat.state;
-        if (state == PlayerCombat.PlayerState.Normal && held && playerMovement.IsGrounded && !guardBroken)
+        if (state == PlayerCombat.PlayerState.Normal && held && playerMovement.IsGrounded && canBlock)
             playerCombat.state = PlayerCombat.PlayerState.Blocking;
         else if (state == PlayerCombat.PlayerState.Blocking && (!held || !playerMovement.IsGrounded || (guardBroken && !IsInBlockstun)))
             playerCombat.state = PlayerCombat.PlayerState.Normal;
@@ -84,7 +88,7 @@ public class PlayerGuard : MonoBehaviour
     void GuardHit()
     {
         StartBlockstun();
-        stamina -= health.LastBlockedDamage * staminaPerDamage;
+        stamina -= health.LastGuardCost;
         regenTimer = regenDelay;
         if (stamina <= 0f)
         {

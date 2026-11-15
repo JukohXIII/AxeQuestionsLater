@@ -492,6 +492,7 @@ GameObject:
   - component: {fileID: 3573462795036708828}
   - component: {fileID: 6562243507651565417}
   - component: {fileID: 4168522202458225171}
+  - component: {fileID: 1504519572268263242}
   m_Layer: 5
   m_Name: TriggerRebindButton
   m_TagString: Untagged
@@ -579,7 +580,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.2509804, g: 0.30588236, b: 0.4509804, a: 1}
-    m_HighlightedColor: {r: 0.36078432, g: 0.4392157, b: 0.6509804, a: 1}
+    m_HighlightedColor: {r: 0.8666667, g: 0.45490196, b: 0.043137256, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.8666667, g: 0.45490196, b: 0.043137256, a: 1}
     m_DisabledColor: {r: 0.22, g: 0.22, b: 0.25882354, a: 1}
@@ -613,3 +614,15 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1504519572268263242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8384654220190448158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39591ec1879636a4a89d7903e35306c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectOnHover

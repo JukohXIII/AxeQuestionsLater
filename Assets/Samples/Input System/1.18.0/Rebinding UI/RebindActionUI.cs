@@ -270,6 +270,10 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// </summary>
         public void StartInteractiveRebind()
         {
+            foreach (var ui in s_RebindActionUIs)
+            {
+                if (ui.ongoingRebind != null) return;   // another key is already waiting
+            }
             if (!ResolveActionAndBinding(out var action, out var bindingIndex))
                 return;
 
@@ -329,6 +333,9 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 rebind.WithControlsHavingToMatchPath("<Keyboard>");
             else if (defaultPath.StartsWith("<Gamepad>"))
                 rebind.WithControlsHavingToMatchPath("<Gamepad>").WithControlsExcluding("<Gamepad>/start");
+            rebind.WithCancelingThrough("<Keyboard>/escape");
+            if (defaultPath.StartsWith("<Gamepad>"))
+                rebind.WithCancelingThrough("<Gamepad>/start");
             m_RebindOperation = rebind   // ✅ use the filtered one
                 .OnCancel(
                     operation =>
@@ -399,8 +406,10 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
             // If we have no rebind overlay and no callback but we have a binding text label,
             // temporarily set the binding text label to "<Waiting>".
-            if (m_RebindOverlay == null && m_RebindText == null && m_RebindStartEvent == null && m_BindingText != null)
-                m_BindingText.text = "<Waiting...>";
+            if (m_BindingText != null)
+            {
+                m_BindingText.text = "Press a key...";
+            }
 
             // Give listeners a chance to act on the rebind starting.
             m_RebindStartEvent?.Invoke(this, m_RebindOperation);

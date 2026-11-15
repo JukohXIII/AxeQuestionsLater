@@ -562,7 +562,7 @@
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "ThrowAxe",
                     "isComposite": false,
                     "isPartOfComposite": false

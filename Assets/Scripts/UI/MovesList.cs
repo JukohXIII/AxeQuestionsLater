@@ -8,6 +8,7 @@ public class MovesList : MonoBehaviour
     [SerializeField] private TMP_Text movesText;
     [SerializeField, TextArea(10, 20)] private string template =
     "Combo:  {attack}, {attack}, {attack}\n\n" +
+    "Throw / Recall axe:  {throw}\n\n" +
     "Uptilt:  {up} + {attack}\n\n" +
     "Downtilt:  {down} + {attack}\n\n" +
     "Air attacks:  {jump} + {attack} + {up}/{down}/{left}/{right}\n\n" +
@@ -25,6 +26,7 @@ public class MovesList : MonoBehaviour
     [SerializeField] private RebindActionUI right;
     [SerializeField] private RebindActionUI jump;
     [SerializeField] private RebindActionUI attack;
+    [SerializeField] private RebindActionUI throwAxe;
     [SerializeField] private RebindActionUI dash;
     [SerializeField] private RebindActionUI grab;
     [SerializeField] private RebindActionUI guard;
@@ -65,6 +67,7 @@ public class MovesList : MonoBehaviour
 
         movesText.text = template
             .Replace("{attack}", Key(pad ? padAttack : attack))
+            .Replace("{throw}", pad ? "-" : Key(throwAxe))
             .Replace("{jump}", Key(pad ? padJump : jump))
             .Replace("{dash}", Key(pad ? padDash : dash))
             .Replace("{grab}", Key(pad ? padGrab : grab))

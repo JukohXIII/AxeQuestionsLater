@@ -21,7 +21,12 @@ public class AxeProjectile : MonoBehaviour
     [SerializeField] private LayerMask stickLayers;     // Ground, Platform, Wall
     [SerializeField] private LayerMask wallLayers;      // Wall
     [SerializeField] private float wallBounce = 0.3f;   // how much speed it keeps after the bounce
+    [SerializeField] private float hitStopDuration = 0.12f;
     private bool bounced;
+
+    [Header("Stick pose")]
+    [SerializeField] private float groundStickAngle = -135f;   // head down into the floor
+    [SerializeField] private float enemyStickAngle = -45f;     // head forward into the enemy
 
     public event Action OnCaught;   // Lars listens to get the axe back
 
@@ -66,6 +71,8 @@ public class AxeProjectile : MonoBehaviour
             {
                 hasHitEnemy = true;
                 h.TakeHit(damage, new Vector2(Mathf.Sign(velocity.x), 0.3f).normalized, knockback);
+                AudioManager.Play(Sfx.HitHeavy);
+                owner.GetComponent<PlayerCombat>().TriggerHitStop(hitStopDuration);
                 StickTo(hit.transform, h);
                 return;
             }
@@ -90,6 +97,8 @@ public class AxeProjectile : MonoBehaviour
         stuckHealth = h;
         if (target != null) stuckOffset = transform.position - target.position;
         animator.enabled = false;   // stop spinning
+        float angle = target != null ? enemyStickAngle : groundStickAngle;
+        transform.localEulerAngles = new Vector3(0f, 0f, angle);
     }
 
     public void Recall()

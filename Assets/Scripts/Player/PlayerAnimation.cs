@@ -11,6 +11,7 @@ public class PlayerAnimation : MonoBehaviour
     private PlayerAxe playerAxe;
 
     private string currentClip;
+    private string lastCombatClip;
     private int lastAttackId;
     private bool wasGrounded = true;
     private float landTimer;
@@ -41,13 +42,16 @@ public class PlayerAnimation : MonoBehaviour
 
         if (clip != currentClip || newAttack)
         {
-            animator.Play(clip, 0, 0f);
+            bool versionSwap = !newAttack && currentClip == lastCombatClip && clip == playerCombat.CurrentAnimation;
+            float start = versionSwap ? animator.GetCurrentAnimatorStateInfo(0).normalizedTime : 0f;
+            animator.Play(clip, 0, start);
             currentClip = clip;
         }
 
         // STATS: only the attack clip follows the attack speed. Every other clip plays at normal speed.
         bool playingAttackClip = !string.IsNullOrEmpty(playerCombat.CurrentAnimation) && clip == playerCombat.CurrentAnimation;
         animator.speed = playingAttackClip ? playerCombat.AttackSpeedMultiplier : 1f;
+        lastCombatClip = playerCombat.CurrentAnimation;
     }
 
     // Highest priority first
@@ -55,22 +59,24 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (playerCombat.state == PlayerCombat.PlayerState.Defeated)
         {
-            if (playerDefeat.IsRunningAway) return "Lars_walk_withoutAxe";
+            if (playerDefeat.IsRunningAway) return AxeClip("Lars_walk_withoutAxe");
                 return playerDefeat.DefeatLanded ? "Lars_defeated" : "Lars_getHit";
         }
         if (playerCombat.state == PlayerCombat.PlayerState.Knockdown)
         {
             return playerGetHit.KnockdownLanded ? "Lars_getKnocked" : "Lars_getHit";
         }
-        if (playerCombat.state == PlayerCombat.PlayerState.Hurt) return "Lars_getHit";
-        if (playerCombat.state == PlayerCombat.PlayerState.Blocking) return "Lars_block";
+        if (playerCombat.state == PlayerCombat.PlayerState.Hurt) return AxeClip("Lars_getHit");
+        if (playerCombat.state == PlayerCombat.PlayerState.Blocking) return AxeClip("Lars_block");
         if (playerAxe.IsThrowing) return "Lars_throwAxe";
         if (!string.IsNullOrEmpty(playerCombat.CurrentAnimation)) return playerCombat.CurrentAnimation;
-        if (playerMovement.IsDashing) return "Lars_dash";
-        if (!playerMovement.IsGrounded) return rb.linearVelocity.y > 0.1f ? "Lars_jump_up" : "Lars_fall";
-        if (landTimer > 0f) return "Lars_land";
-        if (Mathf.Abs(rb.linearVelocity.x) > 0.1f) return playerAxe.HasAxe ? "Lars_walk" : "Lars_walk_withoutAxe";
         if (playerAxe.IsCatching) return "Lars_receiveAxe";
-        return playerAxe.HasAxe ? "Lars_idle" : "Lars_idle_withoutAxe";
+        if (playerMovement.IsDashing) return AxeClip("Lars_dash");
+        if (!playerMovement.IsGrounded) return rb.linearVelocity.y > 0.1f ? AxeClip("Lars_jump_up") : AxeClip("Lars_fall");
+        if (landTimer > 0f) return AxeClip("Lars_land");
+        if (Mathf.Abs(rb.linearVelocity.x) > 0.1f) return AxeClip("Lars_walk");
+        return AxeClip("Lars_idle");
     }
+
+    string AxeClip(string clip) => playerAxe.HasAxe ? clip : clip + "_withoutAxe";
 }

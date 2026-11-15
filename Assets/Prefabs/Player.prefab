@@ -382,6 +382,7 @@ MonoBehaviour:
     heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 4
+    missAnimationName: 
   - attackName: Neutral Attack-2
     animationName: Lars_groundAttack_chop_2
     startup: 0.1
@@ -396,6 +397,7 @@ MonoBehaviour:
     heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 4
+    missAnimationName: 
   - attackName: Neutral Attack-3
     animationName: Lars_groundAttack_overhead
     startup: 0.16
@@ -410,6 +412,7 @@ MonoBehaviour:
     heavyHit: 1
     cancelPoint: 1
     lungeSpeed: 6
+    missAnimationName: Lars_groundAttack_overhead_notHitting
   upTiltData:
     attackName: Up Tilt
     animationName: Lars_strongAttack_UpTilt
@@ -425,6 +428,7 @@ MonoBehaviour:
     heavyHit: 0
     cancelPoint: 0.7
     lungeSpeed: 0
+    missAnimationName: 
   downTiltData:
     attackName: Down Tilt
     animationName: Lars_strongAttack_DownTilt
@@ -440,6 +444,7 @@ MonoBehaviour:
     heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 0
+    missAnimationName: 
   dashAttackData:
     attackName: Dash Attack
     animationName: Lars_groundAttack_overhead
@@ -455,6 +460,7 @@ MonoBehaviour:
     heavyHit: 1
     cancelPoint: 0.4
     lungeSpeed: 0
+    missAnimationName: Lars_groundAttack_overhead_notHitting
   closeLungeMultiplier: 0.7
   neutralAirData:
     attackName: Neutral Aerial
@@ -471,6 +477,7 @@ MonoBehaviour:
     heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 0
+    missAnimationName: 
   upAirData:
     attackName: Up Aerial
     animationName: Lars_aerialAttack_Up
@@ -486,6 +493,7 @@ MonoBehaviour:
     heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 0
+    missAnimationName: 
   downAirData:
     attackName: Down Aerial
     animationName: Lars_aerialAttack_Down
@@ -501,6 +509,7 @@ MonoBehaviour:
     heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 0
+    missAnimationName: 
   forwardAirData:
     attackName: Forward Aerial
     animationName: Lars_aerialAttack_Forward
@@ -516,6 +525,7 @@ MonoBehaviour:
     heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 0
+    missAnimationName: 
   maxAirHangs: 3
   grabAttackData:
     attackName: Grab Attack
@@ -532,6 +542,7 @@ MonoBehaviour:
     heavyHit: 0
     cancelPoint: 0.4
     lungeSpeed: 0
+    missAnimationName: 
   holdOffset: {x: 0.9, y: 0.2}
   grabHoldTime: 1.5
   minHoldTime: 0.25
@@ -707,6 +718,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAxe
   axePrefab: {fileID: -8169539493221451328, guid: 247c6e0d9a2624843b39c204287bbc23, type: 3}
   spawnOffset: {x: 0.6, y: 0.5}
+  throwDuration: 0.77
+  releaseTime: 0.45
+  catchDuration: 0.68
 --- !u!1 &8023591662331067518
 GameObject:
   m_ObjectHideFlags: 0

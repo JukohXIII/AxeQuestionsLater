@@ -20,6 +20,7 @@ public class AttackData
     public bool heavyHit;
     [Range(0f, 1f)] public float cancelPoint = 0.4f;
     public float lungeSpeed = 0f;
+    public string missAnimationName;   // optional: same swing without the impact effect
 }
 
 [System.Serializable]
@@ -350,6 +351,7 @@ public class PlayerCombat : MonoBehaviour
                                 knockbackDirection = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
                             float dealt = PlayerStats.Apply(StatType.Damage, currentAttack.damage);
                             targetHealth.TakeHit(dealt, knockbackDirection, currentAttack.knockback, currentAttack.causesKnockdown);
+                            CurrentAnimation = currentAttack.animationName;   // connected: swap to the hit version
                             ApplyLifeSteal(dealt);
                             AudioManager.Play(currentAttack.heavyHit ? Sfx.HitHeavy : Sfx.Hit);
                             StartCoroutine(HitStop(hitStopDuration / AttackSpeedMultiplier));
@@ -507,9 +509,12 @@ public class PlayerCombat : MonoBehaviour
             Time.timeScale = 1f;
     }
 
+    public void TriggerHitStop(float duration) => StartCoroutine(HitStop(duration));
+
     void PlayAttackAnimation()
     {
-        SetAnimation(currentAttack.animationName);
+        string startClip = string.IsNullOrEmpty(currentAttack.missAnimationName) ? currentAttack.animationName : currentAttack.missAnimationName;
+        SetAnimation(startClip);
         PlaySwingSound();
     }
 

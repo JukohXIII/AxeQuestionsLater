@@ -43,7 +43,11 @@ public class PlayerAxe : MonoBehaviour
 
     void Update()
     {
-        if (catchTimer > 0f) catchTimer -= Time.deltaTime;
+        if (catchTimer > 0f)
+        {
+            catchTimer -= Time.deltaTime;
+            if (combat.state != PlayerCombat.PlayerState.Normal) catchTimer = 0f;   // attacked, got hit, blocked, threw
+        }
         if (!IsThrowing) return;   // also true if a hit interrupted the throw
 
         throwTimer += Time.deltaTime;

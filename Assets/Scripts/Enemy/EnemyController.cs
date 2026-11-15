@@ -120,7 +120,7 @@ public class EnemyController : MonoBehaviour
         ChangeState(Idle);
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (player == null) return; // No player to chase or attack
         if (grabbable != null && grabbable.IsGrabbed) return; // held: enemy freeze

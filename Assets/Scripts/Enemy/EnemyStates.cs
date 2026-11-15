@@ -287,10 +287,15 @@ public class DeadState : EnemyState
 // TURRET IDLE: never moves on its own. Faces the player and fires whenever the attack is ready.
 public class TurretIdleState : EnemyState
 {
+    readonly TurretEnemyController turret;
     readonly EnemyAttackData attack;
-
-    public TurretIdleState(EnemyController e, EnemyAttackData attack) : base(e) { this.attack = attack; }
-
+    
+    public TurretIdleState(TurretEnemyController e, EnemyAttackData attack) : base(e) 
+    { 
+        turret = e;
+        this.attack = attack; 
+    }
+    
     public override void Tick()
     {
         if (enemyController.IsGrounded())
@@ -300,7 +305,67 @@ public class TurretIdleState : EnemyState
 
         enemyController.Face(enemyController.DirectionToPlayer());
 
-        if (enemyController.CanUse(attack))
+        if (!enemyController.CanUse(attack)) return;
+
+        if (turret.ShouldFire())
             enemyController.StartAttack(attack);
     }
+}
+
+// TURRET ATTACK: windup -> shot, repeated for every snowball chosen by the decision. Recovery only after the last one.
+public class TurretAttackState : EnemyState
+{
+    enum Phase { Windup, Gap }
+    readonly TurretEnemyController turret;
+    EnemyAttackData attack;
+    Phase phase;
+    float timer;
+    int remaningSnowballs;
+
+    public TurretAttackState(TurretEnemyController e) : base(e) { turret = e; }
+
+    public override void Enter()
+    {
+        attack = enemyController.CurrentAttack;
+        enemyController.StopHorizontal();
+
+        remaningSnowballs = turret.PlannedShots;   // as many shots as the decision chose, not necessarily the whole stock
+        BeginWindup(attack.windup);
+    }
+
+    public override void Tick()
+    {
+        timer -= Time.deltaTime;
+        if (timer > 0f) return;
+
+        if (phase == Phase.Gap)
+        {
+            BeginWindup(attack.windup * TurretEnemyController.BurstWindupMultiplier);
+            return;
+        }
+
+        enemyController.FireProjectile(attack);
+        turret.ConsumeAmmo();
+        remaningSnowballs--;
+
+        if (remaningSnowballs <= 0)
+        {
+            enemyController.ChangeState(enemyController.Recovery);
+            return;
+        }
+
+        phase = Phase.Gap;
+        timer = TurretEnemyController.BurstGap;
+    }
+
+    void BeginWindup(float duration)
+    {
+        enemyController.Face(enemyController.DirectionToPlayer());
+        phase = Phase.Windup;
+        timer = duration;
+        AudioManager.Play(Sfx.EnemyWindup);
+    }
+
+    // Also runs when a hit interrupts the burst: the next decision is scheduled from the end of the attack
+    public override void Exit() => turret.ScheduleNextDecision();
 }

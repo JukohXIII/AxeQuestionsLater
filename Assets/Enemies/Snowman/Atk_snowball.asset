@@ -27,7 +27,7 @@ MonoBehaviour:
     breaksGuard: 0
   minRange: 0
   maxRange: 20
-  cooldown: 1.5
+  cooldown: 0
   requiresGrounded: 1
   projectilePrefab: {fileID: 5875846502367963474, guid: e5c8d3106e5e8ef4d8cdf407fb0f7e05, type: 3}
   projectileSpeed: 7

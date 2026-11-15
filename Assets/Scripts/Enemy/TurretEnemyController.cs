@@ -4,7 +4,7 @@ using UnityEngine;
 // Reuses Recovery, Hitstun and Dead from EnemyController. Idle and Attack are replaced.
 public class TurretEnemyController : EnemyController
 {
-    private const float KnockbackMultiplier = 1.6f; // light and squishy: flies further than a normal mob
+    private const float KnockbackMultiplier = 2f; // light and squishy: flies further than a normal mob
     
     public const int MaxAmmo = 3;
     public const float BurstGap = 0.15f;

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72b47043efdc80747aa28d998143266d, type: 3}
+  m_Name: Atk_snowball
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackData
+  windup: 0.5
+  activeDuration: 0
+  recovery: 1
+  moveSpeed: 0
+  endsOnHit: 0
+  hit:
+    damage: 8
+    knockback: 8
+    launchDirection: {x: 1, y: 0.3}
+    hitboxOffset: {x: 0.8, y: 0}
+    hitboxSize: {x: 1, y: 0.8}
+    causesKnockback: 0
+    breaksGuard: 0
+  minRange: 0
+  maxRange: 20
+  cooldown: 1.5
+  requiresGrounded: 1
+  projectilePrefab: {fileID: 5875846502367963474, guid: e5c8d3106e5e8ef4d8cdf407fb0f7e05, type: 3}
+  projectileSpeed: 7
+  animationClip: 

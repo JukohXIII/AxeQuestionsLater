@@ -31,14 +31,14 @@ public static class RunCards
         Changed?.Invoke();
     }
 
-    public static List<CardDefinition> Draw(int count)
+    public static List<CardDefinition> Draw(int count, CardRarity minRarity = CardRarity.Common)
     {
         float luck = PlayerStats.Apply(StatType.Luck, 0f);
         float Weight(CardDefinition c) => c.weight * RarityRules.Weight(c.rarity, luck);
 
         var pool = new List<CardDefinition>();
         foreach (var c in All)
-            if (c.weight > 0f && CanTake(c)) pool.Add(c);
+            if (c.weight > 0f && c.rarity >= minRarity && CanTake(c)) pool.Add(c);
 
         var result = new List<CardDefinition>();
         while (result.Count < count && pool.Count > 0)

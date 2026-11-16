@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d324bb70fcdef054eb2755bacf1aded1, type: 3}
+  m_Name: RunMapSettings
+  m_EditorClassIdentifier: Assembly-CSharp::RunMapSettings
+  stagePool:
+  - {fileID: 11400000, guid: 7fd954dffb5198d418c14ea261016341, type: 2}
+  - {fileID: 11400000, guid: 090e0e13b6481eb409e2eb85de90b5ac, type: 2}
+  bossStage: {fileID: 11400000, guid: ced7b1c5d80c55b4a80220c95052d7a9, type: 2}

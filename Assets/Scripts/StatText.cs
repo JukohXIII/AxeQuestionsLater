@@ -16,6 +16,7 @@ public static class StatText
         StatType.ComboWindow    => "Combo window",
         StatType.LifeSteal      => "Life steal",
         StatType.KnockbackTaken => "Knockback taken",
+        StatType.HealingPower   => "Healing power",
         _ => stat.ToString()
     };
 

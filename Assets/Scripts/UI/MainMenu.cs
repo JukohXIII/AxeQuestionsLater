@@ -13,7 +13,8 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
         RunData.PlayerDamage = 0f;
-        SceneManager.LoadScene(firstStageScene);
+        RunMap.Generate();
+        SceneManager.LoadScene(RunMap.IsGenerated ? RunMap.MapScene : firstStageScene);
     }
 
     public void QuitGame()

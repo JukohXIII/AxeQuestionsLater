@@ -550,7 +550,7 @@ public class PlayerCombat : MonoBehaviour
     void ApplyLifeSteal(float damageDealt)
     {
         float ratio = PlayerStats.Apply(StatType.LifeSteal, 0f);
-        if (ratio > 0f) health.Heal(damageDealt * ratio);
+        if (ratio > 0f) health.Heal(PlayerHealing.Boost(damageDealt * ratio));
     }
 
     void PlaySwingSound()

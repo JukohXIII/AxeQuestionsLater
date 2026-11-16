@@ -4677,7 +4677,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 780af11ab9ffef840ab4b4f4877d991a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageExit
-  nextSceneName: Stage 1
+  nextSceneName: Map
+  startsRun: 1
   fader: {fileID: 8681716306624487442}
 --- !u!1 &1975033553
 GameObject:

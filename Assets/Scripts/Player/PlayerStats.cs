@@ -9,7 +9,7 @@ public enum StatType
     // Sharpening stone (Axe)
     Damage, AttackSpeed, ComboSpeed, ComboWindow,
     // Cards only stats
-    LifeSteal, KnockbackTaken, Luck
+    LifeSteal, KnockbackTaken, Luck, HealingPower
 }
 
 public enum ModifierMode { Flat, Percent }

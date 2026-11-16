@@ -79,11 +79,13 @@ public class StageManager : MonoBehaviour
         StartCoroutine(ClearStage());
     }
 
+    bool IsFinalStage => RunMap.Current == null || RunMap.Current.reward == StageReward.Boss;
+
     IEnumerator ClearStage()
     {
         yield return new WaitForSeconds(clearDelay);
 
-        if (victoryMenu != null)
+        if (victoryMenu != null && IsFinalStage)
         {
             victoryMenu.Show();   // last stage: you win
             yield break;

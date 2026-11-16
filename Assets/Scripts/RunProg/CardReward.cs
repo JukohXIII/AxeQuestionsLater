@@ -8,7 +8,7 @@ public class CardReward : MonoBehaviour
     [SerializeField] private CardOfferPanel panel;
     [SerializeField, Min(1)] private int choices = 3;
     [SerializeField] private float delay = 1f;
-
+    private const CardRarity MysteryMinRarity = CardRarity.Rare;
     private void OnEnable() => spawner.OnAllWavesCleared += HandleCleared; 
     private void OnDisable() => spawner.OnAllWavesCleared -= HandleCleared; 
 
@@ -19,8 +19,24 @@ public class CardReward : MonoBehaviour
     private IEnumerator OfferAfterDelay()
     {
         yield return new WaitForSeconds(delay);
-        var offer = RunCards.Draw(choices);
+        var offer = DrawOffer();
         if (offer.Count > 0) panel.Open(offer);
+    }
+
+    private List<CardDefinition> DrawOffer()
+    {
+        StageReward reward = RunMap.Current != null ? RunMap.Current.reward : StageReward.Cards;
+
+        switch (reward)
+        {
+            case StageReward.Boss:
+                return new List<CardDefinition>();
+            case StageReward.MysteryCard:
+                var mystery = RunCards.Draw(1, MysteryMinRarity);
+                return mystery.Count > 0 ? mystery : RunCards.Draw(choices);
+            default:
+                return RunCards.Draw(choices);
+        }
     }
 
     [ContextMenu("Simulate 1000 offers")]

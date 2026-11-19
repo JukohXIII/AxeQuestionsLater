@@ -194,7 +194,11 @@ public class PlayerCombat : MonoBehaviour
 
     void TryStartAttack()
     {
-        if (!playerAxe.HasAxe) return;
+        if (!playerAxe.HasAxe)
+        {
+            if (attackPressedThisFrame) playerAxe.Recall();
+            return;
+        }
         if (state != PlayerState.Normal && !CanCancel) return;
         if (!attackPressedThisFrame && queuedTimer <= 0f) return;
 

@@ -30,7 +30,7 @@ public class PlayerAxe : MonoBehaviour
     {
         if (!value.isPressed) return;
         if (currentAxe == null) StartThrow();
-        else currentAxe.Recall();
+        else Recall();
     }
 
     void StartThrow()
@@ -69,5 +69,10 @@ public class PlayerAxe : MonoBehaviour
         if (currentAxe != null) Destroy(currentAxe.gameObject);
         currentAxe = null;
         catchTimer = 0f;
+    }
+
+    public void Recall()
+    {
+        if (currentAxe != null) currentAxe.Recall();
     }
 }

@@ -1,0 +1,371 @@
+fileFormatVersion: 2
+guid: 0770aef39153fab4f8480dde25f2b48a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5292056835415255766
+    second: Mob_Snowman dying_0
+  - first:
+      213: -7797753523509926029
+    second: Mob_Snowman dying_1
+  - first:
+      213: 726764002575509369
+    second: Mob_Snowman dying_2
+  - first:
+      213: 7697700298689478699
+    second: Mob_Snowman dying_3
+  - first:
+      213: 3419952021739385080
+    second: Mob_Snowman dying_4
+  - first:
+      213: 2352712884028998418
+    second: Mob_Snowman dying_5
+  - first:
+      213: 7583164052504186133
+    second: Mob_Snowman dying_6
+  - first:
+      213: -1174878438747414519
+    second: Mob_Snowman dying_7
+  - first:
+      213: -1688262556466782750
+    second: Mob_Snowman dying_8
+  - first:
+      213: 3900448835596824583
+    second: Mob_Snowman dying_9
+  - first:
+      213: 7982564801255388443
+    second: Mob_Snowman dying_10
+  - first:
+      213: -6179641893302993693
+    second: Mob_Snowman dying_11
+  - first:
+      213: -7751830819306118941
+    second: Mob_Snowman dying_12
+  - first:
+      213: 1239622616297275508
+    second: Mob_Snowman dying_13
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 8
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mob_Snowman dying_0
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 144
+        width: 62
+        height: 93
+      alignment: 9
+      pivot: {x: 0.5645161, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2555e1c856de86b0800000000000000
+      internalID: -5292056835415255766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mob_Snowman dying_1
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 144
+        width: 75
+        height: 90
+      alignment: 9
+      pivot: {x: 0.46666667, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 377e3211c70d8c390800000000000000
+      internalID: -7797753523509926029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mob_Snowman dying_2
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 144
+        width: 88
+        height: 80
+      alignment: 9
+      pivot: {x: 0.39772728, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 977ed01820cf51a00800000000000000
+      internalID: 726764002575509369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mob_Snowman dying_3
+      rect:
+        serializedVersion: 2
+        x: 701
+        y: 144
+        width: 118
+        height: 51
+      alignment: 9
+      pivot: {x: 0.29661018, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b200ec233a9b3da60800000000000000
+      internalID: 7697700298689478699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mob_Snowman dying_5
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 143
+        width: 129
+        height: 47
+      alignment: 9
+      pivot: {x: 0.27131784, y: 0.021276595}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 213880f17e386a020800000000000000
+      internalID: 2352712884028998418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mob_Snowman dying_7
+      rect:
+        serializedVersion: 2
+        x: 1139
+        y: 144
+        width: 134
+        height: 47
+      alignment: 9
+      pivot: {x: 0.26119402, y: -0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 900e134e84ef1bfe0800000000000000
+      internalID: -1174878438747414519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mob_Snowman dying_9
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 15
+        width: 134
+        height: 47
+      alignment: 9
+      pivot: {x: 0.26119402, y: 0.021276595}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 700b55eec8d212630800000000000000
+      internalID: 3900448835596824583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mob_Snowman dying_11
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 15
+        width: 145
+        height: 54
+      alignment: 9
+      pivot: {x: 0.2413793, y: 0.018518519}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ec7d8e60708d3aa0800000000000000
+      internalID: -6179641893302993693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mob_Snowman dying_13
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 15
+        width: 134
+        height: 47
+      alignment: 9
+      pivot: {x: 0.26119402, y: 0.021276595}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47080f3a336043110800000000000000
+      internalID: 1239622616297275508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: dd98bdac53b606c4a81f9838087c8f7f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mob_Snowman dying_0: -5292056835415255766
+      Mob_Snowman dying_1: -7797753523509926029
+      Mob_Snowman dying_10: 7982564801255388443
+      Mob_Snowman dying_11: -6179641893302993693
+      Mob_Snowman dying_12: -7751830819306118941
+      Mob_Snowman dying_13: 1239622616297275508
+      Mob_Snowman dying_2: 726764002575509369
+      Mob_Snowman dying_3: 7697700298689478699
+      Mob_Snowman dying_4: 3419952021739385080
+      Mob_Snowman dying_5: 2352712884028998418
+      Mob_Snowman dying_6: 7583164052504186133
+      Mob_Snowman dying_7: -1174878438747414519
+      Mob_Snowman dying_8: -1688262556466782750
+      Mob_Snowman dying_9: 3900448835596824583
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -65,6 +65,7 @@ public class PlayerDefeat : MonoBehaviour
             if (landCheckDelay > 0f || !playerMovement.IsGrounded) return;   // still flying
             DefeatLanded = true;
         }
+        if (!IsRunningAway) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
 
         defeatClipTimer += Time.deltaTime;   // the defeat clip starts when he lands
         if (!axeDropped && defeatClipTimer >= axeDropTime) DropAxe();

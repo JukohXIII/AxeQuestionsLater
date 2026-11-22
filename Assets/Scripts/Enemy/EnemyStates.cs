@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // IDLE: no active target. Also the decision hub:
@@ -320,7 +321,6 @@ public class TurretAttackState : EnemyState
     EnemyAttackData attack;
     Phase phase;
     float timer;
-    int remaningSnowballs;
 
     public TurretAttackState(TurretEnemyController e) : base(e) { turret = e; }
 
@@ -328,9 +328,11 @@ public class TurretAttackState : EnemyState
     {
         attack = enemyController.CurrentAttack;
         enemyController.StopHorizontal();
+        enemyController.Face(enemyController.DirectionToPlayer());
+        AudioManager.Play(Sfx.EnemyWindup);
 
-        remaningSnowballs = turret.PlannedShots;   // as many shots as the decision chose, not necessarily the whole stock
-        BeginWindup(attack.windup);
+        phase = Phase.Windup;
+        timer = attack.windup;
     }
 
     public override void Tick()
@@ -338,32 +340,24 @@ public class TurretAttackState : EnemyState
         timer -= Time.deltaTime;
         if (timer > 0f) return;
 
-        if (phase == Phase.Gap)
-        {
-            BeginWindup(attack.windup * TurretEnemyController.BurstWindupMultiplier);
-            return;
-        }
-
-        enemyController.FireProjectile(attack);
-        turret.ConsumeAmmo();
-        remaningSnowballs--;
-
-        if (remaningSnowballs <= 0)
+        if (phase == Phase.Gap && !turret.ShouldContinueBurst())
         {
             enemyController.ChangeState(enemyController.Recovery);
             return;
         }
 
-        phase = Phase.Gap;
-        timer = TurretEnemyController.BurstGap;
+        Throw();
     }
 
-    void BeginWindup(float duration)
+    void Throw()
     {
         enemyController.Face(enemyController.DirectionToPlayer());
-        phase = Phase.Windup;
-        timer = duration;
-        AudioManager.Play(Sfx.EnemyWindup);
+        enemyController.FireProjectile(attack);
+        turret.ConsumeAmmo();
+        turret.NotifyThrown();
+
+        phase = Phase.Gap;
+        timer = TurretEnemyController.ThrowInterval;
     }
 
     // Also runs when a hit interrupts the burst: the next decision is scheduled from the end of the attack

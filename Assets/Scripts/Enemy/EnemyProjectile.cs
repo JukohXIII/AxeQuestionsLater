@@ -10,9 +10,11 @@ public class EnemyProjectile : MonoBehaviour
     private LayerMask targetLayer;
     private LayerMask groundLayer;
     private bool consumed;
+    private const float ExplosionDuration = 0.43f; // length of Snowball_explosion
+    [SerializeField] private Animator animator;
 
     void Awake() => rb = GetComponent<Rigidbody2D>();
-
+    
     public void Launch(Vector2 direction, float speed, EnemyHitData hitData, LayerMask targets, LayerMask ground)
     {
         hit = hitData;
@@ -34,6 +36,12 @@ public class EnemyProjectile : MonoBehaviour
 
         if ((targetLayer.value & bit) != 0)
         {
+            if (other.isTrigger)
+            {
+                // Trigger on the target layer = the attack hitbox, only enabled during the active frames of a swing
+                if (other.GetComponentInParent<PlayerCombat>() != null) Despawn();
+                return;
+            }
             Health target = other.GetComponentInParent<Health>();
             if (target == null || target.IsInvincible) return;   // dash i-frames: the projectile flies through
 
@@ -53,7 +61,9 @@ public class EnemyProjectile : MonoBehaviour
     void Despawn()
     {
         consumed = true;
-        // TODO: impact VFX
-        Destroy(gameObject);
+        rb.linearVelocity = Vector2.zero;
+        rb.simulated = false; // no more hits while the explosion plays
+        animator.Play("Snowball_explosion", 0, 0f);
+        Destroy(gameObject, ExplosionDuration); // shorter delay than the Lifetime one: the earliest wins
     }
 }

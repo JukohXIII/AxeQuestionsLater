@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(Health))]
+[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(Health))]
 public class EnemyController : MonoBehaviour
 {
 
@@ -54,7 +54,7 @@ public class EnemyController : MonoBehaviour
     public PlayerMovement PlayerMovement { get; private set; }
     private IEnemyState currentState;
     public IEnemyState CurrentState => currentState;
-    private new BoxCollider2D collider;
+    private new Collider2D collider;
     private float lastJumpTime = -999f;
     private Grabbable grabbable;
     public static event System.Action<EnemyConfig> OnAnyEnemyDied;
@@ -70,7 +70,7 @@ public class EnemyController : MonoBehaviour
     {
         Rb = GetComponent<Rigidbody2D>();
         Health = GetComponent<Health>();
-        collider = GetComponent<BoxCollider2D>();
+        collider = GetComponent<Collider2D>();
         grabbable = GetComponent<Grabbable>();
 
         // Virtual factories: a subclass can swap any single state.

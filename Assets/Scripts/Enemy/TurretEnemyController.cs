@@ -7,10 +7,12 @@ public class TurretEnemyController : EnemyController
     private const float KnockbackMultiplier = 2f; // light and squishy: flies further than a normal mob
     
     public const int MaxAmmo = 3;
-    public const float BurstGap = 0.15f;
-    public const float BurstWindupMultiplier = 0.6f;
     private const float ReloadTime = 2f;
-
+    // Time between two throws of a burst. Matches the length of the throw clip (0.55 s)
+    public const float ThrowInterval = 0.55f;
+    // The animation listens to this to restart the throw clip at every snowball
+    public event System.Action Thrown;
+    public void NotifyThrown() => Thrown?.Invoke();
     // The snowman takes a decision at random moments, between these two delays (seconds)
     private const float MinDecisionDelay = 0.4f;
     private const float MaxDecisionDelay = 1.6f;
@@ -24,7 +26,6 @@ public class TurretEnemyController : EnemyController
     public int Ammo { get; private set; }
     private float reloadTimer;
     private float nextDecisionTime;
-    public int PlannedShots { get; private set; }
     protected override void Awake()
     {
         base.Awake();
@@ -71,9 +72,13 @@ public class TurretEnemyController : EnemyController
             return false;
         }
 
-        PlannedShots = Random.Range(1, Ammo + 1);   // int version: the upper bound is excluded
-        return true;
+        return true;   // the number of snowballs is decided throw after throw, not here
     }
+
+    // After each throw of a burst, chance to keep throwing while the stock allows it
+    private const float ContinueChance = 0.5f;
+
+    public bool ShouldContinueBurst() => Ammo > 0 && Random.value < ContinueChance;
 
     public void ScheduleNextDecision() =>
         nextDecisionTime = Time.time + Random.Range(MinDecisionDelay, MaxDecisionDelay);

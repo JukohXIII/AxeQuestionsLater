@@ -38,3 +38,7 @@ MonoBehaviour:
   landingMargin: 0.3
   jumpReachSafety: 0.85
   souls: 5
+  idleClip: Mob_snowman_idle
+  walkClip: Mob_snowman_idle
+  hitClip: Mob_snowman_getHit
+  dyingClip: Mob_snowman_dying

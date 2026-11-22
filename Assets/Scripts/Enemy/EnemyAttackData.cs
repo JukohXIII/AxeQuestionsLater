@@ -52,4 +52,5 @@ public class EnemyAttackData : ScriptableObject
 
     [Header("Animation")]
     public string animationClip = "Mob_01_attack";
+    public string throwClip; // ranged enemies: replayed for every projectile released
 }

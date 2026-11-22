@@ -4,6 +4,7 @@ public class EnemyAnimation : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     private EnemyController enemy;
+    private TurretEnemyController turret; // null for enemies without a burst
     private IEnemyState lastState;
     private Grabbable grabbable;
     private bool wasGrabbed;
@@ -12,8 +13,14 @@ public class EnemyAnimation : MonoBehaviour
     void Awake()
     {
         enemy = GetComponent<EnemyController>();
+        turret = enemy as TurretEnemyController;
         grabbable = GetComponent<Grabbable>();
     }
+
+    void OnEnable() { if (turret != null) turret.Thrown += OnThrown; }
+    void OnDisable() { if (turret != null) turret.Thrown -= OnThrown; }
+
+    void OnThrown() => animator.Play(enemy.CurrentAttack.throwClip, 0, 0f);
 
     void Update()
     {
@@ -35,15 +42,16 @@ public class EnemyAnimation : MonoBehaviour
         lastState = state;
         lastDeadSettled = deadSettled;
 
+        EnemyConfig cfg = enemy.Config;
         if (state == enemy.Chase || state == enemy.Retreat)
-            animator.Play("Mob_01_walk");
+            animator.Play(cfg.walkClip);
         else if (state == enemy.Attack)
             animator.Play(enemy.CurrentAttack.animationClip, 0, 0f);
         else if (state == enemy.Dead)
-            animator.Play(deadSettled ? "Mob_01_dying" : "Mob_01_getHit", 0, 0f);
+            animator.Play(deadSettled ? cfg.dyingClip : cfg.hitClip, 0, 0f);
         else if (state == enemy.Hitstun)
-            animator.Play("Mob_01_getHit", 0, 0f);
+            animator.Play(cfg.hitClip, 0, 0f);
         else
-            animator.Play("Mob_01_idle");
+            animator.Play(cfg.idleClip);
     }
 }

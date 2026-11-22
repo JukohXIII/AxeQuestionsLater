@@ -56,4 +56,9 @@ public class EnemyConfig : ScriptableObject
     [Header("Rewards")]
     [Tooltip("Souls dropped when this enemy dies.")]
     public int souls = 5;
+
+    public string idleClip = "Mob_01_idle";
+    public string walkClip = "Mob_01_walk";
+    public string hitClip = "Mob_01_getHit";
+    public string dyingClip = "Mob_01_dying";
 }

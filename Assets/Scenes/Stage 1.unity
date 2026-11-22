@@ -4209,12 +4209,12 @@ MonoBehaviour:
   maxAlive: 2
   waves:
   - entries:
-    - prefab: {fileID: 476157468979207105, guid: 0b80965afa8d54544bcae64b45ffad66, type: 3}
+    - prefab: {fileID: 2568556369983828727, guid: 415129d60b7250d4bb516224deeb4692, type: 3}
       count: 1
     delayBeforeWave: 1.5
     delayBetweenSpawns: 0.5
   - entries:
-    - prefab: {fileID: 476157468979207105, guid: 0b80965afa8d54544bcae64b45ffad66, type: 3}
+    - prefab: {fileID: 2568556369983828727, guid: 415129d60b7250d4bb516224deeb4692, type: 3}
       count: 2
     delayBeforeWave: 1.5
     delayBetweenSpawns: 0

@@ -57,7 +57,7 @@ public class EnemyController : MonoBehaviour
     private new Collider2D collider;
     private float lastJumpTime = -999f;
     private Grabbable grabbable;
-    public static event System.Action<EnemyConfig> OnAnyEnemyDied;
+    public static event System.Action<EnemyConfig, Vector2> OnAnyEnemyDied;
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics()
     {
@@ -180,7 +180,7 @@ public class EnemyController : MonoBehaviour
     private void HandleDeath()
     {
         ChangeState(Dead);
-        OnAnyEnemyDied?.Invoke(config);
+        OnAnyEnemyDied?.Invoke(config, collider.bounds.center);
     }
     protected virtual IEnemyState CreateIdle() => new IdleState(this);
     protected virtual IEnemyState CreateChase() => new ChaseState(this);

@@ -32,7 +32,7 @@ public static class AudioManager
             pool[i].spatialBlend = 0f;
         }
 
-        EnemyController.OnAnyEnemyDied += _ => Play(Sfx.EnemyDie); //
+        EnemyController.OnAnyEnemyDied += (_, __) => Play(Sfx.EnemyDie); //
     }
 
     public static void Play(Sfx id, float volumeScale = 1f)

@@ -355,6 +355,7 @@ public class PlayerCombat : MonoBehaviour
                                 knockbackDirection = ((Vector2)hit.transform.position - (Vector2)transform.position).normalized;
                             float dealt = PlayerStats.Apply(StatType.Damage, currentAttack.damage);
                             targetHealth.TakeHit(dealt, knockbackDirection, currentAttack.knockback, currentAttack.causesKnockdown);
+                            ComboCounter.AddHit();
                             CurrentAnimation = currentAttack.animationName;   // connected: swap to the hit version
                             ApplyLifeSteal(dealt);
                             AudioManager.Play(currentAttack.heavyHit ? Sfx.HitHeavy : Sfx.Hit);
@@ -468,6 +469,7 @@ public class PlayerCombat : MonoBehaviour
         if (heldTarget.TryGetComponent(out ThrownCollateral collateral)) collateral.Launch();
         float dealt = PlayerStats.Apply(StatType.Damage, t.damage);
         heldTarget.GetComponent<Health>().TakeHit(dealt, dir, t.knockback, t.causesKnockdown);
+        ComboCounter.AddHit();
         ApplyLifeSteal(dealt);
         AudioManager.Play(Sfx.HitHeavy);
         StartCoroutine(HitStop(hitStopDuration));

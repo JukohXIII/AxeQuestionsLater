@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyAnimation : MonoBehaviour
 {
     [SerializeField] private Animator animator;
+    [SerializeField] private string grabClip = "Mob_01_inGrab";
     private EnemyController enemy;
     private TurretEnemyController turret; // null for enemies without a burst
     private IEnemyState lastState;
@@ -27,7 +28,7 @@ public class EnemyAnimation : MonoBehaviour
         bool grabbed = grabbable != null && grabbable.IsGrabbed;
         if (grabbed)
         {
-            if (!wasGrabbed) animator.Play("Mob_01_inGrab", 0, 0f);
+            if (!wasGrabbed) animator.Play(grabClip, 0, 0f);
             wasGrabbed = true;
             return;
         }

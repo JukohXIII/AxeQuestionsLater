@@ -48,6 +48,7 @@ public class ThrownCollateral : MonoBehaviour
             alreadyHit.Add(hit);
             float side = Mathf.Sign(hit.transform.position.x - transform.position.x);
             h.TakeHit(damage, new Vector2(side, 0.5f).normalized, knockback, false);
+            ComboCounter.AddHit();
             active = false;
             return;
         }

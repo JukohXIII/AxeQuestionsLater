@@ -29,6 +29,7 @@ public class PlayerGetHit : MonoBehaviour
 
     void HandleHit()
     {
+        ComboCounter.Break();
         if (health.LastHitCausedKnockdown)
         {
             playerCombat.Interrupt(PlayerCombat.PlayerState.Knockdown);

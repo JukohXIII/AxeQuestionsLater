@@ -71,6 +71,7 @@ public class AxeProjectile : MonoBehaviour
             {
                 hasHitEnemy = true;
                 h.TakeHit(damage, new Vector2(Mathf.Sign(velocity.x), 0.3f).normalized, knockback);
+                ComboCounter.AddHit();
                 AudioManager.Play(Sfx.HitHeavy);
                 owner.GetComponent<PlayerCombat>().TriggerHitStop(hitStopDuration);
                 StickTo(hit.transform, h);

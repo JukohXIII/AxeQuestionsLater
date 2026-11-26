@@ -47,6 +47,8 @@ GameObject:
   - component: {fileID: 3903909107696671280}
   - component: {fileID: 3673976286801628263}
   - component: {fileID: 5600062437293492434}
+  - component: {fileID: 8643357658695152006}
+  - component: {fileID: 90487859987301835}
   m_Layer: 8
   m_Name: Snowman
   m_TagString: Untagged
@@ -189,6 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimation
   animator: {fileID: 3755884681070405686}
+  grabClip: Mob_snowman_getHit
 --- !u!114 &3673976286801628263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6f36bc46b8b8846be2a54baf2a7dba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitFlash
-  sprite: {fileID: 0}
+  sprite: {fileID: 6005971250894123864}
   flashColor: {r: 1, g: 1, b: 1, a: 1}
   flashDuration: 0
   blinkInterval: 0.08
@@ -224,6 +227,38 @@ MonoBehaviour:
   fadeSpeed: 3
   flashColor: {r: 1, g: 1, b: 1, a: 1}
   flashDuration: 0.1
+--- !u!114 &8643357658695152006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2568556369983828727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c6505d78736f74ab857c9bbfde6b9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Grabbable
+--- !u!114 &90487859987301835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2568556369983828727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b05b4c747340e54ca0997afb9d2d548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThrownCollateral
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  damage: 5
+  knockback: 8
+  landGrace: 0.1
+  hitboxSize: {x: 1, y: 1}
+  minSpeed: 2
 --- !u!1 &3820407132785994691
 GameObject:
   m_ObjectHideFlags: 0

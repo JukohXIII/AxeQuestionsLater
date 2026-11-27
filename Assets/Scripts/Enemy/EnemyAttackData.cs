@@ -49,6 +49,10 @@ public class EnemyAttackData : ScriptableObject
     [Tooltip("If set, the attack fires this at the end of the windup instead of using the melee hit zone. Only damage, knockback, launchDirection and breaksGuard of 'hit' are used.")]
     public EnemyProjectile projectilePrefab;
     public float projectileSpeed = 7f;
+    [Tooltip("Ranged attacks: beyond this distance to the target, the projectile is lobbed in an arc. 0 = always straight.")]
+    public float lobMinDistance;
+    [Tooltip("Aim error as a fraction of the distance to the target (0.05 = 5%). 0 = perfect aim.")]
+    public float aimError;
 
     [Header("Animation")]
     public string animationClip = "Mob_01_attack";

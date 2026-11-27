@@ -12,16 +12,56 @@ public class EnemyProjectile : MonoBehaviour
     private bool consumed;
     private const float ExplosionDuration = 0.43f; // length of Snowball_explosion
     [SerializeField] private Animator animator;
-
+    public const float LobGravity = 25f;
+    private const float LobAngle = 50 * Mathf.Deg2Rad;
+    private const float MinLobDx = 0.5f;
+    private Vector2 velocity;
+    private float gravity;
     void Awake() => rb = GetComponent<Rigidbody2D>();
     
     public void Launch(Vector2 direction, float speed, EnemyHitData hitData, LayerMask targets, LayerMask ground)
     {
+        Setup(hitData, targets, ground);
+        velocity = direction * speed;
+        rb.linearVelocity = velocity;
+    }
+
+    public void LaunchLob(Vector2 launchVelocity, EnemyHitData hitData, LayerMask targets, LayerMask ground)
+    {
+        Setup(hitData, targets, ground);
+        gravity = LobGravity;
+        velocity = launchVelocity;
+        rb.linearVelocity = velocity;
+    }
+
+    void Setup(EnemyHitData hitData, LayerMask targets, LayerMask ground)
+    {
         hit = hitData;
         targetLayer = targets;
         groundLayer = ground;
-        rb.linearVelocity = direction * speed;
         Destroy(gameObject, Lifetime);
+    }
+
+    void FixedUpdate()
+    {
+        if (gravity == 0f || consumed) return;
+        velocity.y -= gravity * Time.fixedDeltaTime;
+        rb.linearVelocity = velocity;
+    }
+
+    public static bool TryAimLob(Vector2 delta, out Vector2 launchVelocity)
+    {
+        launchVelocity = Vector2.zero;
+        float dx = Mathf.Abs(delta.x);
+        if (dx < MinLobDx) return false;
+
+        float cos = Mathf.Cos(LobAngle);
+        float denominator = 2f * cos * cos * (dx * Mathf.Tan(LobAngle) - delta.y);
+        if (denominator <= 0f) return false;
+
+        float speed = Mathf.Sqrt(LobGravity * dx * dx / denominator);
+        launchVelocity = new Vector2(Mathf.Sign(delta.x) * speed * cos, speed * Mathf.Sin(LobAngle));
+        return true;
     }
 
     void OnTriggerEnter2D(Collider2D other) => Resolve(other);

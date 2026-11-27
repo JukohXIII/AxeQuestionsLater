@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(Health))]
 public class EnemyController : MonoBehaviour
@@ -265,11 +266,27 @@ public class EnemyController : MonoBehaviour
 
         Vector2 origin = muzzle != null ? (Vector2)muzzle.position : (Vector2)transform.position;
         Vector2 target = PlayerCollider != null ? (Vector2)PlayerCollider.bounds.center : (Vector2)player.position;
-        Vector2 direction = (target - origin).normalized;
-        if (direction == Vector2.zero) direction = Vector2.right * FacingDirection;
+        Vector2 toTarget = target - origin;
+        float distance = toTarget.magnitude; // real distance : decides straight throw or lob throw
+
+        toTarget += Random.insideUnitCircle * (distance * attack.aimError);
 
         EnemyProjectile projectile = Instantiate(attack.projectilePrefab, origin, Quaternion.identity);
-        projectile.Launch(direction, attack.projectileSpeed, attack.hit, playerLayer, groundLayer);
+
+        Vector2 lobVelocity = Vector2.zero;
+        bool lob = attack.lobMinDistance > 0f 
+                   && distance >= attack.lobMinDistance
+                   && EnemyProjectile.TryAimLob(toTarget, out lobVelocity);
+
+        if (lob)
+        {
+            projectile.LaunchLob(lobVelocity, attack.hit, playerLayer, groundLayer);
+            return;
+        }
+
+        Vector2 direction = toTarget.normalized;
+        if (direction == Vector2.zero) direction = Vector2.right * FacingDirection;
+        projectile.Launch(direction,attack.projectileSpeed, attack.hit, playerLayer, groundLayer);
     }
 
     public bool DealHit(EnemyHitData hit, HashSet<Health> alreadyHit)

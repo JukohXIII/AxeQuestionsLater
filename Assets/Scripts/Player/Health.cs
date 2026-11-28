@@ -23,6 +23,10 @@ public class Health : MonoBehaviour
     public Action OnDeath;
     public bool HideInvincibleBlink { get; set; }
     public float LastGuardCost { get; private set; }
+    // Raised after any hit that dealt damage (not on blocks): the hit entity and the damage dealt
+    public static event Action<Health, float> OnAnyDamaged;
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetStatics() => OnAnyDamaged = null;
 
     void Awake()
     {
@@ -41,6 +45,7 @@ public class Health : MonoBehaviour
         }
 
         damagePercent += damageAmount;
+        OnAnyDamaged?.Invoke(this, damageAmount);
         rb.linearVelocity = knockbackDirection * knockbackForce * KnockbackTakenMultiplier;
         LastHitCausedKnockdown = causesKnockdown;
 
